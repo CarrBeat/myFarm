@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Моя ферма</string>
+    <string name="main_column_text">Главная</string>
+    <string name="animals_column_text">Животные</string>
+    <string name="feed_column_text">Кормление</string>
+    <string name="pregnancy_column_text">Беременность</string>
+    <string name="settings_column_text">Настройки</string>
 </resources>
