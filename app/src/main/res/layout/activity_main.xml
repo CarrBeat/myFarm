@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="60dp"
         android:layout_height="0dp"
         android:background="@color/lite_green"
@@ -17,20 +18,20 @@
 
         <TextView
             android:id="@+id/main_column"
-            android:layout_width="81dp"
-            android:layout_height="80dp"
+            android:layout_width="94dp"
+            android:layout_height="106dp"
             android:fontFamily="serif"
             android:gravity="center"
             android:rotation="270"
             android:text="@string/main_column_text"
             android:textColor="@color/black"
             android:textSize="19sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.476"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.032" />
+            app:layout_constraintVertical_bias="0.028" />
 
         <TextView
             android:id="@+id/animal_column"
@@ -82,6 +83,20 @@
             app:layout_constraintVertical_bias="0.641" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="339dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </android.support.constraint.ConstraintLayout>

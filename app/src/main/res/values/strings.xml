@@ -5,4 +5,5 @@
     <string name="feed_column_text">Кормление</string>
     <string name="pregnancy_column_text">Беременность</string>
     <string name="settings_column_text">Настройки</string>
+    <string name="category">category</string>
 </resources>
