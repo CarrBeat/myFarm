@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         categoryList.add(new Category(2, "Рогатый скот"));
         categoryList.add(new Category(3, "Иные млекопитающие"));
         categoryList.add(new Category(4, "Прочие"));
+        categoryList.add(new Category(5, "Все"));
         setCategoryRecycler(categoryList);
 
 
@@ -85,11 +86,19 @@ public class MainActivity extends AppCompatActivity {
         animalList.addAll(fullAnimalList);
 
         List<AnimalType> filterAnimalTypes = new ArrayList<>();
-        for (AnimalType inWork : animalList){
-            if (inWork.getCategory() == category){
-                filterAnimalTypes.add(inWork);
+
+        System.out.println(category);
+
+        if (category == 5){
+            filterAnimalTypes.addAll(animalList);
+        } else {
+            for (AnimalType inWork : animalList){
+                if (inWork.getCategory() == category){
+                    filterAnimalTypes.add(inWork);
+                }
             }
         }
+
         animalList.clear();
         animalList.addAll(filterAnimalTypes);
         animalTypeAdapter.notifyDataSetChanged();
