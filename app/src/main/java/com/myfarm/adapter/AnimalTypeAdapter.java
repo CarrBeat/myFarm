@@ -62,7 +62,6 @@ public class AnimalTypeAdapter extends RecyclerView.Adapter<AnimalTypeAdapter.An
 
         public AnimalTypeViewHolder(@NonNull View itemView) {
             super(itemView);
-
             backgroundAnimalType = itemView.findViewById(R.id.animal_linear_layout);
             animalTypeImage = itemView.findViewById(R.id.animal_type_image);
             animalTypeTitle = itemView.findViewById(R.id.animal_type_text);
