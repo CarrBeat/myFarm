@@ -99,10 +99,17 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="272dp"
-        android:layout_height="469dp"
-        tools:layout_editor_absoluteX="97dp"
-        tools:layout_editor_absoluteY="137dp" />
+        android:id="@+id/animalsRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
 
 </android.support.constraint.ConstraintLayout>
