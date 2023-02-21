@@ -18,7 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView categoryRecycler, animalsRecycler;
     CategoryAdapter categoryAdapter;
-    AnimalTypeAdapter animalTypeAdapter;
+    static List<AnimalType> animalList = new ArrayList<>();
+    static List<AnimalType> fullAnimalList = new ArrayList<>();
+    static AnimalTypeAdapter animalTypeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +34,22 @@ public class MainActivity extends AppCompatActivity {
         categoryList.add(new Category(4, "Прочие"));
         setCategoryRecycler(categoryList);
 
-        List<AnimalType> animalList = new ArrayList<>();
-        animalList.add(new AnimalType(1, "cow", "Корова/бык", "#b8860b"));
-        animalList.add(new AnimalType(2, "sheep", "Овца/баран", "#b8860b"));
-        animalList.add(new AnimalType(3, "goat", "Коза/козёл", "#b8860b"));
-        animalList.add(new AnimalType(4, "chicken", "Курица/петух", "#00bfff"));
-        animalList.add(new AnimalType(5, "quail", "Перепел", "#00bfff"));
-        animalList.add(new AnimalType(6, "ducks", "Утка/селезень", "#00bfff"));
-        animalList.add(new AnimalType(7, "geese", "Гусь", "#00bfff"));
-        animalList.add(new AnimalType(8, "turckey", "Индейка", "#00bfff"));
-        animalList.add(new AnimalType(9, "ostrich", "Страус", "#00bfff"));
-        animalList.add(new AnimalType(10, "pig", "Свинья", "#90ee90"));
-        animalList.add(new AnimalType(12, "bees", "Пчёлы", "#90ee90"));
-        animalList.add(new AnimalType(13, "rabbit", "Кролик", "#90ee90"));
+
+        animalList.add(new AnimalType(1, "cow", "Корова/бык", "#b8860b", 2));
+        animalList.add(new AnimalType(2, "sheep", "Овца/баран", "#b8860b", 2));
+        animalList.add(new AnimalType(3, "goat", "Коза/козёл", "#b8860b", 2));
+        animalList.add(new AnimalType(4, "chicken", "Курица/петух", "#00bfff", 1));
+        animalList.add(new AnimalType(5, "quail", "Перепел", "#00bfff", 1));
+        animalList.add(new AnimalType(6, "ducks", "Утка/селезень", "#00bfff", 1));
+        animalList.add(new AnimalType(7, "geese", "Гусь", "#00bfff", 1));
+        animalList.add(new AnimalType(8, "turckey", "Индейка", "#00bfff", 1));
+        animalList.add(new AnimalType(9, "ostrich", "Страус", "#00bfff", 1));
+        animalList.add(new AnimalType(10, "pig", "Свинья", "#90ee90",3));
+        animalList.add(new AnimalType(12, "bees", "Пчёлы", "#90ee90",4));
+        animalList.add(new AnimalType(13, "rabbit", "Кролик", "#90ee90", 3));
+
+        fullAnimalList.addAll(animalList);
+
         setAnimalTypeRecycler(animalList);
 
 
@@ -72,4 +77,22 @@ public class MainActivity extends AppCompatActivity {
         categoryAdapter = new CategoryAdapter(this, categoryList);
         categoryRecycler.setAdapter(categoryAdapter);
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public static void showSortedAnimalType(int category){
+
+        animalList.clear();
+        animalList.addAll(fullAnimalList);
+
+        List<AnimalType> filterAnimalTypes = new ArrayList<>();
+        for (AnimalType inWork : animalList){
+            if (inWork.getCategory() == category){
+                filterAnimalTypes.add(inWork);
+            }
+        }
+        animalList.clear();
+        animalList.addAll(filterAnimalTypes);
+        animalTypeAdapter.notifyDataSetChanged();
+    }
+
 }

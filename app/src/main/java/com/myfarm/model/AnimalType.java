@@ -1,14 +1,23 @@
 package com.myfarm.model;
 
 public class AnimalType {
-    int id;
+    int id, category;
     String img, title, backgroundColor;
 
-    public AnimalType(int id, String img, String title, String backgroundColor) {
+    public AnimalType(int id, String img, String title, String backgroundColor, int category) {
         this.id = id;
         this.img = img;
         this.title = title;
         this.backgroundColor = backgroundColor;
+        this.category = category;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     public int getId() {
