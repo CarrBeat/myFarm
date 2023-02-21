@@ -33,7 +33,18 @@ public class MainActivity extends AppCompatActivity {
         setCategoryRecycler(categoryList);
 
         List<AnimalType> animalList = new ArrayList<>();
-        animalList.add(new AnimalType(1, "cow", "Корова", "#ffff00"));
+        animalList.add(new AnimalType(1, "cow", "Корова/бык", "#b8860b"));
+        animalList.add(new AnimalType(2, "sheep", "Овца/баран", "#b8860b"));
+        animalList.add(new AnimalType(3, "goat", "Коза/козёл", "#b8860b"));
+        animalList.add(new AnimalType(4, "chicken", "Курица/петух", "#00bfff"));
+        animalList.add(new AnimalType(5, "quail", "Перепел", "#00bfff"));
+        animalList.add(new AnimalType(6, "ducks", "Утка/селезень", "#00bfff"));
+        animalList.add(new AnimalType(7, "geese", "Гусь", "#00bfff"));
+        animalList.add(new AnimalType(8, "turckey", "Индейка", "#00bfff"));
+        animalList.add(new AnimalType(9, "ostrich", "Страус", "#00bfff"));
+        animalList.add(new AnimalType(10, "pig", "Свинья", "#90ee90"));
+        animalList.add(new AnimalType(12, "bees", "Пчёлы", "#90ee90"));
+        animalList.add(new AnimalType(13, "rabbit", "Кролик", "#90ee90"));
         setAnimalTypeRecycler(animalList);
 
 
@@ -42,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private void setAnimalTypeRecycler(List<AnimalType> animalList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
                 RecyclerView.HORIZONTAL, false);
-        animalsRecycler = findViewById(R.id.animalsRecycler);
+        animalsRecycler = findViewById(R.id.animal_recycler);
         animalsRecycler.setLayoutManager(layoutManager);
 
         animalTypeAdapter = new AnimalTypeAdapter(this, animalList);

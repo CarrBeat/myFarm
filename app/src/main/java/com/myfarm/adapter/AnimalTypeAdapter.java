@@ -1,5 +1,6 @@
 package com.myfarm.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -36,14 +37,16 @@ public class AnimalTypeAdapter extends RecyclerView.Adapter<AnimalTypeAdapter.An
 
     @Override
     public void onBindViewHolder(@NonNull AnimalTypeViewHolder holder, int position) {
-        holder.backgroundAnimalType.setBackgroundColor(
-                Color.parseColor(animalTypesList.get(position).getBackgroundColor()));
 
+        @SuppressLint("DiscouragedApi")
         int imageId = context.getResources().getIdentifier(animalTypesList.get(position).getImg(),
                 "drawable", context.getPackageName());
         holder.animalTypeImage.setImageResource(imageId);
 
         holder.animalTypeTitle.setText(animalTypesList.get(position).getTitle());
+
+        holder.backgroundAnimalType.setBackgroundColor(
+                Color.parseColor(animalTypesList.get(position).getBackgroundColor()));
     }
 
     @Override
@@ -59,10 +62,10 @@ public class AnimalTypeAdapter extends RecyclerView.Adapter<AnimalTypeAdapter.An
 
         public AnimalTypeViewHolder(@NonNull View itemView) {
             super(itemView);
-            // ниже должно быть .findViewById(R.id.имя переменной)
-            backgroundAnimalType = itemView.findViewWithTag(backgroundAnimalType); //тут by id
-            animalTypeImage = itemView.findViewWithTag(animalTypeImage);
-            animalTypeTitle = itemView.findViewWithTag(animalTypeTitle);
+
+            backgroundAnimalType = itemView.findViewById(R.id.animal_linear_layout);
+            animalTypeImage = itemView.findViewById(R.id.animal_type_image);
+            animalTypeTitle = itemView.findViewById(R.id.animal_type_text);
         }
     }
 
