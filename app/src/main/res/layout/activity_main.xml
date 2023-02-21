@@ -98,5 +98,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="272dp"
+        android:layout_height="469dp"
+        tools:layout_editor_absoluteX="97dp"
+        tools:layout_editor_absoluteY="137dp" />
+
 
 </android.support.constraint.ConstraintLayout>

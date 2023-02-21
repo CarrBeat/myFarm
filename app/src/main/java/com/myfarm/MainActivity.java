@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
         setCategoryRecycler(categoryList);
     }
 
-    @SuppressLint("WrongViewCast")
+
     private void setCategoryRecycler(List<Category> categoryList) {
 
         // организуем горизонтальный вывод:
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
                 RecyclerView.HORIZONTAL, false);
-        categoryRecycler = findViewById(R.id.category_title);
+        categoryRecycler = findViewById(R.id.recycler_view);
         categoryRecycler.setLayoutManager(layoutManager);
 
         categoryAdapter = new CategoryAdapter(this, categoryList);
