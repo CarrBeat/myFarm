@@ -2,6 +2,7 @@ package com.myfarm.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.myfarm.R;
 import com.myfarm.model.AnimalType;
+import com.myfarm.newAnimalPage;
 
 import java.util.List;
 
@@ -47,6 +49,18 @@ public class AnimalTypeAdapter extends RecyclerView.Adapter<AnimalTypeAdapter.An
 
         holder.backgroundAnimalType.setBackgroundColor(
                 Color.parseColor(animalTypesList.get(position).getBackgroundColor()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, newAnimalPage.class);
+
+                intent.putExtra("animalPageImage", imageId);
+                intent.putExtra("animalTypeText", animalTypesList.get(position).getTitle());
+
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

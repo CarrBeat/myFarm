@@ -19,7 +19,6 @@
             android:id="@+id/main_column"
             android:layout_width="94dp"
             android:layout_height="106dp"
-            android:fontFamily="serif"
             android:gravity="center"
             android:rotation="270"
             android:text="@string/main_column_text"
@@ -36,7 +35,6 @@
             android:id="@+id/animal_column"
             android:layout_width="120dp"
             android:layout_height="80dp"
-            android:fontFamily="serif"
             android:gravity="center"
             android:rotation="270"
             android:text="@string/animals_column_text"
@@ -52,7 +50,6 @@
             android:id="@+id/pregnancy_column"
             android:layout_width="150dp"
             android:layout_height="80dp"
-            android:fontFamily="serif"
             android:gravity="center"
             android:rotation="270"
             android:text="@string/pregnancy_column_text"
@@ -68,7 +65,6 @@
             android:id="@+id/settings_column"
             android:layout_width="115dp"
             android:layout_height="80dp"
-            android:fontFamily="serif"
             android:gravity="center"
             android:rotation="270"
             android:text="@string/settings_column_text"
@@ -84,18 +80,16 @@
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/addAnimalImage"
         android:layout_width="261dp"
         android:layout_height="168dp"
-        android:layout_marginStart="45dp"
         android:layout_marginTop="25dp"
-        android:layout_marginEnd="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.113"
+        app:layout_constraintVertical_bias="0.077"
         app:srcCompat="@drawable/cow" />
 
     <TextView
@@ -104,7 +98,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
         android:layout_marginEnd="45dp"
-        android:fontFamily="serif"
         android:text="@string/new_animal_title"
         android:textColor="@color/black"
         android:textSize="22sp"
@@ -113,85 +106,104 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <TextView
         android:id="@+id/birthDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="serif"
         android:text="@string/animal_birthdate"
         android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="0.072"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.604" />
+        app:layout_constraintVertical_bias="0.647" />
+
+    <TextView
+        android:id="@+id/birthdateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/animal_name"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.413" />
+
+    <TextView
+        android:id="@+id/birthdateTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/animal_type"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.035"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.527" />
 
     <TextView
         android:id="@+id/ageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="serif"
         android:text="@string/animal_age"
         android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.706" />
+        app:layout_constraintVertical_bias="0.736" />
 
     <TextView
         android:id="@+id/monthBirthText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="45dp"
-        android:fontFamily="serif"
         android:text="@string/animal_birthdate_month"
         android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.805" />
+        app:layout_constraintVertical_bias="0.842" />
 
     <EditText
         android:id="@+id/editAnimalName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginEnd="73dp"
+        android:layout_width="203dp"
+        android:layout_height="46dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/animal_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42" />
+        app:layout_constraintVertical_bias="0.411" />
 
     <EditText
         android:id="@+id/editAnimalType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginEnd="73dp"
+        android:layout_width="189dp"
+        android:layout_height="42dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/animal_type"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.886"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516" />
+        app:layout_constraintVertical_bias="0.53" />
 
     <EditText
         android:id="@+id/editAnimalBirthdate"
@@ -204,7 +216,7 @@
         app:layout_constraintHorizontal_bias="0.921"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.609" />
+        app:layout_constraintVertical_bias="0.638" />
 
     <EditText
         android:id="@+id/editTextNumberSigned"
@@ -217,10 +229,10 @@
         app:layout_constraintHorizontal_bias="0.935"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.709" />
+        app:layout_constraintVertical_bias="0.74" />
 
     <EditText
-        android:id="@+id/editTextNumberSigned2"
+        android:id="@+id/monthBirthTextSigned"
         android:layout_width="129dp"
         android:layout_height="53dp"
         android:ems="10"
@@ -230,14 +242,46 @@
         app:layout_constraintHorizontal_bias="0.927"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82" />
+        app:layout_constraintVertical_bias="0.849" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/addNewAnimalButton"
+        android:layout_width="195dp"
+        android:layout_height="44dp"
+        android:background="@color/medium_yellow"
+        android:bottomRightRadius="10dp"
+        android:text="ДОБАВИТЬ ЖИВОТНОЕ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.969" />
+
+    <Switch
+        android:id="@+id/animalSex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="186dp"
-        tools:layout_editor_absoluteY="574dp" />
+        android:text="М   "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.944" />
+
+    <TextView
+        android:id="@+id/womanSex"
+        android:layout_width="39dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="11dp"
+        android:text="Ж"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/animalSex"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.974" />
 
 </android.support.constraint.ConstraintLayout>
