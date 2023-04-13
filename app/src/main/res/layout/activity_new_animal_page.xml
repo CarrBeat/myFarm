@@ -184,7 +184,6 @@
         android:layout_width="203dp"
         android:layout_height="46dp"
         android:ems="10"
-        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.885"
@@ -197,7 +196,6 @@
         android:layout_width="189dp"
         android:layout_height="42dp"
         android:ems="10"
-        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.886"
@@ -205,12 +203,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.53" />
 
-    <EditText
-        android:id="@+id/editAnimalBirthdate"
+    <TextView
+        android:id="@+id/textAnimalBirthdate"
         android:layout_width="148dp"
         android:layout_height="45dp"
-        android:ems="10"
-        android:inputType="date"
+        android:text="ВЫБРАТЬ"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.921"
@@ -250,7 +248,7 @@
         android:layout_height="44dp"
         android:background="@color/medium_yellow"
         android:bottomRightRadius="10dp"
-        android:text="ДОБАВИТЬ ЖИВОТНОЕ"
+        android:text="@string/addAnimalText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
@@ -258,11 +256,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.969" />
 
+    <Button
+        android:id="@+id/datePickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выбери дату"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="105dp"
+        tools:layout_editor_absoluteY="378dp" />
+
     <Switch
         android:id="@+id/animalSex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="М   "
+        android:text="@string/sexMaleText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.81"

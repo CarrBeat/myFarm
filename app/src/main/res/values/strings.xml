@@ -13,4 +13,6 @@
     <string name="animal_birthdate">Дата рождения:</string>
     <string name="animal_age">Возраст (полных лет):</string>
     <string name="animal_birthdate_month">Месяц рождения:</string>
+    <string name="addAnimalText">ДОБАВИТЬ ЖИВОТНОЕ</string>
+    <string name="sexMaleText">М   </string>
 </resources>
