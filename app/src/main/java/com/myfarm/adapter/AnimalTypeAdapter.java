@@ -38,7 +38,8 @@ public class AnimalTypeAdapter extends RecyclerView.Adapter<AnimalTypeAdapter.An
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AnimalTypeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AnimalTypeViewHolder holder,
+                                 @SuppressLint("RecyclerView") int position) {
 
         @SuppressLint("DiscouragedApi")
         int imageId = context.getResources().getIdentifier(animalTypesList.get(position).getImg(),
