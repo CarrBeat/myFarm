@@ -120,7 +120,7 @@
         app:layout_constraintHorizontal_bias="0.072"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.647" />
+        app:layout_constraintVertical_bias="0.633" />
 
     <TextView
         android:id="@+id/birthdateTitle"
@@ -205,23 +205,25 @@
 
     <TextView
         android:id="@+id/textAnimalBirthdate"
-        android:layout_width="148dp"
-        android:layout_height="45dp"
-        android:text="ВЫБРАТЬ"
+        android:layout_width="145dp"
+        android:layout_height="25dp"
+        android:text="@string/selectDate"
+        android:textAlignment="viewStart"
         android:textColor="@color/black"
+        android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.921"
+        app:layout_constraintHorizontal_bias="0.912"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.638" />
+        app:layout_constraintVertical_bias="0.630" />
 
     <EditText
         android:id="@+id/editTextNumberSigned"
         android:layout_width="102dp"
         android:layout_height="47dp"
         android:ems="10"
-        android:inputType="numberSigned"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.935"
@@ -234,7 +236,7 @@
         android:layout_width="129dp"
         android:layout_height="53dp"
         android:ems="10"
-        android:inputType="numberSigned"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.927"
@@ -258,12 +260,16 @@
 
     <Button
         android:id="@+id/datePickerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Выбери дату"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="105dp"
-        tools:layout_editor_absoluteY="378dp" />
+        android:layout_width="170dp"
+        android:layout_height="42dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.632"
+        tools:ignore="MissingConstraints" />
 
     <Switch
         android:id="@+id/animalSex"

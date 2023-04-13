@@ -3,8 +3,8 @@
     <style name="Theme.MyFarm" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryDark">@color/green</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="colorPrimaryDark">@color/normal_dark_yellow</item>
+        <item name="colorAccent">@color/dark_green</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

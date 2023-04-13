@@ -45,8 +45,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
-        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-        System.out.println(currentDate);
+        String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
 
         TextView textView = findViewById(R.id.textAnimalBirthdate);
         textView.setText(currentDate);
