@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import java.util.List;
 
+@Dao
 public interface ProductivityDao {
     @Insert
     void insertAll(Productivity... productivities);
