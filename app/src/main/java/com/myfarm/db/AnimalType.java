@@ -2,6 +2,7 @@ package com.myfarm.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import io.reactivex.rxjava3.annotations.NonNull;
 
