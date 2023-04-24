@@ -2,10 +2,12 @@ package com.myfarm.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import io.reactivex.rxjava3.annotations.NonNull;
 
-@Entity(tableName = "productivity")
+@Entity(foreignKeys = @ForeignKey(entity = Product.class, parentColumns = "idProduct",
+        childColumns = "productID"), tableName = "productivity")
 public class Productivity {
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -13,7 +15,7 @@ public class Productivity {
     private int idProductivity;
 
     @NonNull
-    @ColumnInfo(name = "productID")
+    @ColumnInfo(name = "productID", index = true)
     private int productID;
 
     @NonNull
