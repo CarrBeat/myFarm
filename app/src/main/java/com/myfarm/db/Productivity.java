@@ -6,8 +6,9 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import io.reactivex.rxjava3.annotations.NonNull;
 
-@Entity(foreignKeys = @ForeignKey(entity = Product.class, parentColumns = "idProduct",
-        childColumns = "productID"), tableName = "productivity")
+@Entity(foreignKeys = {@ForeignKey(entity = Product.class, parentColumns = "idProduct",
+        childColumns = "productID"), @ForeignKey(entity = Animal.class, parentColumns = "idAnimal",
+        childColumns = "animalID")}, tableName = "productivity")
 public class Productivity {
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -19,7 +20,7 @@ public class Productivity {
     private int productID;
 
     @NonNull
-    @ColumnInfo(name = "animalID")
+    @ColumnInfo(name = "animalID", index = true)
     private int animalID;
 
     @NonNull
