@@ -28,7 +28,7 @@ public class Animal {
     @ColumnInfo(name = "birthdate")
     private String birthdate;
 
-    @ColumnInfo(name = "pregnancyID")
+    @ColumnInfo(name = "pregnancyID", index = true)
     private Boolean pregnancyID;
 
     @NonNull
