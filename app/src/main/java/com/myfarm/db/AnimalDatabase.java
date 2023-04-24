@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Animal.class, AnimalType.class}, version = 1, exportSchema = false)
+@Database(entities = {Animal.class, AnimalType.class, Pregnancy.class}, version = 1, exportSchema = false)
 public abstract class AnimalDatabase extends RoomDatabase {
     public abstract AnimalDao animalDao();
 

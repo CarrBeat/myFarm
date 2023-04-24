@@ -6,8 +6,9 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import io.reactivex.rxjava3.annotations.NonNull;
 
-@Entity(foreignKeys = @ForeignKey(entity = AnimalType.class, parentColumns = "idAnimalType",
-        childColumns = "animalTypeID"), tableName = "animal")
+@Entity(foreignKeys = {@ForeignKey(entity = AnimalType.class, parentColumns = "idAnimalType",
+        childColumns = "animalTypeID"), @ForeignKey(entity = Pregnancy.class,
+        parentColumns = "idPregnancy", childColumns = "pregnancyID")}, tableName = "animal")
 
 public class Animal {
     @NonNull
