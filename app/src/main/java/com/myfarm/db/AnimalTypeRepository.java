@@ -14,6 +14,5 @@ public class AnimalTypeRepository {
     }
 
 
-
     public List<AnimalType> getAllAnimalTypes() { return tAnimalTypeDao.getAllAnimalTypes(); }
 }

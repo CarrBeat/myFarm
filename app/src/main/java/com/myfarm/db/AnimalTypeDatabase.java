@@ -23,7 +23,7 @@ public abstract class AnimalTypeDatabase extends RoomDatabase {
             synchronized (AnimalTypeDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    AnimalTypeDatabase.class, "word_database")
+                                    AnimalTypeDatabase.class, "animalType-database")
                             .build();
                 }
             }
