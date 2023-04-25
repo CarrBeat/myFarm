@@ -5,9 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import androidx.room.Room;
 
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
+import com.myfarm.db.AnimalTypeDatabase;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
 
@@ -52,6 +56,36 @@ public class MainActivity extends AppCompatActivity {
         fullAnimalList.addAll(animalList);
 
         setAnimalTypeRecycler(animalList);
+
+        AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
+                AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
+
+        com.myfarm.db.AnimalType cow = new com.myfarm.db.AnimalType("Корова/бык",
+                "250-310", 9);
+        com.myfarm.db.AnimalType sheep = new com.myfarm.db.AnimalType("Овца/баран",
+                "147-150", 0);
+        com.myfarm.db.AnimalType goat = new com.myfarm.db.AnimalType("Коза/козёл",
+                "152",8);
+        com.myfarm.db.AnimalType chicken = new com.myfarm.db.AnimalType("Курица/петух",
+                "21", 1);
+        com.myfarm.db.AnimalType quail = new com.myfarm.db.AnimalType("Перепел",
+                "17-23", 1);
+        com.myfarm.db.AnimalType duck = new com.myfarm.db.AnimalType("Утка/селезень",
+                "22-40", 1);
+        com.myfarm.db.AnimalType goose = new com.myfarm.db.AnimalType("Гусь",
+                "28-32", 1);
+        com.myfarm.db.AnimalType turkey = new com.myfarm.db.AnimalType("Индейка",
+                "28", 1);
+        com.myfarm.db.AnimalType ostrich = new com.myfarm.db.AnimalType("Страус",
+                "35-45", 0);
+        com.myfarm.db.AnimalType pig = new com.myfarm.db.AnimalType("Свинья",
+                "117", 0);
+        com.myfarm.db.AnimalType bee = new com.myfarm.db.AnimalType("Пчела",
+                "16-21", 0);
+
+        animalTypeDatabase.animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
+                turkey, ostrich, pig, bee);
+        List<AnimalType> animalTypeList = animalTypeDatabase.animalTypeDao().insertAll();
 
 
     }

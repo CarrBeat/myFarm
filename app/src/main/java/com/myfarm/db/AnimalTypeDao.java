@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface AnimalTypeDao {
     @Insert
-    void insertAll(AnimalType... animalTypes);
+    List<com.myfarm.model.AnimalType> insertAll(AnimalType... animalTypes);
 
     @Delete
     void delete(AnimalType animalType);

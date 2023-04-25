@@ -18,14 +18,14 @@ public class AnimalType {
     private String animalTypeName;
 
     @ColumnInfo(name = "pregnancyPeriod")
-    private int pregnancyPeriod;
+    private String pregnancyPeriod;
 
     @NonNull
     @ColumnInfo(name = "normalProduction")
     private int normalProduction;
 
 
-    public AnimalType(String animalTypeName, int pregnancyPeriod, int normalProduction){
+    public AnimalType(String animalTypeName, String pregnancyPeriod, int normalProduction){
         this.animalTypeName = animalTypeName;
         this.pregnancyPeriod = pregnancyPeriod;
         this.normalProduction = normalProduction;
@@ -47,11 +47,11 @@ public class AnimalType {
         this.animalTypeName = animalTypeName;
     }
 
-    public int getPregnancyPeriod() {
+    public String getPregnancyPeriod() {
         return pregnancyPeriod;
     }
 
-    public void setPregnancyPeriod(int pregnancyPeriod) {
+    public void setPregnancyPeriod(String pregnancyPeriod) {
         this.pregnancyPeriod = pregnancyPeriod;
     }
 
