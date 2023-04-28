@@ -16,4 +16,5 @@
     <string name="addAnimalText">ДОБАВИТЬ ЖИВОТНОЕ</string>
     <string name="sexMaleText">М   </string>
     <string name="selectDate">_______________</string>
+    <string name="reset">Сброс</string>
 </resources>

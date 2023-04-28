@@ -46,6 +46,15 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
             datePicker.show(getSupportFragmentManager(), "date picker");
         });
 
+        Button resetButton = findViewById(R.id.resetBirthdate);
+        resetButton.setOnClickListener(view -> {
+            findViewById(R.id.editTextNumberSigned).setEnabled(true);
+            findViewById(R.id.monthBirthTextSigned).setEnabled(true);
+            TextView textView = findViewById(R.id.textAnimalBirthdate);
+            textView.setText("_______________");
+
+        });
+
         ImageView animalPageImage = findViewById(R.id.addAnimalImage);
         TextView animalTypeText = findViewById(R.id.editAnimalType);
 
@@ -61,8 +70,9 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
-
         TextView textView = findViewById(R.id.textAnimalBirthdate);
         textView.setText(currentDate);
+        findViewById(R.id.editTextNumberSigned).setEnabled(false);
+        findViewById(R.id.monthBirthTextSigned).setEnabled(false);
     }
 }
