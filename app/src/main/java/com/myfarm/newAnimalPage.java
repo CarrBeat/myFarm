@@ -29,22 +29,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_animal_page);
 
-        Button button = (Button) findViewById(R.id.datePickerButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment datePicker = new DatePickerFragment();
-                datePicker.show(getSupportFragmentManager(), "date picker");
-            }
-        });
-
-        ImageView animalPageImage = findViewById(R.id.addAnimalImage);
-        TextView animalTypeText = findViewById(R.id.editAnimalType);
-
-        animalPageImage.setImageResource(getIntent().getIntExtra("animalPageImage", 0));
-        animalTypeText.setText(getIntent().getStringExtra("animalTypeText"));
-
-
         AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
                 AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
         setContentView(R.layout.activity_new_animal_page);
@@ -55,6 +39,18 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Применяем адаптер к элементу spinner
         spinner.setAdapter(adapter);
+
+        Button button = findViewById(R.id.datePickerButton);
+        button.setOnClickListener(view -> {
+            DialogFragment datePicker = new DatePickerFragment();
+            datePicker.show(getSupportFragmentManager(), "date picker");
+        });
+
+        ImageView animalPageImage = findViewById(R.id.addAnimalImage);
+        TextView animalTypeText = findViewById(R.id.editAnimalType);
+
+        animalPageImage.setImageResource(getIntent().getIntExtra("animalPageImage", 0));
+        animalTypeText.setText(getIntent().getStringExtra("animalTypeText"));
 
     }
 
