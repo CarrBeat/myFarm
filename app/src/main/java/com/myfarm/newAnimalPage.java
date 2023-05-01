@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -57,6 +59,15 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         animalPageImage.setImageResource(getIntent().getIntExtra("animalPageImage", 0));
         spinner.setSelection(animalTypeDatabase.animalTypeDao().getAnimalTypeNames().indexOf(
                 getIntent().getStringExtra("animalTypeText")));
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(spinner.getSelectedItemId());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
     }
 
     @Override
