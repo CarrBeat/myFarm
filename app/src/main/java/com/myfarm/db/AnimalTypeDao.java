@@ -17,4 +17,7 @@ public interface AnimalTypeDao {
     @Query("SELECT animalTypeName FROM animalType")
     List<String> getAnimalTypeNames();
 
+    @Query("SELECT photoName FROM animalType where animalTypeName = :typeName")
+    String getPhotoNameByAnimalTypeName(String typeName);
+
 }

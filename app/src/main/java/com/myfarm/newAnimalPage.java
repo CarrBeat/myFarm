@@ -1,5 +1,6 @@
 package com.myfarm;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -62,8 +63,10 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
+            @SuppressLint("DiscouragedApi")
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(spinner.getSelectedItemId());
+                animalPageImage.setImageResource(getResources().getIdentifier(animalTypeDatabase.animalTypeDao().getPhotoNameByAnimalTypeName(
+                        (String) spinner.getSelectedItem()), "drawable", getPackageName()));
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
