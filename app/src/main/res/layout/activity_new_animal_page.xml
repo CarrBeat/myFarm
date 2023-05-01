@@ -82,10 +82,10 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="195dp"
-        android:layout_height="41dp"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="324dp"
+        android:layout_width="180dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="224dp"
+        android:layout_marginTop="329dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

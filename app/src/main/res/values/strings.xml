@@ -9,7 +9,7 @@
     <string name="animal_type_image">animalTypeImage</string>
     <string name="new_animal_title">Добавление животного</string>
     <string name="animal_name">Кличка:</string>
-    <string name="animal_type">Порода (вид):</string>
+    <string name="animal_type">Тип/порода/вид:</string>
     <string name="animal_birthdate">Дата рождения:</string>
     <string name="animal_age">Возраст (полных лет):</string>
     <string name="animal_birthdate_month">Месяц рождения:</string>
