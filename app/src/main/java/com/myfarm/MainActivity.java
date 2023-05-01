@@ -85,26 +85,16 @@ public class MainActivity extends AppCompatActivity {
                     "35-45", 0);
             com.myfarm.db.AnimalType pig = new com.myfarm.db.AnimalType("Свинья",
                     "117", 0);
-            com.myfarm.db.AnimalType bee = new com.myfarm.db.AnimalType("Пчела",
-                    "16-21", 0);
+            com.myfarm.db.AnimalType nutria = new com.myfarm.db.AnimalType("Нутрия",
+                    "127-132", 0);
+            com.myfarm.db.AnimalType rabbit = new com.myfarm.db.AnimalType("Кролик",
+                    "28-35", 0);
 
             animalTypeDatabase.animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
-                    turkey, ostrich, pig, bee);
+                    turkey, ostrich, pig, nutria, rabbit);
 
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

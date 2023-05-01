@@ -37,7 +37,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-
         Button button = findViewById(R.id.datePickerButton);
         button.setOnClickListener(view -> {
             DialogFragment datePicker = new DatePickerFragment();
@@ -56,7 +55,8 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         ImageView animalPageImage = findViewById(R.id.addAnimalImage);
 
         animalPageImage.setImageResource(getIntent().getIntExtra("animalPageImage", 0));
-
+        spinner.setSelection(animalTypeDatabase.animalTypeDao().getAnimalTypeNames().indexOf(
+                getIntent().getStringExtra("animalTypeText")));
     }
 
     @Override
