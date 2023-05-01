@@ -1,25 +1,22 @@
 package com.myfarm;
 
 import android.app.DatePickerDialog;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.room.Room;
 
-import com.myfarm.db.AnimalType;
 import com.myfarm.db.AnimalTypeDatabase;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class newAnimalPage extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -32,13 +29,14 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
                 AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
         setContentView(R.layout.activity_new_animal_page);
+
         Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, animalTypeDatabase.animalTypeDao().getAllAnimalTypes());
-        // Определяем разметку для использования при выборе элемента
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, new ArrayList<>());
+        adapter.addAll(animalTypeDatabase.animalTypeDao().getAnimalTypeNames());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Применяем адаптер к элементу spinner
         spinner.setAdapter(adapter);
+
 
         Button button = findViewById(R.id.datePickerButton);
         button.setOnClickListener(view -> {

@@ -14,7 +14,7 @@ public interface AnimalTypeDao {
     @Delete
     void delete(AnimalType animalType);
 
-    @Query("SELECT * FROM animalType")
-    List<AnimalType> getAllAnimalTypes();
+    @Query("SELECT animalTypeName FROM animalType")
+    List<String> getAnimalTypeNames();
 
 }

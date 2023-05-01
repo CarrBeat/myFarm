@@ -2,7 +2,7 @@ package com.myfarm.db;
 
 import android.app.Application;
 
-import java.util.List;
+import java.util.Collection;
 
 public class AnimalTypeRepository {
     private final AnimalTypeDao tAnimalTypeDao;
@@ -14,5 +14,5 @@ public class AnimalTypeRepository {
     }
 
 
-    public List<AnimalType> getAllAnimalTypes() { return tAnimalTypeDao.getAllAnimalTypes(); }
+    public Collection<? extends String> getAllAnimalTypes() { return tAnimalTypeDao.getAnimalTypeNames(); }
 }
