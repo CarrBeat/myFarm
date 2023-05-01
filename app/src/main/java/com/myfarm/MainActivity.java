@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         animalList.add(new AnimalType(8, "turckey", "Индейка", "#00bfff", 1));
         animalList.add(new AnimalType(9, "ostrich", "Страус", "#00bfff", 1));
         animalList.add(new AnimalType(10, "pig", "Свинья", "#90ee90",3));
-        animalList.add(new AnimalType(12, "bees", "Пчёлы", "#90ee90",4));
+        animalList.add(new AnimalType(12, "nutria", "Нутрия", "#90ee90",4));
         animalList.add(new AnimalType(13, "rabbit", "Кролик", "#90ee90", 3));
 
         fullAnimalList.addAll(animalList);

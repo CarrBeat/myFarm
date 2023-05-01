@@ -54,10 +54,8 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         });
 
         ImageView animalPageImage = findViewById(R.id.addAnimalImage);
-        TextView animalTypeText = findViewById(R.id.editAnimalType);
 
         animalPageImage.setImageResource(getIntent().getIntExtra("animalPageImage", 0));
-        animalTypeText.setText(getIntent().getStringExtra("animalTypeText"));
 
     }
 

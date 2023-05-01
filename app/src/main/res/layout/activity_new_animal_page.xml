@@ -82,10 +82,10 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="176dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="180dp"
-        android:layout_marginTop="296dp"
+        android:layout_width="195dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="324dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -201,18 +201,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.411" />
 
-    <EditText
-        android:id="@+id/editAnimalType"
-        android:layout_width="189dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.886"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.53" />
-
     <TextView
         android:id="@+id/textAnimalBirthdate"
         android:layout_width="145dp"
@@ -275,10 +263,10 @@
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintHorizontal_bias="0.933"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632"
+        app:layout_constraintVertical_bias="0.628"
         tools:ignore="MissingConstraints" />
 
     <Button
