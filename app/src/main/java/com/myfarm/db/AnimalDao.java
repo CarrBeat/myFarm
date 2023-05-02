@@ -14,11 +14,8 @@ public interface AnimalDao {
     @Delete
     void delete(Animal animal);
 
-    @Query("SELECT * FROM animal")
-    List<Animal> getAllAnimals();
-
-    @Query("SELECT * FROM animal where animalTypeID LIKE :animalType")
-    List<Animal> getAnimalsByAnimalType(int animalType);
+    @Query("SELECT animalName FROM animal")
+    List<String> getAllAnimals();
 
 
 

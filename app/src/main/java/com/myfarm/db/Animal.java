@@ -3,12 +3,12 @@ package com.myfarm.db;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 import io.reactivex.rxjava3.annotations.NonNull;
 
-@Entity(foreignKeys = {@ForeignKey(entity = AnimalType.class, parentColumns = "idAnimalType",
-        childColumns = "animalTypeID"), @ForeignKey(entity = Pregnancy.class,
-        parentColumns = "idPregnancy", childColumns = "pregnancyID")}, tableName = "animal")
+@Entity(tableName = "animal")
 
 public class Animal {
     @NonNull
@@ -29,17 +29,25 @@ public class Animal {
     private String birthdate;
 
     @ColumnInfo(name = "pregnancyID", index = true)
-    private Boolean pregnancyID;
+    private int pregnancyID;
 
     @NonNull
     @ColumnInfo(name = "female")
     private Boolean female;
 
-    public Animal(String animalName, int animalTypeID, String birthdate, boolean pregnancyID, boolean female){
+    public Animal(String animalName, int animalTypeID, String birthdate, int pregnancyID, boolean female){
         this.animalName = animalName;
         this.animalTypeID = animalTypeID;
         this.birthdate = birthdate;
         this.pregnancyID = pregnancyID;
+        this.female = female;
+    }
+
+    @Ignore
+    public Animal(String animalName, int animalTypeID, String birthdate, boolean female){
+        this.animalName = animalName;
+        this.animalTypeID = animalTypeID;
+        this.birthdate = birthdate;
         this.female = female;
     }
 
@@ -75,11 +83,11 @@ public class Animal {
         this.birthdate = birthdate;
     }
 
-    public Boolean getPregnancyID() {
+    public int getPregnancyID() {
         return pregnancyID;
     }
 
-    public void setPregnancyID(Boolean pregnancyID) {
+    public void setPregnancyID(int pregnancyID) {
         this.pregnancyID = pregnancyID;
     }
 

@@ -2,6 +2,7 @@ package com.myfarm.db;
 
 import android.app.Application;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class AnimalRepository {
@@ -13,7 +14,7 @@ public class AnimalRepository {
         tAnimalDao = db.animalDao();
     }
 
-    public List<Animal> getAllAnimals(){
+    public List<String> getAllAnimals(){
         return tAnimalDao.getAllAnimals();
     }
 }

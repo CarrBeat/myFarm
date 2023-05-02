@@ -15,6 +15,8 @@ import androidx.room.Room;
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
 import com.myfarm.db.AnimalTypeDatabase;
+import com.myfarm.db.Pregnancy;
+import com.myfarm.db.PregnancyDatabase;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
 
@@ -38,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         categoryList.add(new Category(1, "Птицы"));
         categoryList.add(new Category(2, "Рогатый скот"));
         categoryList.add(new Category(3, "Иные млекопитающие"));
-        categoryList.add(new Category(4, "Прочие"));
-        categoryList.add(new Category(5, "Все"));
+        categoryList.add(new Category(4, "Все"));
         setCategoryRecycler(categoryList);
 
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         animalList.add(new AnimalType(8, "turkey", "Индейка", "#00bfff", 1));
         animalList.add(new AnimalType(9, "ostrich", "Страус", "#00bfff", 1));
         animalList.add(new AnimalType(10, "pig", "Свинья", "#90ee90",3));
-        animalList.add(new AnimalType(12, "nutria", "Нутрия", "#90ee90",4));
+        animalList.add(new AnimalType(12, "nutria", "Нутрия", "#90ee90",3));
         animalList.add(new AnimalType(13, "rabbit", "Кролик", "#90ee90", 3));
 
         fullAnimalList.addAll(animalList);
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(category);
 
-        if (category == 5){
+        if (category == 4){
             filterAnimalTypes.addAll(animalList);
         } else {
             for (AnimalType inWork : animalList){
