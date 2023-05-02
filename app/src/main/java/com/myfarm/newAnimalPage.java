@@ -15,21 +15,26 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.room.Room;
 
 import com.myfarm.db.AnimalDatabase;
 import com.myfarm.db.AnimalTypeDatabase;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class newAnimalPage extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_animal_page);
 
         AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
@@ -38,6 +43,12 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 AnimalDatabase.class, "animal-database").allowMainThreadQueries().build();
 
         setContentView(R.layout.activity_new_animal_page);
+
+        TextView animalNameText = findViewById(R.id.editAnimalName);
+        TextView fatYearsText = findViewById(R.id.fatYearsText);
+        TextView monthBirthEditText = findViewById(R.id.monthBirthEditText);
+        Switch sexSwitch = findViewById(R.id.animalSex);
+        Button enterButton = findViewById(R.id.addNewAnimalButton);
 
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -48,6 +59,11 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         Button datePickButton = findViewById(R.id.datePickerButton);
         datePickButton.setOnClickListener(view -> {
+            if(!fatYearsText.getText().toString().isEmpty() |
+                    !monthBirthEditText.getText().toString().isEmpty()){
+                fatYearsText.setText("");
+                monthBirthEditText.setText("");
+            }
             DialogFragment datePicker = new DatePickerFragment();
             datePicker.show(getSupportFragmentManager(), "date picker");
         });
@@ -56,10 +72,10 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         Button resetButton = findViewById(R.id.resetBirthdate);
         resetButton.setOnClickListener(view -> {
-            findViewById(R.id.editTextNumberSigned).setEnabled(true);
-            findViewById(R.id.monthBirthTextSigned).setEnabled(true);
+            findViewById(R.id.fatYearsText).setEnabled(true);
+            findViewById(R.id.monthBirthEditText).setEnabled(true);
             birthDateText.setText("_______________");
-
+            animalNameText.setText("");
         });
 
         ImageView animalPageImage = findViewById(R.id.addAnimalImage);
@@ -81,24 +97,45 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        TextView animalNameText = findViewById(R.id.editAnimalName);
-        Switch sexSwitch = findViewById(R.id.animalSex);
+        String animalBirthdate;
 
-        Button enterButton = findViewById(R.id.addNewAnimalButton);
         enterButton.setOnClickListener(view -> {
+            if(birthDateText.getText().toString().contains(".") |
+                    ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
+                            | fatYearsText.getText().toString().isEmpty()) |
+                            monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))){
+                if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
+                        | fatYearsText.getText().toString().isEmpty()) &
+                        monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")){
+                    int days = 0;
+                    if (!fatYearsText.getText().toString().isEmpty()){ // ищем количество дней жизни животного
+                        days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
+                    }
+                    days += Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    cal.add(Calendar.DATE,-days);
+                    System.out.println(sdf.format(cal.getTime()));
+                } else {
+                    animalNameText.setText("НЕ УКАЗАН ВОЗРАСТ!");
+                }
+            }
+
+
+            /*
 
             com.myfarm.db.Animal newAnimal = new com.myfarm.db.Animal(String.valueOf(animalNameText.getText()),
                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
                     "20" + birthDateText.getText().toString().substring(
                             birthDateText.getText().toString().lastIndexOf(".") + 1)
-                            + "-" + birthDateText.getText().toString().substring( // ошибка с индексацией
+                            + "-" + birthDateText.getText().toString().substring(
                                     birthDateText.getText().toString().indexOf(".") + 1,
                             birthDateText.getText().toString().lastIndexOf("."))
                             + "-" + birthDateText.getText().toString().substring(0,
                             birthDateText.getText().toString().indexOf(".")),
                     sexSwitch.isSelected());
             animalDatabase.animalDao().insertAll(newAnimal);
-
+            */
             System.out.println(animalDatabase.animalDao().getAllAnimals());
         });
     }
@@ -115,7 +152,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         System.out.println("20" + selectedDate.substring(selectedDate.lastIndexOf(".") + 1)
                 + "-" + selectedDate.substring(selectedDate.indexOf(".") + 1, selectedDate.lastIndexOf("."))
                 + "-" + selectedDate.substring(0, selectedDate.indexOf(".")));
-        findViewById(R.id.editTextNumberSigned).setEnabled(false);
-        findViewById(R.id.monthBirthTextSigned).setEnabled(false);
+        findViewById(R.id.fatYearsText).setEnabled(false);
+        findViewById(R.id.monthBirthEditText).setEnabled(false);
     }
 }

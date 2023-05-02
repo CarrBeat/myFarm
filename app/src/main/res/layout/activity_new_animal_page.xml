@@ -217,7 +217,7 @@
         app:layout_constraintVertical_bias="0.630" />
 
     <EditText
-        android:id="@+id/editTextNumberSigned"
+        android:id="@+id/fatYearsText"
         android:layout_width="102dp"
         android:layout_height="47dp"
         android:ems="10"
@@ -230,7 +230,7 @@
         app:layout_constraintVertical_bias="0.758" />
 
     <EditText
-        android:id="@+id/monthBirthTextSigned"
+        android:id="@+id/monthBirthEditText"
         android:layout_width="129dp"
         android:layout_height="53dp"
         android:ems="10"
