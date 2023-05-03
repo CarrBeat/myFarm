@@ -47,6 +47,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         TextView animalNameText = findViewById(R.id.editAnimalName);
         TextView fatYearsText = findViewById(R.id.fatYearsText);
         TextView monthBirthEditText = findViewById(R.id.monthBirthEditText);
+        TextView animalWeight = findViewById(R.id.weightEditText);
         Switch sexSwitch = findViewById(R.id.animalSex);
         Button enterButton = findViewById(R.id.addNewAnimalButton);
 
@@ -59,8 +60,8 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         Button datePickButton = findViewById(R.id.datePickerButton);
         datePickButton.setOnClickListener(view -> {
-            if(!fatYearsText.getText().toString().isEmpty() |
-                    !monthBirthEditText.getText().toString().isEmpty()){
+            if (!fatYearsText.getText().toString().isEmpty() |
+                    !monthBirthEditText.getText().toString().isEmpty()) {
                 fatYearsText.setText("");
                 monthBirthEditText.setText("");
             }
@@ -85,43 +86,58 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         spinner.setSelection(animalTypeDatabase.animalTypeDao().getAnimalTypeNames().indexOf(
                 getIntent().getStringExtra("animalTypeText")));
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @SuppressLint("DiscouragedApi")
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 animalPageImage.setImageResource(getResources().getIdentifier(
                         animalTypeDatabase.animalTypeDao().getPhotoNameByAnimalTypeName(
-                        (String) spinner.getSelectedItem()), "drawable", getPackageName()));
+                                (String) spinner.getSelectedItem()), "drawable", getPackageName()));
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
 
-        String animalBirthdate;
 
         enterButton.setOnClickListener(view -> {
-            if(birthDateText.getText().toString().contains(".") |
+            String animalBirthdate = null;
+            if (birthDateText.getText().toString().contains(".") |
                     ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
-                            | fatYearsText.getText().toString().isEmpty()) |
-                            monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))){
-
+                            | fatYearsText.getText().toString().isEmpty()) &
+                            monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))) {
+                if (birthDateText.toString().contains(".")) {
+                    animalBirthdate = birthDateText.toString();
+                }
                 if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                         | fatYearsText.getText().toString().isEmpty()) &
-                        monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")){
+                        monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")) {
                     int days = 0;
-                    if (!fatYearsText.getText().toString().isEmpty()){ // ищем количество дней жизни животного
+                    if (!fatYearsText.getText().toString().isEmpty()) { // ищем количество дней жизни животного
                         days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
                     }
                     days += Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    cal.add(Calendar.DATE,-days);
-                    System.out.println(sdf.format(cal.getTime()));
-                } else {
-                    animalNameText.setText("НЕ УКАЗАН ВОЗРАСТ!");
+                    cal.add(Calendar.DATE, -days);
+                    animalBirthdate = sdf.format(cal.getTime());
                 }
-            }
+                if (!animalWeight.getText().toString().isEmpty()){
+                    if (animalWeight.getText().toString().matches("^\\$?(\\d+|\\d*\\.\\d+)$") &
+                            Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
+                        if (Float.parseFloat(animalWeight.getText().toString()) <= 0.001 &
+                                Float.parseFloat(animalWeight.getText().toString()) <= 2555.999){
+                            System.out.println(animalWeight);
+                            System.out.println(animalBirthdate);
+                        } else {
+                            animalWeight.setText("от 0.001 до 2555!");
+                        }
+                    }
+                }
 
+            } else {
+                animalNameText.setText("НЕ УКАЗАН ВОЗРАСТ!");
+            }
 
             /*
 
@@ -137,7 +153,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     sexSwitch.isSelected());
             animalDatabase.animalDao().insertAll(newAnimal);
             */
-            System.out.println(animalDatabase.animalDao().getAllAnimals());
+
         });
     }
 

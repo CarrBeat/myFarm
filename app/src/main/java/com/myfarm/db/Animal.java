@@ -35,12 +35,17 @@ public class Animal {
     @ColumnInfo(name = "female")
     private Boolean female;
 
-    public Animal(String animalName, int animalTypeID, String birthdate, int pregnancyID, boolean female){
+    @ColumnInfo(name = "weight")
+    private float weight;
+
+    public Animal(String animalName, int animalTypeID, String birthdate, int pregnancyID,
+                  boolean female, float weight){
         this.animalName = animalName;
         this.animalTypeID = animalTypeID;
         this.birthdate = birthdate;
         this.pregnancyID = pregnancyID;
         this.female = female;
+        this.weight = weight;
     }
 
     @Ignore
@@ -49,6 +54,16 @@ public class Animal {
         this.animalTypeID = animalTypeID;
         this.birthdate = birthdate;
         this.female = female;
+    }
+
+    @Ignore
+    public Animal(String animalName, int animalTypeID, String birthdate, boolean female,
+                  float weight){
+        this.animalName = animalName;
+        this.animalTypeID = animalTypeID;
+        this.birthdate = birthdate;
+        this.female = female;
+        this.weight = weight;
     }
 
     public int getIdAnimal() {
@@ -98,6 +113,10 @@ public class Animal {
     public void setFemale(Boolean female) {
         this.female = female;
     }
+
+    public float getWeight() { return weight; }
+
+    public void setWeight(float weight) { this.weight = weight; }
 }
 
 
