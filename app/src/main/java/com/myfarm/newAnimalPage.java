@@ -104,6 +104,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                             | fatYearsText.getText().toString().isEmpty()) |
                             monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))){
+
                 if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                         | fatYearsText.getText().toString().isEmpty()) &
                         monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")){
