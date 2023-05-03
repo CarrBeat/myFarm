@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.room.Room;
 
@@ -102,42 +104,86 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         enterButton.setOnClickListener(view -> {
             String animalBirthdate = null;
+            boolean isWeightCorrect = false;
+
+            // проверка ввода даты рождения
             if (birthDateText.getText().toString().contains(".") |
                     ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                             | fatYearsText.getText().toString().isEmpty()) &
                             monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))) {
+                // если выбрана дата рождения
                 if (birthDateText.toString().contains(".")) {
                     animalBirthdate = birthDateText.toString();
-                }
-                if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
-                        | fatYearsText.getText().toString().isEmpty()) &
-                        monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")) {
-                    int days = 0;
-                    if (!fatYearsText.getText().toString().isEmpty()) { // ищем количество дней жизни животного
-                        days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
-                    }
-                    days += Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
-                    Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    cal.add(Calendar.DATE, -days);
-                    animalBirthdate = sdf.format(cal.getTime());
-                }
-                if (!animalWeight.getText().toString().isEmpty()){
-                    if (animalWeight.getText().toString().matches("^\\$?(\\d+|\\d*\\.\\d+)$") &
-                            Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
-                        if (Float.parseFloat(animalWeight.getText().toString()) <= 0.001 &
-                                Float.parseFloat(animalWeight.getText().toString()) <= 2555.999){
-                            System.out.println(animalWeight);
-                            System.out.println(animalBirthdate);
-                        } else {
-                            animalWeight.setText("от 0.001 до 2555!");
-                        }
-                    }
-                }
+                } else
+                    // проверка лет жизни и месяца рождения на корректность
+                    if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
+                            | fatYearsText.getText().toString().isEmpty()) &
+                            monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")) {
 
-            } else {
-                animalNameText.setText("НЕ УКАЗАН ВОЗРАСТ!");
+                        int days = 0;
+                        // ищем количество дней жизни животного
+                        if (!fatYearsText.getText().toString().isEmpty()) {
+                            days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
+                        }
+                        days += Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
+                        Calendar cal = Calendar.getInstance();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        cal.add(Calendar.DATE, -days);
+                        animalBirthdate = sdf.format(cal.getTime());
+                    }
+
+                        Toast weightWarningToast = Toast.makeText(this,
+                                "Масса животного должна быть " +
+                                        "\nот 0.005 кг до 2555.999 кг!",
+                                Toast.LENGTH_LONG);
+                        weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
+
+                        if (!animalWeight.getText().toString().isEmpty()) {
+                            // проверка введённого массы на корректность
+                            if (animalWeight.getText().toString().matches("^\\$?(\\d+|\\d*\\.\\d+)$")) {
+                                // если масса начинается с 0
+                                if (animalWeight.getText().toString().startsWith("0") &
+                                        animalWeight.getText().toString().indexOf(".") == 1 &
+                                        animalWeight.getText().toString().lastIndexOf(".") == 1) {
+                                    if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
+                                            Float.parseFloat(animalWeight.getText().toString()) <= 0.999) {
+                                        isWeightCorrect = true;
+                                        System.out.println(animalWeight.getText().toString());
+                                        System.out.println(animalBirthdate);
+                                    } else {
+                                        animalWeight.setText("");
+                                        weightWarningToast.show();
+                                    }
+                                    // если масса не начинается с 0
+                                } else {
+                                    if (!animalWeight.getText().toString().startsWith("0") &
+                                            Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
+                                        isWeightCorrect = true;
+                                    } else {
+                                        animalWeight.setText("");
+                                        weightWarningToast.show();
+                                    }
+                                }
+                            } else { // если некорректно указан вес
+                                animalWeight.setText("");
+                                weightWarningToast.show();
+                            }
+                        } else {
+                            isWeightCorrect = true;
+                        }
+                assert animalBirthdate != null;
+                if (isWeightCorrect & !animalBirthdate.isEmpty()){
+                    System.out.println("делаем добавление!");
+                }
+                    } else {
+                Toast birthdateWarningToast = Toast.makeText(this,
+                        "Выберите дату рождения животного \nили введите месяц рождения " +
+                                "\nи возраст (если он более 1 года)!",
+                        Toast.LENGTH_LONG);
+                birthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
+                birthdateWarningToast.show();
             }
+
 
             /*
 
