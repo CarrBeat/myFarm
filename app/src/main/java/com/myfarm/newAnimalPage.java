@@ -134,7 +134,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
                         Toast weightWarningToast = Toast.makeText(this,
                                 "Масса животного должна быть " +
-                                        "\nот 0.005 кг до 2555.999 кг!",
+                                        "\nот 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
                                 Toast.LENGTH_LONG);
                         weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
@@ -146,7 +146,9 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                         animalWeight.getText().toString().indexOf(".") == 1 &
                                         animalWeight.getText().toString().lastIndexOf(".") == 1) {
                                     if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
-                                            Float.parseFloat(animalWeight.getText().toString()) <= 0.999) {
+                                            Float.parseFloat(animalWeight.getText().toString()) <= 0.999 &
+                                            (animalWeight.getText().toString().length() -
+                                                    animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
                                         isWeightCorrect = true;
                                         System.out.println(animalWeight.getText().toString());
                                         System.out.println(animalBirthdate);
@@ -154,11 +156,21 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                         animalWeight.setText("");
                                         weightWarningToast.show();
                                     }
-                                    // если масса не начинается с 0
                                 } else {
+                                    // если масса не начинается с 0
                                     if (!animalWeight.getText().toString().startsWith("0") &
                                             Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
-                                        isWeightCorrect = true;
+                                        // если дробное число
+                                        if(animalWeight.getText().toString().contains(".") &
+                                                (animalWeight.getText().toString().length() -
+                                                        animalWeight.getText().toString().indexOf(".") - 1 <= 3)){
+                                            System.out.println(Float.parseFloat(animalWeight.getText().toString()));
+                                            isWeightCorrect = true;
+                                            // если целое число
+                                        } else if (!animalWeight.getText().toString().contains(".") &
+                                                Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
+                                            isWeightCorrect = true;
+                                        }
                                     } else {
                                         animalWeight.setText("");
                                         weightWarningToast.show();
@@ -171,11 +183,16 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                         } else {
                             isWeightCorrect = true;
                         }
+
                 assert animalBirthdate != null;
+                // заключительная проверка перед добавлением
                 if (isWeightCorrect & !animalBirthdate.isEmpty()){
                     System.out.println("делаем добавление!");
+                } else {
+                    animalWeight.setText("");
+                    weightWarningToast.show();
                 }
-                    } else {
+            } else {
                 Toast birthdateWarningToast = Toast.makeText(this,
                         "Выберите дату рождения животного \nили введите месяц рождения " +
                                 "\nи возраст (если он более 1 года)!",
