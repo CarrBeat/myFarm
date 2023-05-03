@@ -15,6 +15,8 @@
     <string name="animal_birthdate_month">Месяц рождения:</string>
     <string name="addAnimalText">ДОБАВИТЬ ЖИВОТНОЕ</string>
     <string name="sexMaleText">М   </string>
-    <string name="selectDate">_______________</string>
-    <string name="reset">Сброс</string>
+    <string name="selectDate">___________</string>
+    <string name="resetShort">Х</string>
+    <string name="femaleShort">Ж</string>
+    <string name="weightText">Масса животного (в КГ):</string>
 </resources>
