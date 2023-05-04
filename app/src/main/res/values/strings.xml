@@ -19,4 +19,7 @@
     <string name="resetShort">Х</string>
     <string name="femaleShort">Ж</string>
     <string name="weightText">Масса животного (в КГ):</string>
+    <string name="animal_description">Во вкладке \"Животные\" отображаются все добавленные животные в систему, есть возможность добавить и удалить животных, а также перейти в меню конкретного животного для работы с ним.</string>
+    <string name="pregnancy_description">В данной вкладке можно просмотреть все беременности, а также ознакомиться с подробной информация о каждой из них.</string>
+    <string name="settings_description">Здесь можно настроить уведомления</string>
 </resources>

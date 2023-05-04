@@ -6,20 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
 import androidx.room.Room;
-
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
+import com.myfarm.db.AnimalDatabase;
 import com.myfarm.db.AnimalTypeDatabase;
-import com.myfarm.db.Pregnancy;
-import com.myfarm.db.PregnancyDatabase;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,15 +27,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
+                AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
+        AnimalDatabase animalDatabase = Room.databaseBuilder(getApplicationContext(),
+                AnimalDatabase.class, "animal-database").allowMainThreadQueries().build();
 
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(new Category(1, "Птицы"));
         categoryList.add(new Category(2, "Рогатый скот"));
         categoryList.add(new Category(3, "Иные млекопитающие"));
         categoryList.add(new Category(4, "Все"));
-        setCategoryRecycler(categoryList);
-
 
         animalList.add(new AnimalType(1, "cow", "Корова/бык", "#b8860b", 2));
         animalList.add(new AnimalType(2, "sheep", "Овца/баран", "#b8860b", 2));
@@ -57,15 +52,10 @@ public class MainActivity extends AppCompatActivity {
         animalList.add(new AnimalType(12, "nutria", "Нутрия", "#90ee90",3));
         animalList.add(new AnimalType(13, "rabbit", "Кролик", "#90ee90", 3));
 
-        fullAnimalList.addAll(animalList);
-
-        setAnimalTypeRecycler(animalList);
-
-        AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
-                AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
-
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         if (prefs.getBoolean("isFirstRun", true)) {
+            setContentView(R.layout.greetings_activity_main);
+
             com.myfarm.db.AnimalType cow = new com.myfarm.db.AnimalType("Корова/бык",
                     "250-310", 9, "cow");
             com.myfarm.db.AnimalType sheep = new com.myfarm.db.AnimalType("Овца/баран",
@@ -97,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
 
+        if (animalDatabase.animalDao().getAllAnimals().toString().equals("[]")){
+            setContentView(R.layout.greetings_activity_main);
+            fullAnimalList.addAll(animalList);
+            setAnimalTypeRecycler(animalList);
+            setCategoryRecycler(categoryList);
+        } else {
+            setContentView(R.layout.activity_main);
+        }
 
     }
 

@@ -2,6 +2,7 @@ package com.myfarm;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -186,7 +187,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
                 // заключительная проверка перед добавлением
                 if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
-                    System.out.println("пришл");
                     if (isWeightCorrect){
                         System.out.println(animalBirthdate);
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
@@ -200,6 +200,10 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 animalBirthdate, sexSwitch.isSelected());
                         animalDatabase.animalDao().insertAll(newAnimal);
                     }
+                    System.out.println("мы тут, да");
+                    finishAffinity();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
                 } else {
                     birthdateWarningToast.show();
                 }
