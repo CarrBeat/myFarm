@@ -145,10 +145,11 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 if (animalWeight.getText().toString().startsWith("0") &
                                         animalWeight.getText().toString().indexOf(".") == 1 &
                                         animalWeight.getText().toString().lastIndexOf(".") == 1) {
+                                    System.out.println("пришли1");
                                     if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
-                                            Float.parseFloat(animalWeight.getText().toString()) <= 0.999 &
                                             (animalWeight.getText().toString().length() -
                                                     animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
+                                        System.out.println("пришли2");
                                         isWeightCorrect = true;
                                         System.out.println(animalWeight.getText().toString());
                                         System.out.println(animalBirthdate);
