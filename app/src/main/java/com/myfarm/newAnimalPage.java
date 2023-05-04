@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.room.Room;
 
+import com.myfarm.db.Animal;
 import com.myfarm.db.AnimalDatabase;
 import com.myfarm.db.AnimalTypeDatabase;
 
@@ -103,18 +104,21 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
 
         enterButton.setOnClickListener(view -> {
+            TextView animalTextView = findViewById(R.id.textAnimalBirthdate);
             String animalBirthdate = null;
             boolean isWeightCorrect = false;
+            Toast birthdateWarningToast = Toast.makeText(this,
+                    "Выберите дату рождения животного \nили введите месяц рождения " +
+                            "\nи возраст (если он более 1 года)!",
+                    Toast.LENGTH_LONG);
+            birthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
             // проверка ввода даты рождения
-            if (birthDateText.getText().toString().contains(".") |
+            if (birthDateText.getText().toString().matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]" +
+                    "|1[0-9]|2[0-9]|3[01])") |
                     ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                             | fatYearsText.getText().toString().isEmpty()) &
                             monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))) {
-                // если выбрана дата рождения
-                if (birthDateText.toString().contains(".")) {
-                    animalBirthdate = birthDateText.toString();
-                } else
                     // проверка лет жизни и месяца рождения на корректность
                     if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                             | fatYearsText.getText().toString().isEmpty()) &
@@ -130,6 +134,8 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                         cal.add(Calendar.DATE, -days);
                         animalBirthdate = sdf.format(cal.getTime());
+                    } else {
+                        animalBirthdate = animalTextView.getText().toString();
                     }
 
                         Toast weightWarningToast = Toast.makeText(this,
@@ -145,11 +151,9 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 if (animalWeight.getText().toString().startsWith("0") &
                                         animalWeight.getText().toString().indexOf(".") == 1 &
                                         animalWeight.getText().toString().lastIndexOf(".") == 1) {
-                                    System.out.println("пришли1");
                                     if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
                                             (animalWeight.getText().toString().length() -
                                                     animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
-                                        System.out.println("пришли2");
                                         isWeightCorrect = true;
                                         System.out.println(animalWeight.getText().toString());
                                         System.out.println(animalBirthdate);
@@ -181,46 +185,42 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 animalWeight.setText("");
                                 weightWarningToast.show();
                             }
-                        } else {
-                            isWeightCorrect = true;
                         }
 
-                assert animalBirthdate != null;
                 // заключительная проверка перед добавлением
-                if (isWeightCorrect & !animalBirthdate.isEmpty()){
-                    System.out.println("делаем добавление!");
+
+                if (animalBirthdate != null) {
+                    System.out.println(animalBirthdate);
+                    if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
+                        System.out.println("пришл");
+                        if (isWeightCorrect){
+                            System.out.println(animalBirthdate);
+                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                                    Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
+                                    animalBirthdate, sexSwitch.isSelected(),
+                                    Float.parseFloat(animalWeight.getText().toString()));
+                            animalDatabase.animalDao().insertAll(newAnimal);
+                        } else {
+                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                                    Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
+                                    animalBirthdate, sexSwitch.isSelected());
+                            animalDatabase.animalDao().insertAll(newAnimal);
+                        }
+                    } else {
+                        birthdateWarningToast.show();
+                    }
                 } else {
-                    animalWeight.setText("");
-                    weightWarningToast.show();
+                    birthdateWarningToast.show();
                 }
+                System.out.println(animalDatabase.animalDao().getAllAnimals());
             } else {
-                Toast birthdateWarningToast = Toast.makeText(this,
-                        "Выберите дату рождения животного \nили введите месяц рождения " +
-                                "\nи возраст (если он более 1 года)!",
-                        Toast.LENGTH_LONG);
-                birthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
                 birthdateWarningToast.show();
             }
-
-
-            /*
-
-            com.myfarm.db.Animal newAnimal = new com.myfarm.db.Animal(String.valueOf(animalNameText.getText()),
-                    Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
-                    "20" + birthDateText.getText().toString().substring(
-                            birthDateText.getText().toString().lastIndexOf(".") + 1)
-                            + "-" + birthDateText.getText().toString().substring(
-                                    birthDateText.getText().toString().indexOf(".") + 1,
-                            birthDateText.getText().toString().lastIndexOf("."))
-                            + "-" + birthDateText.getText().toString().substring(0,
-                            birthDateText.getText().toString().indexOf(".")),
-                    sexSwitch.isSelected());
-            animalDatabase.animalDao().insertAll(newAnimal);
-            */
 
         });
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
@@ -229,10 +229,10 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         calendar.set(Calendar.DAY_OF_MONTH, day);
         String selectedDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
         TextView textView = findViewById(R.id.textAnimalBirthdate);
-        textView.setText(selectedDate);
-        System.out.println("20" + selectedDate.substring(selectedDate.lastIndexOf(".") + 1)
-                + "-" + selectedDate.substring(selectedDate.indexOf(".") + 1, selectedDate.lastIndexOf("."))
-                + "-" + selectedDate.substring(0, selectedDate.indexOf(".")));
+        textView.setText("20" + selectedDate.substring(selectedDate.lastIndexOf(".") + 1)
+                + "-" + selectedDate.substring(selectedDate.indexOf(".") + 1,
+                selectedDate.lastIndexOf(".")) + "-" + selectedDate.substring(0,
+                selectedDate.indexOf(".")));
         findViewById(R.id.fatYearsText).setEnabled(false);
         findViewById(R.id.monthBirthEditText).setEnabled(false);
     }

@@ -14,7 +14,7 @@ public class AnimalRepository {
         tAnimalDao = db.animalDao();
     }
 
-    public List<String> getAllAnimals(){
+    public List<Animal> getAllAnimals(){
         return tAnimalDao.getAllAnimals();
     }
 }
