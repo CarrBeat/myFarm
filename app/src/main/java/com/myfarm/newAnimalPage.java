@@ -105,7 +105,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         enterButton.setOnClickListener(view -> {
             TextView animalTextView = findViewById(R.id.textAnimalBirthdate);
-            String animalBirthdate = null;
+            String animalBirthdate;
             boolean isWeightCorrect = false;
             Toast birthdateWarningToast = Toast.makeText(this,
                     "Выберите дату рождения животного \nили введите месяц рождения " +
@@ -155,8 +155,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                             (animalWeight.getText().toString().length() -
                                                     animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
                                         isWeightCorrect = true;
-                                        System.out.println(animalWeight.getText().toString());
-                                        System.out.println(animalBirthdate);
                                     } else {
                                         animalWeight.setText("");
                                         weightWarningToast.show();
@@ -169,7 +167,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                         if(animalWeight.getText().toString().contains(".") &
                                                 (animalWeight.getText().toString().length() -
                                                         animalWeight.getText().toString().indexOf(".") - 1 <= 3)){
-                                            System.out.println(Float.parseFloat(animalWeight.getText().toString()));
                                             isWeightCorrect = true;
                                             // если целое число
                                         } else if (!animalWeight.getText().toString().contains(".") &
@@ -188,35 +185,27 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                         }
 
                 // заключительная проверка перед добавлением
-
-                if (animalBirthdate != null) {
-                    System.out.println(animalBirthdate);
-                    if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
-                        System.out.println("пришл");
-                        if (isWeightCorrect){
-                            System.out.println(animalBirthdate);
-                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
-                                    Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
-                                    animalBirthdate, sexSwitch.isSelected(),
-                                    Float.parseFloat(animalWeight.getText().toString()));
-                            animalDatabase.animalDao().insertAll(newAnimal);
-                        } else {
-                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
-                                    Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
-                                    animalBirthdate, sexSwitch.isSelected());
-                            animalDatabase.animalDao().insertAll(newAnimal);
-                        }
+                if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
+                    System.out.println("пришл");
+                    if (isWeightCorrect){
+                        System.out.println(animalBirthdate);
+                        Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                                Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
+                                animalBirthdate, sexSwitch.isSelected(),
+                                Float.parseFloat(animalWeight.getText().toString()));
+                        animalDatabase.animalDao().insertAll(newAnimal);
                     } else {
-                        birthdateWarningToast.show();
+                        Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                                Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
+                                animalBirthdate, sexSwitch.isSelected());
+                        animalDatabase.animalDao().insertAll(newAnimal);
                     }
                 } else {
                     birthdateWarningToast.show();
                 }
-                System.out.println(animalDatabase.animalDao().getAllAnimals());
             } else {
                 birthdateWarningToast.show();
             }
-
         });
     }
 
