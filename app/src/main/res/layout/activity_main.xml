@@ -25,7 +25,6 @@
             android:text="@string/main_column_text"
             android:textColor="@color/black"
             android:textSize="19sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,35 +77,25 @@
             app:layout_constraintTop_toBottomOf="@+id/pregnancy_column"
             app:layout_constraintVertical_bias="0.641" />
 
+        <Button
+            android:id="@+id/animals_button"
+            android:layout_width="56dp"
+            android:layout_height="115dp"
+            android:background="@android:color/transparent"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="204dp"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/pregnancy_button"
+            android:layout_width="57dp"
+            android:layout_height="155dp"
+            android:background="@android:color/transparent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="425dp" />
+
     </android.support.constraint.ConstraintLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="339dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/animal_recycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="150dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
 
 </android.support.constraint.ConstraintLayout>

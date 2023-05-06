@@ -2,10 +2,13 @@ package com.myfarm;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
+
 import androidx.room.Room;
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
@@ -95,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setContentView(R.layout.activity_main);
         }
+
 
     }
 
