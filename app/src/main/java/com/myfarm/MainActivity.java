@@ -3,10 +3,13 @@ package com.myfarm;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,6 +20,9 @@ import com.myfarm.db.AnimalDatabase;
 import com.myfarm.db.AnimalTypeDatabase;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     static List<AnimalType> animalList = new ArrayList<>();
     static List<AnimalType> fullAnimalList = new ArrayList<>();
     static AnimalTypeAdapter animalTypeAdapter;
+
+    private MainFragment mainFragment = new MainFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +106,47 @@ public class MainActivity extends AppCompatActivity {
             setCategoryRecycler(categoryList);
         } else {
             setContentView(R.layout.activity_main);
+            setNewFragment(mainFragment);
+            TextView mainText = findViewById(R.id.main_column);
+            TextView animalText = findViewById(R.id.animal_column);
+            TextView pregnancyText = findViewById(R.id.pregnancy_column);
+            TextView settingsText = findViewById(R.id.settings_column);
+
+            mainText.setTypeface(null, Typeface.BOLD);
+            Button mainButton = findViewById(R.id.main_button);
+            Button animalsButton = findViewById(R.id.animals_button);
+            Button pregnancyButton = findViewById(R.id.pregnancy_button);
+            Button settingsButton = findViewById(R.id.settings_button);
+            animalsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AnimalsFragment animalsFragment = new AnimalsFragment();
+                    setNewFragment(animalsFragment);
+                    mainText.setTypeface(null, Typeface.NORMAL);
+                    pregnancyText.setTypeface(null, Typeface.NORMAL);
+                    settingsText.setTypeface(null, Typeface.NORMAL);
+                    animalText.setTypeface(null, Typeface.BOLD);
+                }
+            });
+            mainButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setNewFragment(mainFragment);
+                    mainText.setTypeface(null, Typeface.BOLD);
+                    pregnancyText.setTypeface(null, Typeface.NORMAL);
+                    settingsText.setTypeface(null, Typeface.NORMAL);
+                    animalText.setTypeface(null, Typeface.NORMAL);
+                }
+            });
         }
 
-        Button animalsButton = findViewById(R.id.animals_button);
-        animalsButton.setOnClickListener(view -> {
-            System.out.println(animalsButton);
-        });
+    }
 
+    public void setNewFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void setAnimalTypeRecycler(List<AnimalType> animalList) {
