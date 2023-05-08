@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.room.Room;
@@ -99,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
         }
 
+        Button animalsButton = findViewById(R.id.animals_button);
+        animalsButton.setOnClickListener(view -> {
+            System.out.println(animalsButton);
+        });
 
     }
 

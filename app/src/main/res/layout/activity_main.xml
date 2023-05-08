@@ -23,6 +23,7 @@
             android:gravity="center"
             android:rotation="270"
             android:text="@string/main_column_text"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -79,21 +80,43 @@
 
         <Button
             android:id="@+id/animals_button"
-            android:layout_width="56dp"
-            android:layout_height="115dp"
+            android:layout_width="60dp"
+            android:layout_height="118dp"
             android:background="@android:color/transparent"
-            tools:layout_editor_absoluteX="2dp"
-            tools:layout_editor_absoluteY="204dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.261"
             tools:ignore="MissingConstraints" />
 
         <Button
             android:id="@+id/pregnancy_button"
-            android:layout_width="57dp"
-            android:layout_height="155dp"
+            android:layout_width="62dp"
+            android:layout_height="160dp"
             android:background="@android:color/transparent"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="2dp"
-            tools:layout_editor_absoluteY="425dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.605"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/settings_button"
+            android:layout_width="63dp"
+            android:layout_height="134dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.949"
+            tools:ignore="MissingConstraints" />
+
 
     </android.support.constraint.ConstraintLayout>
 
