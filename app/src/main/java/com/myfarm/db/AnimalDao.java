@@ -1,5 +1,7 @@
 package com.myfarm.db;
 
+import android.arch.lifecycle.LiveData;
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,7 +17,7 @@ public interface AnimalDao {
     void delete(Animal animal);
 
     @Query("SELECT * FROM animal")
-    List<Animal> getAllAnimals();
+    LiveData<List<Animal>> getAllAnimals();
 
 
 

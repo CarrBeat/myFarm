@@ -109,7 +109,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/settings_description_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/settings_description"
@@ -121,7 +121,7 @@
         app:layout_constraintVertical_bias="0.86" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/pregnancy_description_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pregnancy_description"
@@ -132,20 +132,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.582" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.563"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.715" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/animal_description_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/animal_description"
