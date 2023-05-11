@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.room.Room;
 import com.myfarm.adapter.AnimalTypeAdapter;
@@ -104,6 +106,47 @@ public class MainActivity extends AppCompatActivity {
             fullAnimalList.addAll(animalList);
             setAnimalTypeRecycler(animalList);
             setCategoryRecycler(categoryList);
+
+            Button mainButton = findViewById(R.id.main_button);
+            Button animalsButton = findViewById(R.id.animals_button);
+            Button pregnancyButton = findViewById(R.id.pregnancy_button);
+            Button settingsButton = findViewById(R.id.settings_button);
+
+            mainButton.setOnClickListener(view -> {
+                @SuppressLint("ShowToast")
+                Toast mainInfoToast = Toast.makeText(this,
+                        "Здесь отображаются данные о животных в графическом виде.",
+                        Toast.LENGTH_LONG);
+                mainInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                mainInfoToast.show();
+            });
+            animalsButton.setOnClickListener(view -> {
+                @SuppressLint("ShowToast")
+                Toast animalsInfoToast = Toast.makeText(this,
+                        "Во вкладке \"Животные\" отображаются все добавленные животные в систему, " +
+                                "\nесть возможность добавить и удалить животных, " +
+                                "\nа также перейти в меню конкретного животного для работы с ним.",
+                        Toast.LENGTH_LONG);
+                animalsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                animalsInfoToast.show();
+            });
+            pregnancyButton.setOnClickListener(view -> {
+                @SuppressLint("ShowToast")
+                Toast pregnancyInfoToast = Toast.makeText(this,
+                        "В данной вкладке можно просмотреть все беременности, " +
+                                "\nа также ознакомиться с подробной информация о каждой из них.",
+                        Toast.LENGTH_LONG);
+                pregnancyInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                pregnancyInfoToast.show();
+            });
+            settingsButton.setOnClickListener(view -> {
+                @SuppressLint("ShowToast")
+                Toast settingsInfoToast = Toast.makeText(this,
+                        "Здесь можно настроить уведомления",
+                        Toast.LENGTH_LONG);
+                settingsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                settingsInfoToast.show();
+            });
         } else {
             setContentView(R.layout.activity_main);
             setNewFragment(mainFragment);
@@ -141,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 
     public void setNewFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
