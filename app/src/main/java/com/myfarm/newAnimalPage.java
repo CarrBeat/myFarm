@@ -26,11 +26,9 @@ import com.myfarm.db.AnimalTypeDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class newAnimalPage extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -53,7 +51,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         TextView monthBirthEditText = findViewById(R.id.monthBirthEditText);
         TextView animalWeight = findViewById(R.id.weightEditText);
         Switch sexSwitch = findViewById(R.id.animalSex);
-        Button enterButton = findViewById(R.id.addNewAnimalButton);
+        Button enterButton = findViewById(R.id.add_animal_button);
 
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,

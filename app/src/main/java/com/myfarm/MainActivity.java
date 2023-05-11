@@ -112,39 +112,48 @@ public class MainActivity extends AppCompatActivity {
             Button pregnancyButton = findViewById(R.id.pregnancy_button);
             Button settingsButton = findViewById(R.id.settings_button);
 
+            Toast mainInfoToast = Toast.makeText(this,
+                    "Здесь отображаются данные о животных в графическом виде.",
+                    Toast.LENGTH_LONG);
+            mainInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+            Toast animalsInfoToast = Toast.makeText(this,
+                    "Во вкладке \"Животные\" отображаются все добавленные животные в систему, " +
+                            "\nесть возможность добавить и удалить животных, " +
+                            "\nа также перейти в меню конкретного животного для работы с ним.",
+                    Toast.LENGTH_LONG);
+            animalsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+            Toast pregnancyInfoToast = Toast.makeText(this,
+                    "В данной вкладке можно просмотреть все беременности, " +
+                            "\nа также ознакомиться с подробной информация о каждой из них.",
+                    Toast.LENGTH_LONG);
+            pregnancyInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+            Toast settingsInfoToast = Toast.makeText(this,
+                    "Здесь можно настроить уведомления",
+                    Toast.LENGTH_LONG);
+            settingsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+
             mainButton.setOnClickListener(view -> {
-                @SuppressLint("ShowToast")
-                Toast mainInfoToast = Toast.makeText(this,
-                        "Здесь отображаются данные о животных в графическом виде.",
-                        Toast.LENGTH_LONG);
-                mainInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                animalsInfoToast.cancel();
+                pregnancyInfoToast.cancel();
+                settingsInfoToast.cancel();
                 mainInfoToast.show();
             });
             animalsButton.setOnClickListener(view -> {
-                @SuppressLint("ShowToast")
-                Toast animalsInfoToast = Toast.makeText(this,
-                        "Во вкладке \"Животные\" отображаются все добавленные животные в систему, " +
-                                "\nесть возможность добавить и удалить животных, " +
-                                "\nа также перейти в меню конкретного животного для работы с ним.",
-                        Toast.LENGTH_LONG);
-                animalsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                mainInfoToast.cancel();
+                pregnancyInfoToast.cancel();
+                settingsInfoToast.cancel();
                 animalsInfoToast.show();
             });
             pregnancyButton.setOnClickListener(view -> {
-                @SuppressLint("ShowToast")
-                Toast pregnancyInfoToast = Toast.makeText(this,
-                        "В данной вкладке можно просмотреть все беременности, " +
-                                "\nа также ознакомиться с подробной информация о каждой из них.",
-                        Toast.LENGTH_LONG);
-                pregnancyInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                mainInfoToast.cancel();
+                animalsInfoToast.cancel();
+                settingsInfoToast.cancel();
                 pregnancyInfoToast.show();
             });
             settingsButton.setOnClickListener(view -> {
-                @SuppressLint("ShowToast")
-                Toast settingsInfoToast = Toast.makeText(this,
-                        "Здесь можно настроить уведомления",
-                        Toast.LENGTH_LONG);
-                settingsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+                mainInfoToast.cancel();
+                animalsInfoToast.cancel();
+                pregnancyInfoToast.cancel();
                 settingsInfoToast.show();
             });
         } else {

@@ -10,4 +10,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="medium_yellow">#9CFFC107</color>
+    <color name="lite_blue">#87cefa</color>
+    <color name="panic_red">#ff2400</color>
+    <color name="normal_pink">#ffb6c1</color>
 </resources>
