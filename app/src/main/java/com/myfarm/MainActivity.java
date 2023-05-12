@@ -1,8 +1,12 @@
 package com.myfarm;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelStore;
+import android.arch.lifecycle.ViewModelStoreOwner;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,17 +17,18 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.room.Room;
+import android.arch.lifecycle.ViewModelProvider;
 import android.widget.Toast;
 
-import androidx.room.Room;
+import com.myfarm.adapter.AnimalAdapter;
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
+import com.myfarm.db.Animal;
 import com.myfarm.db.AnimalDatabase;
 import com.myfarm.db.AnimalTypeDatabase;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
     static List<AnimalType> animalList = new ArrayList<>();
     static List<AnimalType> fullAnimalList = new ArrayList<>();
     static AnimalTypeAdapter animalTypeAdapter;
-
     private MainFragment mainFragment = new MainFragment();
+    private AnimalsFragment animalsFragment = new AnimalsFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,8 +177,10 @@ public class MainActivity extends AppCompatActivity {
             animalsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AnimalsFragment animalsFragment = new AnimalsFragment();
                     setNewFragment(animalsFragment);
+
+                    fillRecyclerView();
+
                     mainText.setTypeface(null, Typeface.NORMAL);
                     pregnancyText.setTypeface(null, Typeface.NORMAL);
                     settingsText.setTypeface(null, Typeface.NORMAL);
@@ -194,6 +201,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    void fillRecyclerView(){
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+        final AnimalAdapter animalAdapter = new AnimalAdapter();
+        recyclerView.setAdapter(animalAdapter);
+
+        AnimalViewModel animalViewModel = new ViewModelProvider(animalsFragment.requireActivity()).get(AnimalViewModel.class);
+        animalViewModel.getAllAnimals().observe(this, new Observer<List<Animal>>() {
+            @Override
+            public void onChanged(@Nullable List<Animal> animals) {
+                animalAdapter.setAnimals(animals);
+            }
+        });
+
+        recyclerView.setAdapter(animalAdapter);
+    }
 
     public void setNewFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

@@ -19,6 +19,7 @@
     <string name="change_weight_button_text">Изменить массу</string>
     <string name="new_pregnancy_text">Добавить беременность</string>
     <string name="calc_button_text">Рассчитать массу</string>
+    <string name="animal_data">Добавить данные</string>
     <string name="delete_animal_text">Удалить животное</string>
     <string name="sex_male_text">М   </string>
     <string name="select_date_text">___________</string>
