@@ -3,26 +3,23 @@ package com.myfarm;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.room.Room;
+import android.widget.Toast;
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
-import com.myfarm.db.AnimalDatabase;
-import com.myfarm.db.AnimalTypeDatabase;
+import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,17 +30,15 @@ public class MainActivity extends AppCompatActivity {
     static List<AnimalType> animalList = new ArrayList<>();
     static List<AnimalType> fullAnimalList = new ArrayList<>();
     static AnimalTypeAdapter animalTypeAdapter;
-
     private MainFragment mainFragment = new MainFragment();
+    private AnimalsFragment animalsFragment = new AnimalsFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
-                AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
-        AnimalDatabase animalDatabase = Room.databaseBuilder(getApplicationContext(),
-                AnimalDatabase.class, "animal-database").allowMainThreadQueries().build();
+        MyFarmDatabase myFarmDatabase = Room.databaseBuilder(getApplicationContext(),
+                MyFarmDatabase.class, "animalType-database").allowMainThreadQueries().build();
 
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(new Category(1, "Птицы"));
@@ -93,17 +88,67 @@ public class MainActivity extends AppCompatActivity {
             com.myfarm.db.AnimalType rabbit = new com.myfarm.db.AnimalType("Кролик",
                     "28-35", 0, "rabbit");
 
-            animalTypeDatabase.animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
+            myFarmDatabase.animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
                     turkey, ostrich, pig, nutria, rabbit);
 
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
 
-        if (animalDatabase.animalDao().getAllAnimals().toString().equals("[]")){
+        if (myFarmDatabase.animalDao().getAllAnimals().toString().equals("[]")){
             setContentView(R.layout.greetings_activity_main);
             fullAnimalList.addAll(animalList);
             setAnimalTypeRecycler(animalList);
             setCategoryRecycler(categoryList);
+
+            Button mainButton = findViewById(R.id.main_button);
+            Button animalsButton = findViewById(R.id.animals_button);
+            Button pregnancyButton = findViewById(R.id.pregnancy_button);
+            Button settingsButton = findViewById(R.id.settings_button);
+
+            Toast mainInfoToast = Toast.makeText(this,
+                    "Здесь отображаются данные о животных в графическом виде.",
+                    Toast.LENGTH_LONG);
+            mainInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+            Toast animalsInfoToast = Toast.makeText(this,
+                    "Во вкладке \"Животные\" отображаются все добавленные животные в систему, " +
+                            "\nесть возможность добавить и удалить животных, " +
+                            "\nа также перейти в меню конкретного животного для работы с ним.",
+                    Toast.LENGTH_LONG);
+            animalsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+            Toast pregnancyInfoToast = Toast.makeText(this,
+                    "В данной вкладке можно просмотреть все беременности, " +
+                            "\nа также ознакомиться с подробной информация о каждой из них.",
+                    Toast.LENGTH_LONG);
+            pregnancyInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+            Toast settingsInfoToast = Toast.makeText(this,
+                    "Здесь можно настроить уведомления",
+                    Toast.LENGTH_LONG);
+            settingsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+
+            mainButton.setOnClickListener(view -> {
+                animalsInfoToast.cancel();
+                pregnancyInfoToast.cancel();
+                settingsInfoToast.cancel();
+                mainInfoToast.show();
+            });
+            animalsButton.setOnClickListener(view -> {
+                mainInfoToast.cancel();
+                pregnancyInfoToast.cancel();
+                settingsInfoToast.cancel();
+                animalsInfoToast.show();
+            });
+            pregnancyButton.setOnClickListener(view -> {
+                mainInfoToast.cancel();
+                animalsInfoToast.cancel();
+                settingsInfoToast.cancel();
+                pregnancyInfoToast.show();
+            });
+            settingsButton.setOnClickListener(view -> {
+                mainInfoToast.cancel();
+                animalsInfoToast.cancel();
+                pregnancyInfoToast.cancel();
+                settingsInfoToast.show();
+            });
         } else {
             setContentView(R.layout.activity_main);
             setNewFragment(mainFragment);
@@ -120,8 +165,10 @@ public class MainActivity extends AppCompatActivity {
             animalsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AnimalsFragment animalsFragment = new AnimalsFragment();
                     setNewFragment(animalsFragment);
+
+                   // fillRecyclerView();
+
                     mainText.setTypeface(null, Typeface.NORMAL);
                     pregnancyText.setTypeface(null, Typeface.NORMAL);
                     settingsText.setTypeface(null, Typeface.NORMAL);
@@ -141,6 +188,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    /*
+    void fillRecyclerView(){
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+        final AnimalAdapter animalAdapter = new AnimalAdapter();
+        recyclerView.setAdapter(animalAdapter);
+
+        AnimalViewModel animalViewModel = new ViewModelProvider(animalsFragment.requireActivity()).get(AnimalViewModel.class);
+        animalViewModel.getAllAnimals().observe(this, new Observer<List<Animal>>() {
+            @Override
+            public void onChanged(@Nullable List<Animal> animals) {
+                animalAdapter.setAnimals(animals);
+            }
+        });
+
+        recyclerView.setAdapter(animalAdapter);
+    }*/
 
     public void setNewFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

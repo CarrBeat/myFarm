@@ -2,18 +2,16 @@ package com.myfarm.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.myfarm.MainActivity;
 import com.myfarm.R;
 import com.myfarm.model.Category;
-
 import java.util.List;
+import io.reactivex.rxjava3.annotations.NonNull;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 

@@ -8,20 +8,25 @@
     <string name="category">category</string>
     <string name="animal_type_image">animalTypeImage</string>
     <string name="new_animal_title">Добавление животного</string>
+    <string name="animal_page_text">Страница животного</string>
     <string name="animal_name">Кличка:</string>
     <string name="animal_type">Тип/порода/вид:</string>
     <string name="animal_birthdate">Дата рождения:</string>
     <string name="animal_age">Возраст (полных лет):</string>
+    <string name="short_animal_age">Возраст:</string>
     <string name="animal_birthdate_month">Месяц рождения:</string>
-    <string name="addAnimalText">ДОБАВИТЬ ЖИВОТНОЕ</string>
-    <string name="sexMaleText">М   </string>
-    <string name="selectDate">___________</string>
-    <string name="resetShort">Х</string>
-    <string name="femaleShort">Ж</string>
-    <string name="weightText">Масса животного (в КГ):</string>
-    <string name="animal_description">Во вкладке \"Животные\" отображаются все добавленные животные в систему, есть возможность добавить и удалить животных, а также перейти в меню конкретного животного для работы с ним.</string>
-    <string name="pregnancy_description">В данной вкладке можно просмотреть все беременности, а также ознакомиться с подробной информация о каждой из них.</string>
-    <string name="settings_description">Здесь можно настроить уведомления</string>
+    <string name="add_animal_button_text">СОХРАНИТЬ ИЗМЕНЕНИЯ</string>
+    <string name="change_weight_button_text">Изменить массу</string>
+    <string name="new_pregnancy_text">Добавить беременность</string>
+    <string name="calc_button_text">Рассчитать массу</string>
+    <string name="animal_data">Добавить данные</string>
+    <string name="delete_animal_text">Удалить животное</string>
+    <string name="sex_male_text">М   </string>
+    <string name="select_date_text">___________</string>
+    <string name="reset_short_text">Х</string>
+    <string name="female_short_text">Ж</string>
+    <string name="weight_text">Масса животного (в КГ):</string>
+    <string name="greetings_text">Добро пожаловать! \n Нажмите на изображение животного, \n чтобы добавить его в систему!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
