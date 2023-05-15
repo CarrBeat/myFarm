@@ -100,6 +100,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
             TextView animalTextView = findViewById(R.id.textAnimalBirthdate);
             String animalBirthdate;
             boolean isWeightCorrect = false;
+            boolean weightWarning = false;
             Toast birthdateWarningToast = Toast.makeText(this,
                     "Выберите дату рождения животного \nили введите месяц рождения " +
                             "\nи возраст (если он более 1 года)!",
@@ -169,16 +170,19 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                             } else {
                                 animalWeight.setText("");
                                 weightWarningToast.show();
+                                weightWarning = true;
                             }
                         }
                     } else { // если некорректно указан вес
                         animalWeight.setText("");
                         weightWarningToast.show();
+                        weightWarning = true;
                     }
                 }
 
                 // заключительная проверка перед добавлением
                 if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
+                    System.out.println("?");
                     if (isWeightCorrect){
                         System.out.println(animalBirthdate);
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
@@ -186,16 +190,14 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 animalBirthdate, sexSwitch.isSelected(),
                                 Float.parseFloat(animalWeight.getText().toString()));
                         myFarmDatabase.animalDao().insertAll(newAnimal);
-                    } else {
+                        finishActivity();
+                    } else if (!weightWarning) {
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
                                 animalBirthdate, sexSwitch.isSelected());
                         myFarmDatabase.animalDao().insertAll(newAnimal);
+                       finishActivity();
                     }
-                    System.out.println("мы тут, да");
-                    finishAffinity();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
                 } else {
                     birthdateWarningToast.show();
                 }
@@ -203,6 +205,12 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 birthdateWarningToast.show();
             }
         });
+    }
+
+    void finishActivity(){
+        finishAffinity();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @SuppressLint("SetTextI18n")
