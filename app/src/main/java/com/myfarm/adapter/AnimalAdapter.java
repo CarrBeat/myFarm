@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.myfarm.R;
 import com.myfarm.db.Animal;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.rxjava3.annotations.NonNull;
 
 public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHolder> {

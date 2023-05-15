@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.myfarm.R;
 import com.myfarm.model.AnimalType;
 import com.myfarm.newAnimalPage;
-
 import java.util.List;
+import io.reactivex.rxjava3.annotations.NonNull;
 
 public class AnimalTypeAdapter extends RecyclerView.Adapter<AnimalTypeAdapter.AnimalTypeViewHolder> {
 

@@ -7,20 +7,26 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Animal.class, AnimalType.class, Pregnancy.class}, version = 1, exportSchema = false)
-public abstract class AnimalDatabase extends RoomDatabase {
+@Database(entities = {Animal.class, AnimalType.class, Pregnancy.class, Product.class,
+        Productivity.class}, version = 1, exportSchema = false)
+public abstract class MyFarmDatabase extends RoomDatabase {
     public abstract AnimalDao animalDao();
-    private static volatile AnimalDatabase INSTANCE;
+    public abstract AnimalTypeDao animalTypeDao();
+    public abstract PregnancyDao pregnancyDao();
+    public abstract ProductDao productDao();
+    public abstract ProductivityDao productivityDao();
+
+    private static volatile MyFarmDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public static AnimalDatabase getDatabase(final Context context) {
+    public static MyFarmDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (AnimalDatabase.class) {
+            synchronized (MyFarmDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    AnimalDatabase.class, "word_database")
+                                    MyFarmDatabase.class, "my_farm_database")
                             .allowMainThreadQueries().build();
                 }
             }

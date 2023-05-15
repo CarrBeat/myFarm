@@ -1,16 +1,12 @@
 package com.myfarm;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelStore;
-import android.arch.lifecycle.ViewModelStoreOwner;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -18,18 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.room.Room;
-import android.arch.lifecycle.ViewModelProvider;
 import android.widget.Toast;
-
-import com.myfarm.adapter.AnimalAdapter;
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
-import com.myfarm.db.Animal;
-import com.myfarm.db.AnimalDatabase;
-import com.myfarm.db.AnimalTypeDatabase;
+import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,10 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
-                AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
-        AnimalDatabase animalDatabase = Room.databaseBuilder(getApplicationContext(),
-                AnimalDatabase.class, "animal-database").allowMainThreadQueries().build();
+        MyFarmDatabase myFarmDatabase = Room.databaseBuilder(getApplicationContext(),
+                MyFarmDatabase.class, "animalType-database").allowMainThreadQueries().build();
 
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(new Category(1, "Птицы"));
@@ -100,13 +88,13 @@ public class MainActivity extends AppCompatActivity {
             com.myfarm.db.AnimalType rabbit = new com.myfarm.db.AnimalType("Кролик",
                     "28-35", 0, "rabbit");
 
-            animalTypeDatabase.animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
+            myFarmDatabase.animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
                     turkey, ostrich, pig, nutria, rabbit);
 
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
 
-        if (animalDatabase.animalDao().getAllAnimals().toString().equals("[]")){
+        if (myFarmDatabase.animalDao().getAllAnimals().toString().equals("[]")){
             setContentView(R.layout.greetings_activity_main);
             fullAnimalList.addAll(animalList);
             setAnimalTypeRecycler(animalList);
@@ -179,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     setNewFragment(animalsFragment);
 
-                    fillRecyclerView();
+                   // fillRecyclerView();
 
                     mainText.setTypeface(null, Typeface.NORMAL);
                     pregnancyText.setTypeface(null, Typeface.NORMAL);
@@ -201,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*
     void fillRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -218,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(animalAdapter);
-    }
+    }*/
 
     public void setNewFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

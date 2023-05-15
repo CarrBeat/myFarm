@@ -17,13 +17,9 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.room.Room;
-
 import com.myfarm.db.Animal;
-import com.myfarm.db.AnimalDatabase;
-import com.myfarm.db.AnimalTypeDatabase;
-
+import com.myfarm.db.MyFarmDatabase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,10 +35,8 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         setContentView(R.layout.activity_new_animal_page);
 
-        AnimalTypeDatabase animalTypeDatabase = Room.databaseBuilder(getApplicationContext(),
-                AnimalTypeDatabase.class, "animalType-database").allowMainThreadQueries().build();
-        AnimalDatabase animalDatabase = Room.databaseBuilder(getApplicationContext(),
-                AnimalDatabase.class, "animal-database").allowMainThreadQueries().build();
+        MyFarmDatabase myFarmDatabase = Room.databaseBuilder(getApplicationContext(),
+                MyFarmDatabase.class, "animalType-database").allowMainThreadQueries().build();
 
         setContentView(R.layout.activity_new_animal_page);
 
@@ -56,7 +50,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, new ArrayList<>());
-        adapter.addAll(animalTypeDatabase.animalTypeDao().getAnimalTypeNames());
+        adapter.addAll(myFarmDatabase.animalTypeDao().getAnimalTypeNames());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -85,14 +79,14 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         animalPageImage.setImageResource(getIntent().getIntExtra("animalPageImage", 0));
 
-        spinner.setSelection(animalTypeDatabase.animalTypeDao().getAnimalTypeNames().indexOf(
+        spinner.setSelection(myFarmDatabase.animalTypeDao().getAnimalTypeNames().indexOf(
                 getIntent().getStringExtra("animalTypeText")));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @SuppressLint("DiscouragedApi")
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 animalPageImage.setImageResource(getResources().getIdentifier(
-                        animalTypeDatabase.animalTypeDao().getPhotoNameByAnimalTypeName(
+                        myFarmDatabase.animalTypeDao().getPhotoNameByAnimalTypeName(
                                 (String) spinner.getSelectedItem()), "drawable", getPackageName()));
             }
 
@@ -118,70 +112,70 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                             | fatYearsText.getText().toString().isEmpty()) &
                             monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))) {
-                    // проверка лет жизни и месяца рождения на корректность
-                    if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
-                            | fatYearsText.getText().toString().isEmpty()) &
-                            monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")) {
+                // проверка лет жизни и месяца рождения на корректность
+                if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
+                        | fatYearsText.getText().toString().isEmpty()) &
+                        monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")) {
 
-                        int days = 0;
-                        // ищем количество дней жизни животного
-                        if (!fatYearsText.getText().toString().isEmpty()) {
-                            days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
-                        }
-                        days += Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
-                        Calendar cal = Calendar.getInstance();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        cal.add(Calendar.DATE, -days);
-                        animalBirthdate = sdf.format(cal.getTime());
-                    } else {
-                        animalBirthdate = animalTextView.getText().toString();
+                    int days = 0;
+                    // ищем количество дней жизни животного
+                    if (!fatYearsText.getText().toString().isEmpty()) {
+                        days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
                     }
+                    days += Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    cal.add(Calendar.DATE, -days);
+                    animalBirthdate = sdf.format(cal.getTime());
+                } else {
+                    animalBirthdate = animalTextView.getText().toString();
+                }
 
-                        Toast weightWarningToast = Toast.makeText(this,
-                                "Масса животного должна быть " +
-                                        "\nот 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
-                                Toast.LENGTH_LONG);
-                        weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
+                Toast weightWarningToast = Toast.makeText(this,
+                        "Масса животного должна быть " +
+                                "\nот 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
+                        Toast.LENGTH_LONG);
+                weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
-                        if (!animalWeight.getText().toString().isEmpty()) {
-                            // проверка введённого массы на корректность
-                            if (animalWeight.getText().toString().matches("^\\$?(\\d+|\\d*\\.\\d+)$")) {
-                                // если масса начинается с 0
-                                if (animalWeight.getText().toString().startsWith("0") &
-                                        animalWeight.getText().toString().indexOf(".") == 1 &
-                                        animalWeight.getText().toString().lastIndexOf(".") == 1) {
-                                    if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
-                                            (animalWeight.getText().toString().length() -
-                                                    animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
-                                        isWeightCorrect = true;
-                                    } else {
-                                        animalWeight.setText("");
-                                        weightWarningToast.show();
-                                    }
-                                } else {
-                                    // если масса не начинается с 0
-                                    if (!animalWeight.getText().toString().startsWith("0") &
-                                            Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
-                                        // если дробное число
-                                        if(animalWeight.getText().toString().contains(".") &
-                                                (animalWeight.getText().toString().length() -
-                                                        animalWeight.getText().toString().indexOf(".") - 1 <= 3)){
-                                            isWeightCorrect = true;
-                                            // если целое число
-                                        } else if (!animalWeight.getText().toString().contains(".") &
-                                                Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
-                                            isWeightCorrect = true;
-                                        }
-                                    } else {
-                                        animalWeight.setText("");
-                                        weightWarningToast.show();
-                                    }
+                if (!animalWeight.getText().toString().isEmpty()) {
+                    // проверка введённого массы на корректность
+                    if (animalWeight.getText().toString().matches("^\\$?(\\d+|\\d*\\.\\d+)$")) {
+                        // если масса начинается с 0
+                        if (animalWeight.getText().toString().startsWith("0") &
+                                animalWeight.getText().toString().indexOf(".") == 1 &
+                                animalWeight.getText().toString().lastIndexOf(".") == 1) {
+                            if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
+                                    (animalWeight.getText().toString().length() -
+                                            animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
+                                isWeightCorrect = true;
+                            } else {
+                                animalWeight.setText("");
+                                weightWarningToast.show();
+                            }
+                        } else {
+                            // если масса не начинается с 0
+                            if (!animalWeight.getText().toString().startsWith("0") &
+                                    Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
+                                // если дробное число
+                                if(animalWeight.getText().toString().contains(".") &
+                                        (animalWeight.getText().toString().length() -
+                                                animalWeight.getText().toString().indexOf(".") - 1 <= 3)){
+                                    isWeightCorrect = true;
+                                    // если целое число
+                                } else if (!animalWeight.getText().toString().contains(".") &
+                                        Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
+                                    isWeightCorrect = true;
                                 }
-                            } else { // если некорректно указан вес
+                            } else {
                                 animalWeight.setText("");
                                 weightWarningToast.show();
                             }
                         }
+                    } else { // если некорректно указан вес
+                        animalWeight.setText("");
+                        weightWarningToast.show();
+                    }
+                }
 
                 // заключительная проверка перед добавлением
                 if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
@@ -191,12 +185,12 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
                                 animalBirthdate, sexSwitch.isSelected(),
                                 Float.parseFloat(animalWeight.getText().toString()));
-                        animalDatabase.animalDao().insertAll(newAnimal);
+                        myFarmDatabase.animalDao().insertAll(newAnimal);
                     } else {
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
                                 animalBirthdate, sexSwitch.isSelected());
-                        animalDatabase.animalDao().insertAll(newAnimal);
+                        myFarmDatabase.animalDao().insertAll(newAnimal);
                     }
                     System.out.println("мы тут, да");
                     finishAffinity();

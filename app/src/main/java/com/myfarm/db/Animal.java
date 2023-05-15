@@ -9,7 +9,6 @@ import androidx.room.PrimaryKey;
 import io.reactivex.rxjava3.annotations.NonNull;
 
 @Entity(tableName = "animal")
-
 public class Animal {
     @NonNull
     @PrimaryKey (autoGenerate = true)
