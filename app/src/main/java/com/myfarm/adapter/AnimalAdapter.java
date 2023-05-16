@@ -27,7 +27,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
     public void onBindViewHolder(@NonNull AnimalAdapter.AnimalHolder holder, int position) {
         Animal currentAnimal = animals.get(position);
         holder.textViewTitle.setText(currentAnimal.getAnimalName());
-        holder.textViewDescription.setText(currentAnimal.getAnimalTypeID());
+        holder.textViewDescription.setText(String.valueOf(currentAnimal.getAnimalTypeID()));
         holder.textViewPriority.setText(currentAnimal.getBirthdate());
     }
 

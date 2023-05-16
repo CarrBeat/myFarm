@@ -35,8 +35,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         setContentView(R.layout.activity_new_animal_page);
 
-        MyFarmDatabase myFarmDatabase = Room.databaseBuilder(getApplicationContext(),
-                MyFarmDatabase.class, "animalType-database").allowMainThreadQueries().build();
 
         setContentView(R.layout.activity_new_animal_page);
 
@@ -50,7 +48,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, new ArrayList<>());
-        adapter.addAll(myFarmDatabase.animalTypeDao().getAnimalTypeNames());
+        adapter.addAll(MyFarmDatabase.getDatabase(this).animalTypeDao().getAnimalTypeNames());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -79,14 +77,14 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         animalPageImage.setImageResource(getIntent().getIntExtra("animalPageImage", 0));
 
-        spinner.setSelection(myFarmDatabase.animalTypeDao().getAnimalTypeNames().indexOf(
+        spinner.setSelection(MyFarmDatabase.getDatabase(this).animalTypeDao().getAnimalTypeNames().indexOf(
                 getIntent().getStringExtra("animalTypeText")));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @SuppressLint("DiscouragedApi")
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 animalPageImage.setImageResource(getResources().getIdentifier(
-                        myFarmDatabase.animalTypeDao().getPhotoNameByAnimalTypeName(
+                        MyFarmDatabase.getDatabase(getApplication()).animalTypeDao().getPhotoNameByAnimalTypeName(
                                 (String) spinner.getSelectedItem()), "drawable", getPackageName()));
             }
 
@@ -97,6 +95,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
 
         enterButton.setOnClickListener(view -> {
+            @SuppressLint("CutPasteId")
             TextView animalTextView = findViewById(R.id.textAnimalBirthdate);
             String animalBirthdate;
             boolean isWeightCorrect = false;
@@ -188,13 +187,13 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
                                 animalBirthdate, sexSwitch.isSelected(),
                                 Float.parseFloat(animalWeight.getText().toString()));
-                        myFarmDatabase.animalDao().insertAll(newAnimal);
+                        MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                         finishActivity();
                     } else if (!weightWarning) {
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
                                 animalBirthdate, sexSwitch.isSelected());
-                        myFarmDatabase.animalDao().insertAll(newAnimal);
+                        MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                         finishActivity();
                     }
                 } else {

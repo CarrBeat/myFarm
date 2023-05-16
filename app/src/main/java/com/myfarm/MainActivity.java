@@ -31,14 +31,10 @@ public class MainActivity extends AppCompatActivity {
     static List<AnimalType> fullAnimalList = new ArrayList<>();
     static AnimalTypeAdapter animalTypeAdapter;
     private MainFragment mainFragment = new MainFragment();
-    private AnimalsFragment animalsFragment = new AnimalsFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MyFarmDatabase myFarmDatabase = Room.databaseBuilder(getApplicationContext(),
-                MyFarmDatabase.class, "animalType-database").allowMainThreadQueries().build();
 
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(new Category(1, "Птицы"));
@@ -88,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
             com.myfarm.db.AnimalType rabbit = new com.myfarm.db.AnimalType("Кролик",
                     "28-35", 0, "rabbit");
 
-            myFarmDatabase.animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
+            MyFarmDatabase.getDatabase(this).animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
                     turkey, ostrich, pig, nutria, rabbit);
 
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
 
-        if (myFarmDatabase.animalDao().getAllAnimals().toString().equals("[]")){
+        if (MyFarmDatabase.getDatabase(this).animalDao().getAllAnimals().toString().equals("[]")){
             setContentView(R.layout.greetings_activity_main);
             fullAnimalList.addAll(animalList);
             setAnimalTypeRecycler(animalList);
@@ -162,11 +158,14 @@ public class MainActivity extends AppCompatActivity {
             Button animalsButton = findViewById(R.id.animals_button);
             Button pregnancyButton = findViewById(R.id.pregnancy_button);
             Button settingsButton = findViewById(R.id.settings_button);
+
+            System.out.println(MyFarmDatabase.getDatabase(this).animalDao().getAllAnimals());
+
             animalsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    AnimalsFragment animalsFragment = new AnimalsFragment();
                     setNewFragment(animalsFragment);
-                    System.out.println(myFarmDatabase.animalDao().getAllAnimals());
                     mainText.setTypeface(null, Typeface.NORMAL);
                     pregnancyText.setTypeface(null, Typeface.NORMAL);
                     settingsText.setTypeface(null, Typeface.NORMAL);
