@@ -166,9 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     setNewFragment(animalsFragment);
-
-                   // fillRecyclerView();
-
+                    System.out.println(myFarmDatabase.animalDao().getAllAnimals());
                     mainText.setTypeface(null, Typeface.NORMAL);
                     pregnancyText.setTypeface(null, Typeface.NORMAL);
                     settingsText.setTypeface(null, Typeface.NORMAL);
@@ -189,25 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*
-    void fillRecyclerView(){
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-
-        final AnimalAdapter animalAdapter = new AnimalAdapter();
-        recyclerView.setAdapter(animalAdapter);
-
-        AnimalViewModel animalViewModel = new ViewModelProvider(animalsFragment.requireActivity()).get(AnimalViewModel.class);
-        animalViewModel.getAllAnimals().observe(this, new Observer<List<Animal>>() {
-            @Override
-            public void onChanged(@Nullable List<Animal> animals) {
-                animalAdapter.setAnimals(animals);
-            }
-        });
-
-        recyclerView.setAdapter(animalAdapter);
-    }*/
 
     public void setNewFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

@@ -182,7 +182,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
                 // заключительная проверка перед добавлением
                 if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
-                    System.out.println("?");
                     if (isWeightCorrect){
                         System.out.println(animalBirthdate);
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
@@ -196,7 +195,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
                                 animalBirthdate, sexSwitch.isSelected());
                         myFarmDatabase.animalDao().insertAll(newAnimal);
-                       finishActivity();
+                        finishActivity();
                     }
                 } else {
                     birthdateWarningToast.show();

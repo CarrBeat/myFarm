@@ -1,5 +1,6 @@
 package com.myfarm.adapter;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
         Animal currentAnimal = animals.get(position);
         holder.textViewTitle.setText(currentAnimal.getAnimalName());
         holder.textViewDescription.setText(currentAnimal.getAnimalTypeID());
-        holder.textViewPriority.setText(String.valueOf(currentAnimal.getWeight()));
+        holder.textViewPriority.setText(currentAnimal.getBirthdate());
     }
 
     @Override
@@ -35,15 +36,16 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
         return animals.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setAnimals(List<Animal> animals) {
         this.animals = animals;
         notifyDataSetChanged();
     }
 
     class AnimalHolder extends RecyclerView.ViewHolder {
-        private TextView textViewTitle;
-        private TextView textViewDescription;
-        private TextView textViewPriority;
+        private final TextView textViewTitle;
+        private final TextView textViewDescription;
+        private final TextView textViewPriority;
 
         public AnimalHolder(View itemView) {
             super(itemView);
