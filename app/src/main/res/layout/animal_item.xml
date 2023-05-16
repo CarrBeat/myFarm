@@ -12,29 +12,32 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/text_view_priority"
+            android:id="@+id/right_top_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="4dp"
             android:text="1"
+            android:textSize="15dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <TextView
-            android:id="@+id/text_view_title"
+            android:id="@+id/text_main_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/text_view_priority"
+            android:layout_toStartOf="@id/right_top_text"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Title"
+            android:text="1"
+            android:textSize="17dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <TextView
-            android:id="@+id/text_view_description"
+            android:id="@+id/text_add_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_title"
+            android:layout_below="@id/text_main_info"
             android:text="Description" />
 
     </RelativeLayout>

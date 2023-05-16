@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import java.util.List;
+import java.util.Map;
 
 @Dao
 public interface AnimalTypeDao {
@@ -19,5 +20,6 @@ public interface AnimalTypeDao {
 
     @Query("SELECT photoName FROM animalType where animalTypeName = :typeName")
     String getPhotoNameByAnimalTypeName(String typeName);
+
 
 }

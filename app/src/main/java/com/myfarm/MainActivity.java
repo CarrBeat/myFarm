@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     "22-40", 1, "ducks");
             com.myfarm.db.AnimalType goose = new com.myfarm.db.AnimalType("Гусь",
                     "28-32", 1, "geese");
-            com.myfarm.db.AnimalType turkey = new com.myfarm.db.AnimalType("Индейка",
+            com.myfarm.db.AnimalType turkey = new com.myfarm.db.AnimalType("Индейка/индюк",
                     "28", 1, "turkey");
             com.myfarm.db.AnimalType ostrich = new com.myfarm.db.AnimalType("Страус",
                     "35-45", 0, "ostrich");

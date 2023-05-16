@@ -185,14 +185,14 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                         System.out.println(animalBirthdate);
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
-                                animalBirthdate, sexSwitch.isSelected(),
+                                animalBirthdate, sexSwitch.isChecked(),
                                 Float.parseFloat(animalWeight.getText().toString()));
                         MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                         finishActivity();
                     } else if (!weightWarning) {
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId())),
-                                animalBirthdate, sexSwitch.isSelected());
+                                animalBirthdate, sexSwitch.isChecked());
                         MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                         finishActivity();
                     }
