@@ -15,7 +15,8 @@
     <string name="animal_age">Возраст (полных лет):</string>
     <string name="short_animal_age">Возраст:</string>
     <string name="animal_birthdate_month">Месяц рождения:</string>
-    <string name="add_animal_button_text">СОХРАНИТЬ ИЗМЕНЕНИЯ</string>
+    <string name="save_animal_button_text">СОХРАНИТЬ ИЗМЕНЕНИЯ</string>
+    <string name="add_animal_button_text">ДОБАВИТЬ ЖИВОТНОЕ</string>
     <string name="change_weight_button_text">Изменить массу</string>
     <string name="new_pregnancy_text">Добавить беременность</string>
     <string name="calc_button_text">Рассчитать массу</string>

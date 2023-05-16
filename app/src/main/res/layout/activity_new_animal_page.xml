@@ -247,7 +247,7 @@
         android:layout_height="44dp"
         android:background="@color/medium_yellow"
         android:bottomRightRadius="10dp"
-        android:text="@string/add_animal_button_text"
+        android:text="@string/save_animal_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
