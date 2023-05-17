@@ -6,10 +6,13 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Insert;
 import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
+
 import io.reactivex.rxjava3.annotations.NonNull;
 
 @Entity(tableName = "animal")
-public class Animal {
+public class Animal implements Serializable {
     @NonNull
     @PrimaryKey (autoGenerate = true)
     @ColumnInfo(name = "idAnimal")
@@ -116,6 +119,7 @@ public class Animal {
     public float getWeight() { return weight; }
 
     public void setWeight(float weight) { this.weight = weight; }
+
 }
 
 

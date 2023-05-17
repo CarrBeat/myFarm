@@ -1,11 +1,13 @@
 package com.myfarm.adapter;
 
 import android.annotation.SuppressLint;
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.myfarm.AnimalsFragment;
 import com.myfarm.R;
@@ -21,6 +23,8 @@ import io.reactivex.rxjava3.annotations.NonNull;
 public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHolder> {
     private List<Animal> animals = new ArrayList<>();
     private AnimalsFragment animalsFragment = new AnimalsFragment();
+
+
     @NonNull
     @Override
     public AnimalAdapter.AnimalHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,6 +60,12 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
         } else {
             holder.bottom_text.setText("Самец | " + currentAnimal.getBirthdate());
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                onClickListener.onAnimalClick(currentAnimal, position);
+            }
+        });
     }
 
     @Override
@@ -67,6 +77,16 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
     public void setAnimals(List<Animal> animals) {
         this.animals = animals;
         notifyDataSetChanged();
+    }
+
+    public interface OnAnimalClickListener{
+        void onAnimalClick(Animal animal, int position);
+    }
+
+    private final OnAnimalClickListener onClickListener;
+
+    public AnimalAdapter(Context context, OnAnimalClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     class AnimalHolder extends RecyclerView.ViewHolder {
