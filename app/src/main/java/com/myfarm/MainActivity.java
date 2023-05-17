@@ -1,6 +1,7 @@
 package com.myfarm;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -32,9 +33,13 @@ public class MainActivity extends AppCompatActivity {
     static AnimalTypeAdapter animalTypeAdapter;
     private MainFragment mainFragment = new MainFragment();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // если нужно сразу открыть animalFragment (после добавления животного)
+        boolean startAnimalFragment = getIntent().getBooleanExtra("animalFragment", false);
 
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(new Category(1, "Птицы"));
@@ -91,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         prefs.edit().putBoolean("isFirstRun", false).apply();
 
         if (MyFarmDatabase.getDatabase(this).animalDao().getAllAnimals().toString().equals("[]")){
+
             setContentView(R.layout.greetings_activity_main);
             fullAnimalList.addAll(animalList);
             setAnimalTypeRecycler(animalList);
@@ -145,47 +151,52 @@ public class MainActivity extends AppCompatActivity {
                 pregnancyInfoToast.cancel();
                 settingsInfoToast.show();
             });
-        } else {
+        } else if (!startAnimalFragment){
             setContentView(R.layout.activity_main);
             setNewFragment(mainFragment);
-            TextView mainText = findViewById(R.id.main_column);
-            TextView animalText = findViewById(R.id.animal_column);
-            TextView pregnancyText = findViewById(R.id.pregnancy_column);
-            TextView settingsText = findViewById(R.id.settings_column);
-
-            mainText.setTypeface(null, Typeface.BOLD);
-            Button mainButton = findViewById(R.id.main_button);
-            Button animalsButton = findViewById(R.id.animals_button);
-            Button pregnancyButton = findViewById(R.id.pregnancy_button);
-            Button settingsButton = findViewById(R.id.settings_button);
-
-            System.out.println(MyFarmDatabase.getDatabase(this).animalDao().getAllAnimals());
-
-            animalsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AnimalsFragment animalsFragment = new AnimalsFragment();
-                    setNewFragment(animalsFragment);
-                    mainText.setTypeface(null, Typeface.NORMAL);
-                    pregnancyText.setTypeface(null, Typeface.NORMAL);
-                    settingsText.setTypeface(null, Typeface.NORMAL);
-                    animalText.setTypeface(null, Typeface.BOLD);
-                }
-            });
-            mainButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    setNewFragment(mainFragment);
-                    mainText.setTypeface(null, Typeface.BOLD);
-                    pregnancyText.setTypeface(null, Typeface.NORMAL);
-                    settingsText.setTypeface(null, Typeface.NORMAL);
-                    animalText.setTypeface(null, Typeface.NORMAL);
-                }
-            });
+        } else {
+            setContentView(R.layout.activity_main);
+            setAnimalFragment();
         }
+        TextView mainText = findViewById(R.id.main_column);
+        TextView animalText = findViewById(R.id.animal_column);
+        TextView pregnancyText = findViewById(R.id.pregnancy_column);
+        TextView settingsText = findViewById(R.id.settings_column);
 
+        mainText.setTypeface(null, Typeface.BOLD);
+        Button mainButton = findViewById(R.id.main_button);
+        Button animalsButton = findViewById(R.id.animals_button);
+        Button pregnancyButton = findViewById(R.id.pregnancy_button);
+        Button settingsButton = findViewById(R.id.settings_button);
+
+        System.out.println(MyFarmDatabase.getDatabase(this).animalDao().getAllAnimals());
+
+        animalsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setAnimalFragment();
+                mainText.setTypeface(null, Typeface.NORMAL);
+                pregnancyText.setTypeface(null, Typeface.NORMAL);
+                settingsText.setTypeface(null, Typeface.NORMAL);
+                animalText.setTypeface(null, Typeface.BOLD);
+            }
+        });
+        mainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setNewFragment(mainFragment);
+                mainText.setTypeface(null, Typeface.BOLD);
+                pregnancyText.setTypeface(null, Typeface.NORMAL);
+                settingsText.setTypeface(null, Typeface.NORMAL);
+                animalText.setTypeface(null, Typeface.NORMAL);
+            }
+        });
     }
 
+    void setAnimalFragment(){
+        AnimalsFragment animalsFragment = new AnimalsFragment();
+        setNewFragment(animalsFragment);
+    }
 
     public void setNewFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

@@ -35,7 +35,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
         setContentView(R.layout.activity_new_animal_page);
 
-
         setContentView(R.layout.activity_new_animal_page);
 
         TextView animalNameText = findViewById(R.id.editAnimalName);
@@ -188,14 +187,13 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                 animalBirthdate, sexSwitch.isChecked(),
                                 Float.parseFloat(animalWeight.getText().toString()));
                         MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
-                        finishActivity();
                     } else if (!weightWarning) {
                         Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                 Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
                                 animalBirthdate, sexSwitch.isChecked());
                         MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
-                        finishActivity();
                     }
+                    finishActivity();
                 } else {
                     birthdateWarningToast.show();
                 }
@@ -208,6 +206,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
     void finishActivity(){
         finishAffinity();
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("animalFragment", true);
         startActivity(intent);
     }
 
