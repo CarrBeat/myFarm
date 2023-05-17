@@ -17,14 +17,17 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.room.Room;
+
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class newAnimalPage extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -32,8 +35,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_new_animal_page);
 
         setContentView(R.layout.activity_new_animal_page);
 
@@ -50,6 +51,10 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         adapter.addAll(MyFarmDatabase.getDatabase(this).animalTypeDao().getAnimalTypeNames());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        Toast selectedBirthdateWarningToast = Toast.makeText(this,
+                "Дата рождения \nне может быть в будущем!", Toast.LENGTH_LONG);
+        selectedBirthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
         Button datePickButton = findViewById(R.id.datePickerButton);
         datePickButton.setOnClickListener(view -> {
@@ -96,7 +101,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         enterButton.setOnClickListener(view -> {
             @SuppressLint("CutPasteId")
             TextView animalTextView = findViewById(R.id.textAnimalBirthdate);
-            String animalBirthdate;
+            String animalBirthdate = null;
             boolean isWeightCorrect = false;
             boolean weightWarning = false;
             Toast birthdateWarningToast = Toast.makeText(this,
@@ -118,6 +123,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
 
                     int days = 0;
                     // ищем количество дней жизни животного
+
                     if (!fatYearsText.getText().toString().isEmpty()) {
                         days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
                     }
@@ -127,7 +133,9 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     cal.add(Calendar.DATE, -days);
                     animalBirthdate = sdf.format(cal.getTime());
                 } else {
-                    animalBirthdate = animalTextView.getText().toString();
+                    if (daysBetweenCalc(animalTextView.getText().toString()) <= 0){
+                        animalBirthdate = animalTextView.getText().toString();
+                    }
                 }
 
                 Toast weightWarningToast = Toast.makeText(this,
@@ -179,28 +187,56 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 }
 
                 // заключительная проверка перед добавлением
-                if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
-                    if (isWeightCorrect){
-                        System.out.println(animalBirthdate);
-                        Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
-                                Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
-                                animalBirthdate, sexSwitch.isChecked(),
-                                Float.parseFloat(animalWeight.getText().toString()));
-                        MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
-                    } else if (!weightWarning) {
-                        Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
-                                Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
-                                animalBirthdate, sexSwitch.isChecked());
-                        MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
+                if (animalBirthdate != null){
+                    if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
+                        if (isWeightCorrect){
+                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                                    Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
+                                    animalBirthdate, sexSwitch.isChecked(),
+                                    Float.parseFloat(animalWeight.getText().toString()));
+                            MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
+                        } else if (!weightWarning) {
+                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                                    Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
+                                    animalBirthdate, sexSwitch.isChecked());
+                            MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
+                        }
+                        finishActivity();
+                    } else {
+                        birthdateWarningToast.show();
                     }
-                    finishActivity();
                 } else {
-                    birthdateWarningToast.show();
+                    selectedBirthdateWarningToast.show();
+                    animalTextView.setText("___________");
+                    findViewById(R.id.fatYearsText).setEnabled(true);
+                    findViewById(R.id.monthBirthEditText).setEnabled(true);
                 }
             } else {
                 birthdateWarningToast.show();
             }
         });
+    }
+
+    int daysBetweenCalc(String selectedDate){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        int daysBetween;
+        try {
+            String currentDateS = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+            Date currentDate = sdf.parse("20" + currentDateS.substring(currentDateS.lastIndexOf(".") + 1)
+                    + "-" + currentDateS.substring(currentDateS.indexOf(".") + 1,
+                    currentDateS.lastIndexOf(".")) + "-" + currentDateS.substring(0,
+                    currentDateS.indexOf(".")));
+            Date animalBirthdateToCheck = sdf.parse(selectedDate);
+            assert animalBirthdateToCheck != null;
+            assert currentDate != null;
+            long diff = animalBirthdateToCheck.getTime() - currentDate.getTime();
+            daysBetween = Integer.parseInt(""+(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)));
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return daysBetween;
     }
 
     void finishActivity(){
