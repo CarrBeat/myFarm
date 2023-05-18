@@ -50,11 +50,8 @@ public class AnimalActivity extends AppCompatActivity {
             animalAge.setText(animal.getBirthdate());
             animalName.setText(animal.getAnimalName());
             ImageView imageView = findViewById(R.id.animal_page_image);
-
-            System.out.println(MyFarmDatabase.getDatabase(this).
-                    animalTypeDao().getPhotoNameByIDAnimalType(animal.getIdAnimal()));
             imageView.setImageResource(getResources().getIdentifier(MyFarmDatabase.getDatabase(this).
-                    animalTypeDao().getPhotoNameByIDAnimalType(animal.getIdAnimal()), "drawable", getPackageName()));
+                    animalTypeDao().getPhotoNameByIDAnimalType(animal.getAnimalTypeID()), "drawable", getPackageName()));
 
 
             if(animal.getPregnancyID() > 0 | !animal.getFemale()){
