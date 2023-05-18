@@ -10,6 +10,10 @@
     <string name="new_animal_title">Добавление животного</string>
     <string name="animal_page_text">Страница животного</string>
     <string name="animal_name">Кличка:</string>
+    <string name="chest_girth_text">Обхват груди (см)</string>
+    <string name="body_length_text">Длина туловища (cм)</string>
+    <string name="add_value">Доп. данные (для 2 способа)</string>
+    <string name="calc_way">Способ расчёта</string>
     <string name="animal_type">Тип/порода/вид:</string>
     <string name="animal_birthdate">Дата рождения:</string>
     <string name="animal_age">Возраст (полных лет):</string>
@@ -24,9 +28,12 @@
     <string name="delete_animal_text">Удалить животное</string>
     <string name="sex_male_text">М   </string>
     <string name="select_date_text">___________</string>
+    <string name="first_text">1</string>
+    <string name="second_text">2</string>
     <string name="reset_short_text">Х</string>
     <string name="female_short_text">Ж</string>
     <string name="weight_text">Масса животного (в КГ):</string>
+    <string name="weight_calc">Расчёт примерной массы</string>
     <string name="greetings_text">Добро пожаловать! \n Нажмите на изображение животного, \n чтобы добавить его в систему!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
