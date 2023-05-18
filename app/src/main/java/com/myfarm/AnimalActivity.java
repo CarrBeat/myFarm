@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,14 @@ public class AnimalActivity extends AppCompatActivity {
             TextView animalAge = findViewById(R.id.age_text);
             animalAge.setText(animal.getBirthdate());
             animalName.setText(animal.getAnimalName());
+            ImageView imageView = findViewById(R.id.animal_page_image);
+
+            System.out.println(MyFarmDatabase.getDatabase(this).
+                    animalTypeDao().getPhotoNameByIDAnimalType(animal.getIdAnimal()));
+            imageView.setImageResource(getResources().getIdentifier(MyFarmDatabase.getDatabase(this).
+                    animalTypeDao().getPhotoNameByIDAnimalType(animal.getIdAnimal()), "drawable", getPackageName()));
+
+
             if(animal.getPregnancyID() > 0 | !animal.getFemale()){
                 pregnancyButton.setEnabled(false);
             }
@@ -62,7 +71,22 @@ public class AnimalActivity extends AppCompatActivity {
 
             Button saveAnimalButton = findViewById(R.id.save_animal_button);
             Button removeButton = findViewById(R.id.delete_animal);
+            Button weightCalcButton = findViewById(R.id.open_calc_weight_button);
             CheckBox deleteConfirm = findViewById(R.id.delete_confirm);
+
+            if (animal.getAnimalTypeID() != 1 & animal.getAnimalTypeID() != 10){
+                System.out.println();
+                weightCalcButton.setEnabled(false);
+            }
+
+            weightCalcButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplication(), CalculatorActivity.class);
+                    intent.putExtra("animalTypeID", animal.getAnimalTypeID());
+                    startActivity(intent);
+                }
+            });
 
             pregnancyButton.setOnClickListener(new View.OnClickListener() {
                 @Override

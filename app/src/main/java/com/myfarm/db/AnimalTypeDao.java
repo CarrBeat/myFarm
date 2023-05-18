@@ -22,7 +22,7 @@ public interface AnimalTypeDao {
     @Query("SELECT photoName FROM animalType where animalTypeName = :typeName")
     String getPhotoNameByAnimalTypeName(String typeName);
 
-    @Query("SELECT idAnimalType FROM animalType where animalTypeName = :typeName")
-    int getAnimalTypeIDByAnimalTypeName(String typeName);
+    @Query("SELECT photoName FROM animalType where idAnimalType = :idAnimalType")
+    String getPhotoNameByIDAnimalType(int idAnimalType);
 
 }

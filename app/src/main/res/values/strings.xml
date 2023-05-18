@@ -10,9 +10,9 @@
     <string name="new_animal_title">Добавление животного</string>
     <string name="animal_page_text">Страница животного</string>
     <string name="animal_name">Кличка:</string>
-    <string name="chest_girth_text">Обхват груди (см)</string>
-    <string name="body_length_text">Длина туловища (cм)</string>
-    <string name="add_value">Доп. данные (для 2 способа)</string>
+    <string name="chest_girth_text">Обхват груди (см):</string>
+    <string name="body_length_text">Длина туловища (cм):</string>
+    <string name="add_value">Доп. данные (для 2 способа):</string>
     <string name="calc_way">Способ расчёта</string>
     <string name="animal_type">Тип/порода/вид:</string>
     <string name="animal_birthdate">Дата рождения:</string>
@@ -20,6 +20,7 @@
     <string name="short_animal_age">Возраст:</string>
     <string name="animal_birthdate_month">Месяц рождения:</string>
     <string name="save_animal_button_text">СОХРАНИТЬ ИЗМЕНЕНИЯ</string>
+    <string name="save_animal_weight">СОХРАНИТЬ МАССУ ЖИВОТНОГО</string>
     <string name="add_animal_button_text">ДОБАВИТЬ ЖИВОТНОЕ</string>
     <string name="change_weight_button_text">Изменить массу</string>
     <string name="new_pregnancy_text">Добавить беременность</string>

@@ -193,6 +193,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/first_text"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.717"
@@ -202,16 +203,17 @@
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView
-        android:layout_width="16dp"
-        android:layout_height="19dp"
+        android:layout_width="18dp"
+        android:layout_height="24dp"
         android:text="@string/second_text"
         android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.848"
+        app:layout_constraintHorizontal_bias="0.846"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.426" />
+        app:layout_constraintVertical_bias="0.425" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -231,7 +233,7 @@
         android:layout_height="44dp"
         android:background="@color/medium_yellow"
         android:bottomRightRadius="10dp"
-        android:text="@string/save_animal_button_text"
+        android:text="@string/save_animal_weight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.532"
