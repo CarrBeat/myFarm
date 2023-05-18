@@ -28,11 +28,10 @@ public class AnimalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animal_page);
         EditText animalName = findViewById(R.id.edit_animal_name);
-        TextView animalTypeText = findViewById(R.id.animal_type_text);
-        TextView animalBirthdate = findViewById(R.id.age_text);
         EditText animalWeight = findViewById(R.id.weight_edit_text);
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch animalSexSwitch = findViewById(R.id.animal_sex);
+        Button pregnancyButton = findViewById(R.id.add_pregnancy_button);
 
         Toast deleteAnimalWarning = Toast.makeText(this,
                 "Для удаления необходимо поставить галочку в верхнем правом углу, \n" +
@@ -49,6 +48,9 @@ public class AnimalActivity extends AppCompatActivity {
             TextView animalAge = findViewById(R.id.age_text);
             animalAge.setText(animal.getBirthdate());
             animalName.setText(animal.getAnimalName());
+            if(animal.getPregnancyID() > 0 | !animal.getFemale()){
+                pregnancyButton.setEnabled(false);
+            }
             if (animal.getWeight() == 0.0){
                 animalWeight.setText("");
             } else {
@@ -61,6 +63,13 @@ public class AnimalActivity extends AppCompatActivity {
             Button saveAnimalButton = findViewById(R.id.save_animal_button);
             Button removeButton = findViewById(R.id.delete_animal);
             CheckBox deleteConfirm = findViewById(R.id.delete_confirm);
+
+            pregnancyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // вызов диалога с выбором даты + тост
+                }
+            });
             removeButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
