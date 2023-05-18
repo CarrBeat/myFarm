@@ -129,6 +129,8 @@
         android:layout_width="203dp"
         android:layout_height="46dp"
         android:ems="10"
+        android:textSize="15sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
@@ -154,7 +156,7 @@
         android:id="@+id/ageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/short_animal_age"
+        android:text="@string/animal_birthdate"
         android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -165,12 +167,12 @@
         app:layout_constraintVertical_bias="0.579" />
 
     <Button
-        android:id="@+id/add_animal_button"
+        android:id="@+id/save_animal_button"
         android:layout_width="195dp"
         android:layout_height="44dp"
         android:background="@color/medium_yellow"
         android:bottomRightRadius="10dp"
-        android:text="@string/add_animal_button_text"
+        android:text="@string/save_animal_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
@@ -224,6 +226,8 @@
         android:layout_width="100dp"
         android:layout_height="45dp"
         android:ems="10"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -277,25 +281,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset_short_text"
-        tools:layout_editor_absoluteX="354dp"
-        tools:layout_editor_absoluteY="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.967"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/age_text"
         android:layout_width="197dp"
         android:layout_height="29dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="146dp"
-        tools:layout_editor_absoluteY="363dp" />
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.58"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/animal_type_text"
-        android:layout_width="168dp"
-        android:layout_height="30dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="220dp"
-        tools:layout_editor_absoluteY="306dp" />
+        android:layout_width="175dp"
+        android:layout_height="33dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.488"
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

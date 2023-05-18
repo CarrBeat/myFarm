@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     static List<AnimalType> fullAnimalList = new ArrayList<>();
     static AnimalTypeAdapter animalTypeAdapter;
     private MainFragment mainFragment = new MainFragment();
+    Boolean animalsInSystem = false;
 
 
     @Override
@@ -149,13 +150,17 @@ public class MainActivity extends AppCompatActivity {
                 pregnancyInfoToast.cancel();
                 settingsInfoToast.show();
             });
-        } else if (!startAnimalFragment){
-            setContentView(R.layout.activity_main);
-            setNewFragment(mainFragment);
         } else {
-            setContentView(R.layout.activity_main);
-            setAnimalFragment();
+            animalsInSystem = true;
+            if (!startAnimalFragment){
+                setContentView(R.layout.activity_main);
+                setNewFragment(mainFragment);
+            } else {
+                setContentView(R.layout.activity_main);
+                setAnimalFragment();
+            }
         }
+
         TextView mainText = findViewById(R.id.main_column);
         TextView animalText = findViewById(R.id.animal_column);
         TextView pregnancyText = findViewById(R.id.pregnancy_column);
@@ -167,28 +172,29 @@ public class MainActivity extends AppCompatActivity {
         Button pregnancyButton = findViewById(R.id.pregnancy_button);
         Button settingsButton = findViewById(R.id.settings_button);
 
-        System.out.println(MyFarmDatabase.getDatabase(this).animalDao().getAllAnimals());
+        if (animalsInSystem){
+            animalsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setAnimalFragment();
+                    mainText.setTypeface(null, Typeface.NORMAL);
+                    pregnancyText.setTypeface(null, Typeface.NORMAL);
+                    settingsText.setTypeface(null, Typeface.NORMAL);
+                    animalText.setTypeface(null, Typeface.BOLD);
+                }
+            });
+            mainButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setNewFragment(mainFragment);
+                    mainText.setTypeface(null, Typeface.BOLD);
+                    pregnancyText.setTypeface(null, Typeface.NORMAL);
+                    settingsText.setTypeface(null, Typeface.NORMAL);
+                    animalText.setTypeface(null, Typeface.NORMAL);
+                }
+            });
+        }
 
-        animalsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setAnimalFragment();
-                mainText.setTypeface(null, Typeface.NORMAL);
-                pregnancyText.setTypeface(null, Typeface.NORMAL);
-                settingsText.setTypeface(null, Typeface.NORMAL);
-                animalText.setTypeface(null, Typeface.BOLD);
-            }
-        });
-        mainButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setNewFragment(mainFragment);
-                mainText.setTypeface(null, Typeface.BOLD);
-                pregnancyText.setTypeface(null, Typeface.NORMAL);
-                settingsText.setTypeface(null, Typeface.NORMAL);
-                animalText.setTypeface(null, Typeface.NORMAL);
-            }
-        });
     }
 
     void setAnimalFragment(){

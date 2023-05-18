@@ -10,12 +10,10 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.myfarm.adapter.AnimalAdapter;
 import com.myfarm.db.Animal;
 import com.myfarm.db.AnimalDao;
 import com.myfarm.db.MyFarmDatabase;
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
