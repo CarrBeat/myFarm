@@ -2,6 +2,8 @@ package com.myfarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,22 +16,32 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.nio.file.WatchEvent;
+import com.myfarm.db.Animal;
+import com.myfarm.db.MyFarmDatabase;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class CalculatorActivity extends AppCompatActivity {
-
+    Animal animal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight_calc_page);
-        int animalTypeID = getIntent().getIntExtra("animalTypeID", 0);
+
+        int animalTypeID = 0;
+        Bundle arguments = getIntent().getExtras();
+
+        if(arguments!=null) {
+            animal = (Animal) arguments.getSerializable(Animal.class.getSimpleName());
+            animalTypeID = animal.getAnimalTypeID();
+        }
 
         TextView weightText = findViewById(R.id.weight);
         EditText chestGirth = findViewById(R.id.chest_girth_edittext);
         EditText bodyLengthEdittext = findViewById(R.id.body_length_edittext);
         Button calcWeightButton = findViewById(R.id.calc_weight_button);
+        Button saveWeightButton = findViewById(R.id.save_weight_button);
         Switch calcWaySwitch = findViewById(R.id.calc_way_switch);
         Spinner spinner = findViewById(R.id.spinner);
         ImageView imageView = findViewById(R.id.calc_image);
@@ -70,6 +82,11 @@ public class CalculatorActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG);
         calcSecondWayPigWarning.setGravity(Gravity.BOTTOM, 0, 160);
 
+        Toast saveWarning = Toast.makeText(getApplication(),
+                "Масса не должна быть пустой \nи более 2555 кг!",
+                Toast.LENGTH_LONG);
+        saveWarning.setGravity(Gravity.BOTTOM, 0, 160);
+
         if (animalTypeID == 1){
             // если тип животного крупный рогатый скот
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -97,6 +114,22 @@ public class CalculatorActivity extends AppCompatActivity {
         } else {
             spinner.setEnabled(false);
         }
+
+        saveWeightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!weightText.getText().toString().equals("")){
+                    if (Integer.parseInt(weightText.getText().toString()) <= 2555){
+                        saveNewWeight(Float.parseFloat(weightText.getText().toString()));
+                    } else {
+                        saveWarning.show();
+                    }
+                } else {
+                    saveWarning.show();
+                }
+            }
+        });
+
 
         calcWaySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,4 +261,14 @@ public class CalculatorActivity extends AppCompatActivity {
         }
         return weight;
     }
+
+    void saveNewWeight(float weight){
+        animal.setWeight(weight);
+        MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+        finishAffinity();
+        Intent intent = new Intent(getApplication(), AnimalActivity.class);
+        intent.putExtra(Animal.class.getSimpleName(), animal);
+        startActivity(intent);
+    }
+
 }

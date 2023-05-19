@@ -80,7 +80,7 @@ public class AnimalActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplication(), CalculatorActivity.class);
-                    intent.putExtra("animalTypeID", animal.getAnimalTypeID());
+                    intent.putExtra(Animal.class.getSimpleName(), animal);
                     startActivity(intent);
                 }
             });

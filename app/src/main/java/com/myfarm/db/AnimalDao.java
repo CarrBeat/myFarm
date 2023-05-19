@@ -16,13 +16,13 @@ public interface AnimalDao {
     @Delete
     void delete(Animal animal);
 
+    @Update
+    void updateAnimal(Animal animal);
+
     @Query("SELECT * FROM animal")
     List<Animal> getAllAnimals();
 
     @Query("SELECT animalTypeName from animalType where idAnimalType = :idAnimalType")
     String getAnimalTypeName(int idAnimalType);
-
-    @Update
-    void updateAnimal(Animal animal);
 
 }
