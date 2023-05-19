@@ -2,20 +2,19 @@ package com.myfarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.myfarm.db.MyFarmDatabase;
-
+import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -33,6 +32,8 @@ public class CalculatorActivity extends AppCompatActivity {
         Button calcWeightButton = findViewById(R.id.calc_weight_button);
         Switch calcWaySwitch = findViewById(R.id.calc_way_switch);
         Spinner spinner = findViewById(R.id.spinner);
+        ImageView imageView = findViewById(R.id.calc_image);
+
         final boolean isPig;
 
         Toast calcFirstWayWarning = Toast.makeText(getApplication(),
@@ -50,9 +51,24 @@ public class CalculatorActivity extends AppCompatActivity {
         Toast chestGirthWarning = Toast.makeText(getApplication(),
                 "Укажите обхват груди за лопатками \nна расстоянии \nширины ладони от локтя!",
                 Toast.LENGTH_LONG);
+        chestGirthWarning.setGravity(Gravity.BOTTOM, 0, 160);
         Toast calcSecondWayWarning = Toast.makeText(getApplication(),
                 "Укажите обхват груди \nи длину туловища, \nа также выберите породу!",
                 Toast.LENGTH_LONG);
+        calcSecondWayWarning.setGravity(Gravity.BOTTOM, 0, 160);
+
+        Toast pigDataWarning = Toast.makeText(getApplication(),
+                "Укажите обхват груди за лопатками\n и длину туловища, в см!",
+                Toast.LENGTH_LONG);
+        pigDataWarning.setGravity(Gravity.BOTTOM, 0, 160);
+        Toast pigNumWarning = Toast.makeText(getApplication(),
+                "Обхват груди от 50 см, \nдлина тела от 75 см!",
+                Toast.LENGTH_LONG);
+        pigNumWarning.setGravity(Gravity.BOTTOM, 0, 160);
+        Toast calcSecondWayPigWarning = Toast.makeText(getApplication(),
+                "Для данного способа \nнеобходимо выбрать упитанность!",
+                Toast.LENGTH_LONG);
+        calcSecondWayPigWarning.setGravity(Gravity.BOTTOM, 0, 160);
 
         if (animalTypeID == 1){
             // если тип животного крупный рогатый скот
@@ -61,6 +77,8 @@ public class CalculatorActivity extends AppCompatActivity {
             adapter.addAll("Выберите породу!", "Молочная порода", "Молочно-мясная или мясная порода");
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
+            imageView.setImageResource(getResources().getIdentifier("cow_calc_guide",
+                    "drawable", getPackageName()));
             isPig = false;
         } else {
             // если тип животного свинья
@@ -69,25 +87,33 @@ public class CalculatorActivity extends AppCompatActivity {
             adapter.addAll("Укажите упитанность!", "Тощая упитанность", "Средняя упитанность", "Высшая упитанность");
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
+            imageView.setImageResource(getResources().getIdentifier("pig_calc_guide",
+                    "drawable", getPackageName()));
             isPig = true;
         }
-        spinner.setEnabled(false);
+        if (!isPig){
+            spinner.setEnabled(false);
+            bodyLengthEdittext.setEnabled(false);
+        } else {
+            spinner.setEnabled(false);
+        }
 
         calcWaySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                spinner.setEnabled(calcWaySwitch.isChecked());
+                if (!isPig){
+                    spinner.setEnabled(calcWaySwitch.isChecked());
+                    bodyLengthEdittext.setEnabled(calcWaySwitch.isChecked());
+                } else {
+                    spinner.setEnabled(calcWaySwitch.isChecked());
+                }
             }
         });
 
         calcWeightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*calcFirstWayWarning.cancel();
-                calcSecondWayAnimalTypeWarning.cancel();
-                calcSecondWayDataWarning.cancel();*/
                 weightText.setText("");
-
                 if(!isPig){
                     if (!chestGirth.getText().toString().equals("")){
                         // методы расчёта массы коров
@@ -126,11 +152,55 @@ public class CalculatorActivity extends AppCompatActivity {
                     }
                 } else {
                     // расчёт массы свиньи
-                    System.out.println("масса свиньи тут будет вычисляться");
+                    if (!chestGirth.getText().toString().equals("") & !bodyLengthEdittext.getText().toString().equals("")){
+                        if (Integer.parseInt(chestGirth.getText().toString()) >= 50 &
+                                Integer.parseInt(bodyLengthEdittext.getText().toString()) >= 75){
+                            if(!calcWaySwitch.isChecked()){
+                                // первый способ расчета
+                                weightText.setText(String.valueOf(getPigWeightFirstWay(Float.parseFloat(chestGirth.getText().toString()),
+                                        Float.parseFloat(bodyLengthEdittext.getText().toString()))));
+                            } else {
+                               // второй способ расчета + проверка
+                                if (calcWaySwitch.isChecked() &
+                                        !spinner.getSelectedItem().toString().contains("!")){
+                                    weightText.setText(String.valueOf(getPigWeightSecondWay(Float.parseFloat(chestGirth.getText().toString()),
+                                            Float.parseFloat(bodyLengthEdittext.getText().toString()),
+                                            spinner.getSelectedItem().toString())));
+                                } else {
+                                    calcSecondWayPigWarning.show();
+                                }
+                            }
+                        } else {
+                            pigNumWarning.show();
+                        }
+                    } else {
+                        pigDataWarning.show();
+                    }
                 }
             }
         });
     }
+
+    float getPigWeightFirstWay(float chestGirth, float bodyLength){
+        float weight = 0;
+        weight = (float) (1.54 * chestGirth + 0.99 * bodyLength - 150);
+        return weight;
+    }
+
+    int getPigWeightSecondWay(float chestGirth, float bodyLength, String fatness){
+        int weight = 0;
+        if (Objects.equals(fatness, "Тощая упитанность")){
+            weight = (int) (chestGirth * bodyLength / 162);
+        }
+        if (Objects.equals(fatness, "Средняя упитанность")){
+            weight = (int) (chestGirth * bodyLength / 156);
+        }
+        if (Objects.equals(fatness, "Высшая упитанность")){
+            weight = (int) (chestGirth * bodyLength / 142);
+        }
+        return weight;
+    }
+
     int getCowWeightFirstWay(float chestGirth){
         int weight = 0;
         if (chestGirth >= 170 & chestGirth < 181){
@@ -152,11 +222,9 @@ public class CalculatorActivity extends AppCompatActivity {
         int weight = 0;
         if (Objects.equals(animalType, "Молочная порода")){
             weight = (int) (chestGirth * bodyLength / 100 * 2);
-            return weight;
         }
         if (Objects.equals(animalType, "Молочно-мясная или мясная порода")){
             weight = (int) (chestGirth * bodyLength / 100 * 2.5);
-            return weight;
         }
         return weight;
     }
