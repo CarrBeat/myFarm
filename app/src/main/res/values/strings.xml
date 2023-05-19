@@ -31,6 +31,7 @@
     <string name="select_date_text">___________</string>
     <string name="first_text">1</string>
     <string name="second_text">2</string>
+    <string name="short_kg">КГ</string>
     <string name="reset_short_text">Х</string>
     <string name="female_short_text">Ж</string>
     <string name="weight_text">Масса животного (в КГ):</string>
