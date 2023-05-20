@@ -193,8 +193,22 @@ public class MainActivity extends AppCompatActivity {
                     animalText.setTypeface(null, Typeface.NORMAL);
                 }
             });
+            pregnancyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setPregnancyFragment();
+                    mainText.setTypeface(null, Typeface.NORMAL);
+                    animalText.setTypeface(null, Typeface.NORMAL);
+                    settingsText.setTypeface(null, Typeface.NORMAL);
+                    pregnancyText.setTypeface(null, Typeface.BOLD);
+                }
+            });
         }
+    }
 
+    void setPregnancyFragment(){
+        PregnancyFragment pregnancyFragment = new PregnancyFragment();
+        setNewFragment(pregnancyFragment);
     }
 
     void setAnimalFragment(){

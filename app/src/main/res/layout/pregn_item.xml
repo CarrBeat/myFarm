@@ -13,7 +13,7 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/right_top_text"
+            android:id="@+id/top_right_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -23,11 +23,11 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <TextView
-            android:id="@+id/text_main_info"
+            android:id="@+id/top_left_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/right_top_text"
+            android:layout_toStartOf="@id/top_right_text"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="1"
@@ -35,10 +35,10 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <TextView
-            android:id="@+id/text_add_info"
+            android:id="@+id/bottom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_main_info"
+            android:layout_below="@id/top_left_text"
             android:text="Description"
             android:textSize="16sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
