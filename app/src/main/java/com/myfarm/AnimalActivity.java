@@ -22,6 +22,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
+import com.myfarm.db.Pregnancy;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -97,6 +99,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             pregnancyButton.setOnClickListener(view -> {
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
+                pregnancyButton.setEnabled(false);
             });
 
 
@@ -252,18 +255,25 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         return daysBetween;
     }
 
+    // добавление новой беременности
     void setNewPregnancy(String startPregnancyDate) throws ParseException {
+        // получили срок беременности
         int pregnancyPeriod = MyFarmDatabase.getDatabase(getApplication()).
                 animalTypeDao().getPregnancyPeriodByAnimalTypeID(animal.getAnimalTypeID());
 
+        // расчёт даты беременности
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = formatter.parse(startPregnancyDate);
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, pregnancyPeriod);
-        System.out.println(formatter.format(c.getTime()));
+        System.out.println();
 
+        // непосредственно добавление в БД
+        Pregnancy newPregnancy = new Pregnancy(formatter.format(c.getTime()), true);
+        animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
+        MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
     }
 
 }
