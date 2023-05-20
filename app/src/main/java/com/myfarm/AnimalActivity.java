@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AnimalActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Animal animal;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,14 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
             if(animal.getPregnancyID() > 0 | !animal.getFemale()){
                 pregnancyButton.setEnabled(false);
+                if (animal.getPregnancyID() > 0){
+                    try {
+                        pregnancyButton.setText("Роды с " + Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
+                                pregnancyDao().getPregnancyById(animal.getPregnancyID())));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
             if (animal.getWeight() == 0.0){
                 animalWeight.setText("");
@@ -116,6 +125,9 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 @Override
                 public boolean onLongClick(View view) {
                     if (deleteConfirm.isChecked()) {
+                        if (animal.getPregnancyID() > 0){
+                            MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().deletePregnancyById(animal.getPregnancyID());
+                        }
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().delete(animal);
                         finishActivity();
                     } else {
@@ -268,7 +280,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, pregnancyPeriod);
-        System.out.println();
 
         // непосредственно добавление в БД
         Pregnancy newPregnancy = new Pregnancy(formatter.format(c.getTime()), true);

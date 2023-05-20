@@ -17,4 +17,10 @@ public interface PregnancyDao {
 
     @Query("SELECT * FROM pregnancy")
     List<Pregnancy> getAllPregnancies();
+
+    @Query("delete from pregnancy where idPregnancy = :pregnancyId")
+    void deletePregnancyById(int pregnancyId);
+
+    @Query("select approximatelyChildbirth from pregnancy where idPregnancy = :pregnancyId")
+    String getPregnancyById(int pregnancyId);
 }
