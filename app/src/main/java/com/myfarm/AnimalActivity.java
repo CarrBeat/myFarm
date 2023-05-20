@@ -50,7 +50,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         Button pregnancyButton = findViewById(R.id.add_pregnancy_button);
 
         Toast pregnancyWarningToast = Toast.makeText(this,
-                "Возраст животного должен быть не менее 150 дней!",
+                "Возраст животного \nдолжен быть не менее 150 дней!",
                 Toast.LENGTH_LONG);
         pregnancyWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
@@ -109,12 +109,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
                 pregnancyButton.setEnabled(false);
-                try {
-                    pregnancyButton.setText("Роды с " + Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
-                            pregnancyDao().getPregnancyById(animal.getPregnancyID())));
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
             });
 
 

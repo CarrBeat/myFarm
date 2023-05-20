@@ -71,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
                     "152",8, "goat");
             com.myfarm.db.AnimalType chicken = new com.myfarm.db.AnimalType("Курица/петух",
                     "21", 1, "chicken");
-            com.myfarm.db.AnimalType quail = new com.myfarm.db.AnimalType("Перепел",
+            com.myfarm.db.AnimalType quail = new com.myfarm.db.AnimalType("Перепёлка/перепел",
                     "17-23", 1, "quail");
             com.myfarm.db.AnimalType duck = new com.myfarm.db.AnimalType("Утка/селезень",
                     "22-40", 1, "ducks");
-            com.myfarm.db.AnimalType goose = new com.myfarm.db.AnimalType("Гусь",
+            com.myfarm.db.AnimalType goose = new com.myfarm.db.AnimalType("Гусыня/гусь",
                     "28-32", 1, "geese");
             com.myfarm.db.AnimalType turkey = new com.myfarm.db.AnimalType("Индейка/индюк",
                     "28", 1, "turkey");

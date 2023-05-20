@@ -14,7 +14,7 @@
     <string name="body_length_text">Длина туловища (cм):</string>
     <string name="add_value">Доп. данные (для 2 способа):</string>
     <string name="calc_way">Способ расчёта</string>
-    <string name="animal_type">Тип/порода/вид:</string>
+    <string name="animal_type">Вид/порода:</string>
     <string name="animal_birthdate">Дата рождения:</string>
     <string name="animal_age">Возраст (полных лет):</string>
     <string name="short_animal_age">Возраст:</string>
