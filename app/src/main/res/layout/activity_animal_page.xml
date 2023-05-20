@@ -167,44 +167,47 @@
 
     <Button
         android:id="@+id/save_animal_button"
-        android:layout_width="195dp"
-        android:layout_height="44dp"
+        android:layout_width="201dp"
+        android:layout_height="46dp"
         android:background="@color/medium_yellow"
         android:bottomRightRadius="10dp"
         android:text="@string/save_animal_button_text"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.969" />
+        app:layout_constraintVertical_bias="0.973" />
 
     <Button
         android:id="@+id/delete_animal"
-        android:layout_width="138dp"
-        android:layout_height="43dp"
+        android:layout_width="142dp"
+        android:layout_height="40dp"
         android:background="@color/panic_red"
         android:text="@string/delete_animal_text"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintHorizontal_bias="0.942"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.858" />
+        app:layout_constraintVertical_bias="0.856" />
 
     <Button
         android:id="@+id/add_pregnancy_button"
-        android:layout_width="145dp"
-        android:layout_height="43dp"
+        android:layout_width="158dp"
+        android:layout_height="45dp"
         android:background="@color/normal_pink"
         android:bottomRightRadius="10dp"
         android:text="@string/new_pregnancy_text"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.072"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857" />
+        app:layout_constraintVertical_bias="0.861" />
 
     <Button
         android:id="@+id/open_calc_weight_button"
@@ -213,6 +216,7 @@
         android:background="@color/lite_blue"
         android:bottomRightRadius="10dp"
         android:text="@string/calc_button_text"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"

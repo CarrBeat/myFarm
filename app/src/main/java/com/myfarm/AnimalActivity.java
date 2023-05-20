@@ -109,6 +109,12 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
                 pregnancyButton.setEnabled(false);
+                try {
+                    pregnancyButton.setText("Роды с " + Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
+                            pregnancyDao().getPregnancyById(animal.getPregnancyID())));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
 
