@@ -14,6 +14,10 @@ public interface PregnancyDao {
 
     @Delete
     void delete(Pregnancy pregnancy);
+/*
+    @Query ("SELECT CAST(GETDATE() + (SELECT pregnancyPeriod from animalType, " +
+            "animal where animalTypeID = :animalID) AS DATE)")
+    String calcChildbirthDate(String startPregnancy, int animalID);*/
 
     @Query("SELECT * FROM pregnancy")
     List<Pregnancy> getAllPregnancies();

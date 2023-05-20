@@ -8,21 +8,33 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.DatePickerDialog;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-public class AnimalActivity extends AppCompatActivity {
+public class AnimalActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Animal animal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +45,11 @@ public class AnimalActivity extends AppCompatActivity {
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch animalSexSwitch = findViewById(R.id.animal_sex);
         Button pregnancyButton = findViewById(R.id.add_pregnancy_button);
+
+        Toast pregnancyWarningToast = Toast.makeText(this,
+                "Возраст животного должен быть не менее 150 дней!",
+                Toast.LENGTH_LONG);
+        pregnancyWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
         Toast deleteAnimalWarning = Toast.makeText(this,
                 "Для удаления необходимо поставить галочку в верхнем правом углу, \n" +
@@ -76,6 +93,13 @@ public class AnimalActivity extends AppCompatActivity {
                 weightCalcButton.setEnabled(false);
             }
 
+
+            pregnancyButton.setOnClickListener(view -> {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
+            });
+
+
             weightCalcButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -85,12 +109,6 @@ public class AnimalActivity extends AppCompatActivity {
                 }
             });
 
-            pregnancyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // вызов диалога с выбором даты + тост
-                }
-            });
             removeButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -166,18 +184,15 @@ public class AnimalActivity extends AppCompatActivity {
                     if (!weightWarning | isWeightCorrect | (animalWeight.getText().toString().equals("")
                             & !weightWarning)){
                         weightWarningToast.cancel();
-                        System.out.println("здессс");
                         if (animalWeight.getText().toString().equals("")){
                             animal.setWeight(0);
                         }
                         animal.setAnimalName(String.valueOf(animalName.getText()));
                         animal.setFemale(animalSexSwitch.isChecked());
                         if (isWeightCorrect) {
-                            System.out.println("здесь");
                             animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
                             MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
                         } else {
-                            System.out.println("здесьв");
                             MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
                         }
                         finishActivity();
@@ -193,4 +208,62 @@ public class AnimalActivity extends AppCompatActivity {
         intent.putExtra("animalFragment", true);
         startActivity(intent);
     }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        String pregnancyStartDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+        pregnancyStartDate = "20" + pregnancyStartDate.substring(pregnancyStartDate.lastIndexOf(".") + 1)
+                + "-" + pregnancyStartDate.substring(pregnancyStartDate.indexOf(".") + 1,
+                pregnancyStartDate.lastIndexOf(".")) + "-" + pregnancyStartDate.substring(0,
+                pregnancyStartDate.indexOf("."));
+        if (daysBetweenCalc(pregnancyStartDate) > 150){
+            try {
+                setNewPregnancy(pregnancyStartDate);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            Toast pregnancyWarningToast = Toast.makeText(this,
+                    "Возраст животного должен быть не менее 150 дней!",
+                    Toast.LENGTH_LONG);
+            pregnancyWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
+            pregnancyWarningToast.show();
+        }
+        // нужно сравнить дату начала беременности с возрастом и предупреждение сделать, а затем уж добавлять беременность
+    }
+
+    int daysBetweenCalc(String pregnancyStart){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        int daysBetween;
+        try {
+            Date birthDate = sdf.parse(animal.getBirthdate());
+            Date PregnancyStartDate = sdf.parse(pregnancyStart);
+            assert PregnancyStartDate != null;
+            assert birthDate != null;
+            long diff = PregnancyStartDate.getTime() - birthDate.getTime();
+            daysBetween = Integer.parseInt(""+(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return daysBetween;
+    }
+
+    void setNewPregnancy(String startPregnancyDate) throws ParseException {
+        int pregnancyPeriod = MyFarmDatabase.getDatabase(getApplication()).
+                animalTypeDao().getPregnancyPeriodByAnimalTypeID(animal.getAnimalTypeID());
+
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = formatter.parse(startPregnancyDate);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DAY_OF_MONTH, pregnancyPeriod);
+        System.out.println(formatter.format(c.getTime()));
+
+    }
+
 }
