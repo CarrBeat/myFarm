@@ -10,10 +10,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.myfarm.AnimalsFragment;
+import com.myfarm.Common;
 import com.myfarm.R;
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,13 +54,25 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
         }
         if (currentAnimal.getFemale()){
             if (currentAnimal.getPregnancyID() > 0) {
-                holder.bottom_text.setText("Самка | " + currentAnimal.getBirthdate()
-                        + " | Ожидает потомство!");
+                try {
+                    holder.bottom_text.setText("Самка | " + Common.getNormalDate(currentAnimal.getBirthdate())
+                            + " | Ожидает потомство!");
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
-                holder.bottom_text.setText("Самка | " + currentAnimal.getBirthdate());
+                try {
+                    holder.bottom_text.setText("Самка | " + Common.getNormalDate(currentAnimal.getBirthdate()));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } else {
-            holder.bottom_text.setText("Самец | " + currentAnimal.getBirthdate());
+            try {
+                holder.bottom_text.setText("Самец | " + Common.getNormalDate(currentAnimal.getBirthdate()));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
