@@ -1,23 +1,28 @@
 package com.myfarm;
 
+import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.myfarm.adapter.PregnancyAdapter;
 import com.myfarm.db.Animal;
 import com.myfarm.db.AnimalDao;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Pregnancy;
 import com.myfarm.db.PregnancyDao;
+
+import org.w3c.dom.Text;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,7 +51,6 @@ public class PregnancyFragment extends Fragment {
         CheckBox deleteBox = view.findViewById(R.id.delete_pregn_сheckbox);
         CheckBox notifyBox = view.findViewById(R.id.notify_checkbox);
 
-
         PregnancyAdapter.OnPregnancyClickListener pregnancyClickListener = new PregnancyAdapter.OnPregnancyClickListener() {
             @Override
             public void onPregnancyClick(Pregnancy pregnancy, int position) {
@@ -56,11 +60,14 @@ public class PregnancyFragment extends Fragment {
                     animal.setPregnancyID(1);
                     MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao().updateAnimal(animal);
                     MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().delete(pregnancy);
+
+                    changeFragment();
                     return;
                 } else {
                     pregnancy.setNotify(notifyBox.isChecked());
                     MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().updatePregnancy(pregnancy);
                 }
+
             }
         };
 
@@ -84,5 +91,14 @@ public class PregnancyFragment extends Fragment {
 
         return view;
     }
+
+    void changeFragment(){
+        Fragment newFragment = new AnimalsFragment();
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 
 }

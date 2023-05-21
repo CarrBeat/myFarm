@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="1"
+            android:text="@string/pregnancy_description"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="17sp" />
 
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/top_text"
             android:layout_alignParentStart="true"
-            android:text="Description"
+            android:text="@string/pregnancy_description_two"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="17sp" />
 
