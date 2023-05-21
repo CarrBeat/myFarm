@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AnimalActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Animal animal;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             CheckBox deleteConfirm = findViewById(R.id.delete_confirm);
 
             if (animal.getAnimalTypeID() != 1 & animal.getAnimalTypeID() != 10){
-                System.out.println();
                 weightCalcButton.setEnabled(false);
             }
 
@@ -248,7 +248,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             pregnancyWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
             pregnancyWarningToast.show();
         }
-        // нужно сравнить дату начала беременности с возрастом и предупреждение сделать, а затем уж добавлять беременность
     }
 
     int daysBetweenCalc(String pregnancyStart){

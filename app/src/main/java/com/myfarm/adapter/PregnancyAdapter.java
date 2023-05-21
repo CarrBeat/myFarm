@@ -7,19 +7,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.myfarm.Common;
 import com.myfarm.PregnancyFragment;
 import com.myfarm.R;
 import com.myfarm.db.Animal;
+import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Pregnancy;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.PregnancyHolder>{
 
     private List<Pregnancy> pregnancies = new ArrayList<>();
     private List<Animal> animals = new ArrayList<>();
-    private PregnancyFragment pregnancyFragment = new PregnancyFragment();
+    private final PregnancyFragment pregnancyFragment = new PregnancyFragment();
 
 
     @NonNull
@@ -30,14 +35,40 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
         return new PregnancyHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull PregnancyAdapter.PregnancyHolder holder, int position) {
         Pregnancy currentPregnancy;
         Animal currentAnimal = animals.get(position);
 
-        if (currentAnimal.getPregnancyID() > 0){
+        String animalTypeName = MyFarmDatabase.getDatabase(pregnancyFragment.getContext())
+                .animalDao().getAnimalTypeName(currentAnimal.getAnimalTypeID());
+
+
+
+        if (currentAnimal.getPregnancyID() >= 0){
            currentPregnancy = pregnancies.get(currentAnimal.getPregnancyID());
-           System.out.println(currentPregnancy.getApproximatelyChildbirth());
+           animalTypeName = animalTypeName.substring(0, animalTypeName.indexOf("/")).toUpperCase();
+           if (animalTypeName.contains("/")){
+               if (!Objects.equals(currentAnimal.getAnimalName(), "")){
+                   holder.mainText.setText(animalTypeName + " " + currentAnimal.getAnimalName()
+                           + " ожидает потомство,");
+               } else {
+                   holder.mainText.setText(animalTypeName + " ожидает потомство,");
+               }
+           } else {
+               if (!Objects.equals(currentAnimal.getAnimalName(), "")){
+                   holder.mainText.setText(animalTypeName + " " + currentAnimal.getAnimalName()
+                           + " ожидает потомство,");
+               } else {
+                   holder.mainText.setText(animalTypeName + " ожидает потомство,");
+               }
+           }
+           try {
+               holder.bottom_text.setText("роды с " + Common.getNormalDate(currentPregnancy.getApproximatelyChildbirth()));
+           } catch (ParseException e) {
+               throw new RuntimeException(e);
+           }
         }
 
     }

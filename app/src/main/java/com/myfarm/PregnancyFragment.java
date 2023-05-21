@@ -47,7 +47,6 @@ public class PregnancyFragment extends Fragment {
         pregnancyDao = MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao();
         executorService = Executors.newSingleThreadExecutor();
 
-        System.out.println(pregnancyDao.getAllPregnancies());
         if (!pregnancyDao.getAllPregnancies().isEmpty()){
             pregnancyAdapter.setAnimals(animalDao.getAllAnimals());
             pregnancyAdapter.setPregnancies(pregnancyDao.getAllPregnancies());
