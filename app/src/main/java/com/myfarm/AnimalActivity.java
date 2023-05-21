@@ -75,7 +75,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     animalTypeDao().getPhotoNameByIDAnimalType(animal.getAnimalTypeID()), "drawable", getPackageName()));
 
 
-            if(animal.getPregnancyID() > 0 | !animal.getFemale()){
+            if(animal.getPregnancyID() > 1 | !animal.getFemale()){
                 pregnancyButton.setEnabled(false);
                 if (animal.getPregnancyID() > 0){
                     try {
@@ -125,7 +125,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 @Override
                 public boolean onLongClick(View view) {
                     if (deleteConfirm.isChecked()) {
-                        if (animal.getPregnancyID() > 0){
+                        if (animal.getPregnancyID() > 1){
                             MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().deletePregnancyById(animal.getPregnancyID());
                         }
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().delete(animal);

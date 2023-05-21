@@ -1,6 +1,7 @@
 package com.myfarm.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,48 +41,56 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
     public void onBindViewHolder(@NonNull PregnancyAdapter.PregnancyHolder holder, int position) {
         Pregnancy currentPregnancy = pregnancies.get(position);
 
-        int idAnimal = MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
-                .getAnimalIDByPregnancy(currentPregnancy.getIdPregnancy());
-        String animalName = MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
-                .getAnimalName(idAnimal);
-        String animalTypeName = (MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
-                .getAnimalTypeNameByAnimalID(idAnimal)).toUpperCase();
+        if (currentPregnancy.getIdPregnancy() != 1){
+            int idAnimal = MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
+                    .getAnimalIDByPregnancy(currentPregnancy.getIdPregnancy());
+            String animalName = MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
+                    .getAnimalName(idAnimal);
+            String animalTypeName = (MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
+                    .getAnimalTypeNameByAnimalID(idAnimal)).toUpperCase();
 
-        String animalID;
-        if (Common.showAnimalID){
+            String animalID;
+            if (Common.showAnimalID){
                 animalID = " (№ " + idAnimal + "),";
-        } else {
-            animalID = "";
-        }
+            } else {
+                animalID = "";
+            }
 
-        if (animalTypeName.contains("/")){
-            animalTypeName = animalTypeName.substring(0, animalTypeName.indexOf("/")).toUpperCase();
-            if (!Objects.equals(animalName, "")){
-                holder.topText.setText(animalTypeName + " " + animalName + animalID);
-               } else {
-                   holder.topText.setText(animalTypeName + animalID);
-               }
-           } else {
-               if (!Objects.equals(animalName, "")){
-                   holder.topText.setText(animalTypeName + " " + animalName + animalID);
-               } else {
-                   holder.topText.setText(animalTypeName + animalID);
-               }
-           }
-           if (currentPregnancy.getNotify()){
-               try {
-                   holder.bottomText.setText("родит с " + Common.getNormalDate(
-                           currentPregnancy.getApproximatelyChildbirth()) + ", уведомление вкл.");
-               } catch (ParseException e) {
-                   throw new RuntimeException(e);
-               }
-           } else {
-               try {
-                   holder.bottomText.setText("родит с " + Common.getNormalDate(currentPregnancy.getApproximatelyChildbirth()));
-               } catch (ParseException e) {
-                   throw new RuntimeException(e);
-               }
-           }
+            if (animalTypeName.contains("/")){
+                animalTypeName = animalTypeName.substring(0, animalTypeName.indexOf("/")).toUpperCase();
+                if (!Objects.equals(animalName, "")){
+                    holder.topText.setText(animalTypeName + " " + animalName + animalID);
+                } else {
+                    holder.topText.setText(animalTypeName + animalID);
+                }
+            } else {
+                if (!Objects.equals(animalName, "")){
+                    holder.topText.setText(animalTypeName + " " + animalName + animalID);
+                } else {
+                    holder.topText.setText(animalTypeName + animalID);
+                }
+            }
+            if (currentPregnancy.getNotify()){
+                try {
+                    holder.bottomText.setText("родит с " + Common.getNormalDate(
+                            currentPregnancy.getApproximatelyChildbirth()) + ", уведомление вкл.");
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    holder.bottomText.setText("родит с " + Common.getNormalDate(currentPregnancy.getApproximatelyChildbirth()));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            holder.itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    onClickListener.onPregnancyClick(currentPregnancy, position);
+                }
+            });
+        }
     }
 
     @Override
@@ -93,6 +102,17 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
     public void setPregnancies(List<Pregnancy> pregnancies) {
         this.pregnancies = pregnancies;
         //notifyDataSetChanged();
+    }
+
+    public interface OnPregnancyClickListener{
+        void onPregnancyClick(Pregnancy pregnancy, int position);
+
+    }
+
+    private final PregnancyAdapter.OnPregnancyClickListener onClickListener;
+
+    public PregnancyAdapter(Context context, PregnancyAdapter.OnPregnancyClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     class PregnancyHolder extends RecyclerView.ViewHolder {

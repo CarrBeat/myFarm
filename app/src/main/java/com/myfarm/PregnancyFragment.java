@@ -9,15 +9,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
-import com.myfarm.adapter.AnimalAdapter;
 import com.myfarm.adapter.PregnancyAdapter;
+import com.myfarm.db.Animal;
 import com.myfarm.db.AnimalDao;
 import com.myfarm.db.MyFarmDatabase;
+import com.myfarm.db.Pregnancy;
 import com.myfarm.db.PregnancyDao;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,6 +28,7 @@ public class PregnancyFragment extends Fragment {
     AnimalDao animalDao;
     PregnancyDao pregnancyDao;
     private ExecutorService executorService;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,13 +43,35 @@ public class PregnancyFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        PregnancyAdapter pregnancyAdapter = new PregnancyAdapter();
+        CheckBox deleteBox = view.findViewById(R.id.delete_pregn_сheckbox);
+        CheckBox notifyBox = view.findViewById(R.id.notify_checkbox);
+
+
+        PregnancyAdapter.OnPregnancyClickListener pregnancyClickListener = new PregnancyAdapter.OnPregnancyClickListener() {
+            @Override
+            public void onPregnancyClick(Pregnancy pregnancy, int position) {
+                if (deleteBox.isChecked()){
+                    Animal animal = MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao()
+                                    .getAnimalByPregnancy(pregnancy.getIdPregnancy());
+                    animal.setPregnancyID(1);
+                    MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao().updateAnimal(animal);
+                    MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().delete(pregnancy);
+                    return;
+                } else {
+                    pregnancy.setNotify(notifyBox.isChecked());
+                    MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().updatePregnancy(pregnancy);
+                }
+            }
+        };
+
+        final PregnancyAdapter pregnancyAdapter = new PregnancyAdapter(requireActivity().getApplication(),
+                pregnancyClickListener);
 
         animalDao = MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao();
         pregnancyDao = MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao();
         executorService = Executors.newSingleThreadExecutor();
 
-        if (!pregnancyDao.getAllPregnancies().isEmpty()){
+        if (pregnancyDao.getAllPregnancies().size() > 1){
             pregnancyAdapter.setPregnancies(pregnancyDao.getAllPregnancies());
             recyclerView.setAdapter(pregnancyAdapter);
         } else {
@@ -60,4 +84,5 @@ public class PregnancyFragment extends Fragment {
 
         return view;
     }
+
 }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
 import com.myfarm.db.MyFarmDatabase;
+import com.myfarm.db.Pregnancy;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
 import java.util.ArrayList;
@@ -91,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
             MyFarmDatabase.getDatabase(this).animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
                     turkey, ostrich, pig, nutria, rabbit);
 
-
+            Pregnancy pregnancy = new Pregnancy("-", false);
+            MyFarmDatabase.getDatabase(this).pregnancyDao().insert(pregnancy);
 
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
