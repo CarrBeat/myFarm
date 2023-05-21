@@ -21,6 +21,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
+import com.myfarm.db.Statistics;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -196,6 +198,10 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                     animalBirthdate, sexSwitch.isChecked(),
                                     Float.parseFloat(animalWeight.getText().toString()));
                             MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
+                            Calendar calendar = Calendar.getInstance();
+                            MyFarmDatabase.getDatabase(this).statisticsDao().insertAll(
+                                    new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
+                                    newAnimal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
                         } else if (!weightWarning) {
                             Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),

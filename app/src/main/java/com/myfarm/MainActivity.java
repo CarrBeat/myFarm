@@ -65,29 +65,29 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.greetings_activity_main);
 
             com.myfarm.db.AnimalType cow = new com.myfarm.db.AnimalType("Корова/бык",
-                    "250-310", 9, "cow");
+                    "250-310", "cow");
             com.myfarm.db.AnimalType sheep = new com.myfarm.db.AnimalType("Овца/баран",
-                    "147-150", 0, "sheep");
+                    "147-150", "sheep");
             com.myfarm.db.AnimalType goat = new com.myfarm.db.AnimalType("Коза/козёл",
-                    "152",8, "goat");
+                    "152","goat");
             com.myfarm.db.AnimalType chicken = new com.myfarm.db.AnimalType("Курица/петух",
-                    "21", 1, "chicken");
+                    "21", "chicken");
             com.myfarm.db.AnimalType quail = new com.myfarm.db.AnimalType("Перепёлка/перепел",
-                    "17-23", 1, "quail");
+                    "17-23", "quail");
             com.myfarm.db.AnimalType duck = new com.myfarm.db.AnimalType("Утка/селезень",
-                    "22-40", 1, "ducks");
+                    "22-40", "ducks");
             com.myfarm.db.AnimalType goose = new com.myfarm.db.AnimalType("Гусыня/гусь",
-                    "28-32", 1, "geese");
+                    "28-32", "geese");
             com.myfarm.db.AnimalType turkey = new com.myfarm.db.AnimalType("Индейка/индюк",
-                    "28", 1, "turkey");
+                    "28", "turkey");
             com.myfarm.db.AnimalType ostrich = new com.myfarm.db.AnimalType("Страус",
-                    "35-45", 0, "ostrich");
+                    "35-45", "ostrich");
             com.myfarm.db.AnimalType pig = new com.myfarm.db.AnimalType("Свинья",
-                    "117", 0, "pig");
+                    "117",  "pig");
             com.myfarm.db.AnimalType nutria = new com.myfarm.db.AnimalType("Нутрия",
-                    "127-132", 0, "nutria");
+                    "127-132", "nutria");
             com.myfarm.db.AnimalType rabbit = new com.myfarm.db.AnimalType("Кролик",
-                    "28-35", 0, "rabbit");
+                    "28-35", "rabbit");
 
             MyFarmDatabase.getDatabase(this).animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
                     turkey, ostrich, pig, nutria, rabbit);

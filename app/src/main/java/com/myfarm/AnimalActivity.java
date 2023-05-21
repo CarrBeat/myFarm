@@ -23,6 +23,7 @@ import androidx.fragment.app.DialogFragment;
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Pregnancy;
+import com.myfarm.db.Statistics;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -207,6 +208,10 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                         if (isWeightCorrect) {
                             animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
                             MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+                            Calendar calendar = Calendar.getInstance();
+                            MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
+                                    new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
+                                            animal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
                         } else {
                             MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
                         }
