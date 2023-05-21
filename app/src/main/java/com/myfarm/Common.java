@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class Common {
     public static boolean isNotify = true;
-    public static boolean showAnimalID = true;
+    public static boolean showAnimalID = false;
     @SuppressLint("SimpleDateFormat")
     public static String getNormalDate(String requiredDate) throws ParseException {
         @SuppressLint("SimpleDateFormat")

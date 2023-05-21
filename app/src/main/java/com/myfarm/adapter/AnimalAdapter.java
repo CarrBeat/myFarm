@@ -43,27 +43,34 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
         String animalTypeName = MyFarmDatabase.getDatabase(animalsFragment.getContext())
                 .animalDao().getAnimalTypeName(currentAnimal.getAnimalTypeID());
 
+        String animalID;
+        if (Common.showAnimalID){
+            animalID = " (№ " + currentAnimal.getIdAnimal() + ")";
+        } else {
+            animalID = "";
+        }
+
         if (animalTypeName.contains("/")){
             if (currentAnimal.getFemale()){
                 animalTypeName = animalTypeName.substring(0, animalTypeName.indexOf("/")).toUpperCase();
                 if (!Objects.equals(currentAnimal.getAnimalName(), "")){
-                    holder.mainText.setText(animalTypeName + " | " + currentAnimal.getAnimalName());
+                    holder.mainText.setText(animalTypeName + " " + currentAnimal.getAnimalName() + animalID);
                 } else {
-                    holder.mainText.setText(animalTypeName);
+                    holder.mainText.setText(animalTypeName + animalID);
                 }
             } else {
                 animalTypeName = animalTypeName.substring(animalTypeName.lastIndexOf("/") + 1).toUpperCase();
                 if (!Objects.equals(currentAnimal.getAnimalName(), "")){
-                    holder.mainText.setText(animalTypeName + " | " + currentAnimal.getAnimalName());
+                    holder.mainText.setText(animalTypeName + " " + currentAnimal.getAnimalName() + animalID);
                 } else {
-                    holder.mainText.setText(animalTypeName);
+                    holder.mainText.setText(animalTypeName + animalID);
                 }
             }
         } else {
             if (!Objects.equals(currentAnimal.getAnimalName(), "")){
-                holder.mainText.setText(animalTypeName.toUpperCase() + " | " + currentAnimal.getAnimalName());
+                holder.mainText.setText(animalTypeName.toUpperCase() + " " + currentAnimal.getAnimalName() + animalID);
             } else {
-                holder.mainText.setText(animalTypeName.toUpperCase());
+                holder.mainText.setText(animalTypeName.toUpperCase() + animalID);
             }
         }
 
