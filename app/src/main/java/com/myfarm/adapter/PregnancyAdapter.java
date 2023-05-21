@@ -68,7 +68,7 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
                    holder.topText.setText(animalTypeName + animalID);
                }
            }
-           if (Common.isNotify){
+           if (currentPregnancy.getNotify()){
                try {
                    holder.bottomText.setText("родит с " + Common.getNormalDate(
                            currentPregnancy.getApproximatelyChildbirth()) + ", уведомление вкл.");

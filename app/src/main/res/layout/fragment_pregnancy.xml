@@ -9,7 +9,28 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pregn_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="598dp"
+        android:layout_height="569dp"
         tools:listitem="@layout/pregn_item" />
+
+    <CheckBox
+        android:id="@+id/delete_pregn_сheckbox"
+        android:layout_width="184dp"
+        android:layout_height="46dp"
+        android:layout_gravity="right|bottom"
+        android:text="@string/delete_pregnancy_text"
+        android:textAlignment="center"
+        android:textColor="@color/panic_red"
+        android:textSize="19sp" />
+
+    <CheckBox
+        android:id="@+id/notify_checkbox"
+        android:layout_width="149dp"
+        android:layout_height="48dp"
+        android:layout_gravity="left|bottom"
+        android:text="@string/notify"
+        android:textSize="19sp"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="261dp" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
