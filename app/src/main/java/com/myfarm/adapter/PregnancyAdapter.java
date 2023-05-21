@@ -38,50 +38,55 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull PregnancyAdapter.PregnancyHolder holder, int position) {
-        Pregnancy currentPregnancy;
-        Animal currentAnimal = animals.get(position);
+        Pregnancy currentPregnancy = pregnancies.get(position);
 
-        String animalTypeName = MyFarmDatabase.getDatabase(pregnancyFragment.getContext())
-                .animalDao().getAnimalTypeName(currentAnimal.getAnimalTypeID());
+        int idAnimal = MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
+                .getAnimalIDByPregnancy(currentPregnancy.getIdPregnancy());
+        String animalName = MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
+                .getAnimalName(idAnimal);
+        String animalTypeName = (MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
+                .getAnimalTypeNameByAnimalID(idAnimal)).toUpperCase();
 
-
-
-        if (currentAnimal.getPregnancyID() >= 0){
-           currentPregnancy = pregnancies.get(currentAnimal.getPregnancyID());
-           animalTypeName = animalTypeName.substring(0, animalTypeName.indexOf("/")).toUpperCase();
-           if (animalTypeName.contains("/")){
-               if (!Objects.equals(currentAnimal.getAnimalName(), "")){
-                   holder.mainText.setText(animalTypeName + " " + currentAnimal.getAnimalName()
-                           + " ожидает потомство,");
-               } else {
-                   holder.mainText.setText(animalTypeName + " ожидает потомство,");
-               }
-           } else {
-               if (!Objects.equals(currentAnimal.getAnimalName(), "")){
-                   holder.mainText.setText(animalTypeName + " " + currentAnimal.getAnimalName()
-                           + " ожидает потомство,");
-               } else {
-                   holder.mainText.setText(animalTypeName + " ожидает потомство,");
-               }
-           }
-           try {
-               holder.bottom_text.setText("роды с " + Common.getNormalDate(currentPregnancy.getApproximatelyChildbirth()));
-           } catch (ParseException e) {
-               throw new RuntimeException(e);
-           }
+        String animalID;
+        if (Common.showAnimalID){
+                animalID = " (№ " + idAnimal + "),";
+        } else {
+            animalID = "";
         }
 
+        if (animalTypeName.contains("/")){
+            animalTypeName = animalTypeName.substring(0, animalTypeName.indexOf("/")).toUpperCase();
+            if (!Objects.equals(animalName, "")){
+                holder.topText.setText(animalTypeName + " " + animalName + animalID);
+               } else {
+                   holder.topText.setText(animalTypeName + animalID);
+               }
+           } else {
+               if (!Objects.equals(animalName, "")){
+                   holder.topText.setText(animalTypeName + " " + animalName + animalID);
+               } else {
+                   holder.topText.setText(animalTypeName + animalID);
+               }
+           }
+           if (Common.isNotify){
+               try {
+                   holder.bottomText.setText("родит с " + Common.getNormalDate(
+                           currentPregnancy.getApproximatelyChildbirth()) + ", уведомление вкл.");
+               } catch (ParseException e) {
+                   throw new RuntimeException(e);
+               }
+           } else {
+               try {
+                   holder.bottomText.setText("родит с " + Common.getNormalDate(currentPregnancy.getApproximatelyChildbirth()));
+               } catch (ParseException e) {
+                   throw new RuntimeException(e);
+               }
+           }
     }
 
     @Override
     public int getItemCount() {
         return pregnancies.size();
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void setAnimals(List<Animal> animals) {
-        this.animals = animals;
-        //notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -91,15 +96,13 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
     }
 
     class PregnancyHolder extends RecyclerView.ViewHolder {
-        private final TextView mainText;
-        private final TextView bottom_text;
-        private final TextView rightTopText;
+        private final TextView topText;
+        private final TextView bottomText;
 
         public PregnancyHolder(View itemView) {
             super(itemView);
-            mainText = itemView.findViewById(R.id.top_left_text);
-            bottom_text = itemView.findViewById(R.id.bottom_text);
-            rightTopText = itemView.findViewById(R.id.top_right_text);
+            topText = itemView.findViewById(R.id.top_text);
+            bottomText = itemView.findViewById(R.id.bottom_text);
         }
     }
 }

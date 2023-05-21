@@ -25,4 +25,13 @@ public interface AnimalDao {
     @Query("SELECT animalTypeName from animalType where idAnimalType = :idAnimalType")
     String getAnimalTypeName(int idAnimalType);
 
+    @Query("SELECT idAnimal from animal where pregnancyID = :idPregnancy")
+    int getAnimalIDByPregnancy(int idPregnancy);
+
+    @Query("SELECT animalName from animal where idAnimal = :animalID")
+    String getAnimalName(int animalID);
+
+    @Query("SELECT animalTypeName from animalType where idAnimalType = " +
+            "(select animalTypeID from animal where idAnimal = :animalID)")
+    String getAnimalTypeNameByAnimalID(int animalID);
 }

@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Common {
+    public static boolean isNotify = true;
+    public static boolean showAnimalID = true;
     @SuppressLint("SimpleDateFormat")
     public static String getNormalDate(String requiredDate) throws ParseException {
         @SuppressLint("SimpleDateFormat")

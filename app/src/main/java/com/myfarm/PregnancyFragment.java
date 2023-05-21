@@ -48,7 +48,6 @@ public class PregnancyFragment extends Fragment {
         executorService = Executors.newSingleThreadExecutor();
 
         if (!pregnancyDao.getAllPregnancies().isEmpty()){
-            pregnancyAdapter.setAnimals(animalDao.getAllAnimals());
             pregnancyAdapter.setPregnancies(pregnancyDao.getAllPregnancies());
             recyclerView.setAdapter(pregnancyAdapter);
         } else {
