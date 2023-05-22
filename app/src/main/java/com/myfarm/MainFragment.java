@@ -12,9 +12,13 @@ import android.widget.Spinner;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
@@ -76,8 +80,9 @@ public class MainFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        BarChart barChart = view.findViewById(R.id.bar_chart);
-        ArrayList<BarEntry> weightChart = new ArrayList<>();
+        PieChart pieChart = view.findViewById(R.id.pie_chart);
+        ArrayList<PieEntry> weightChart = new ArrayList<>();
+        pieChart.setEnabled(false);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -88,23 +93,27 @@ public class MainFragment extends Fragment {
                 if (statisticsIDList.size() >= 2){
                     for (int j = 0; j < statisticsIDList.size(); j++){
                         currentStatistics = statistics.get(statisticsIDList.get(j) - 1);
-                        weightChart.add(new BarEntry (j, currentStatistics.getWeight()));
+                        weightChart.add(new PieEntry(currentStatistics.getWeight(), currentStatistics.getDate()));
                     }
                     putData = true;
                 } else {
                     putData = false;
+
                     return;
                 }
-                BarDataSet barDataSet = new BarDataSet(weightChart, "Масса");
-                barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-                barDataSet.setValueTextColor(Color.BLACK);
-                barDataSet.setValueTextSize(16f);
-
-                BarData barData = new BarData(barDataSet);
-                barChart.setFitBars(true);
-                barChart.setData(barData);
-                barChart.getDescription().setText("Изменение массы");
-                barChart.animateY(2000);
+                PieDataSet pieDataSet = new PieDataSet(weightChart, "- даты доб. показ.");
+                pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+                pieDataSet.setValueTextColor(Color.BLACK);
+                pieDataSet.setValueTextSize(18f);
+                PieData pieData = new PieData(pieDataSet);
+                pieChart.setData(pieData);
+                pieChart.getDescription().setEnabled(false);
+                pieChart.setCenterText("Изменение массы");
+                pieChart.animateY(2000);
+                pieChart.setCenterTextSize(18f);
+                pieChart.setEntryLabelTextSize(15f);
+                pieChart.setData(null);
+                pieChart.setNoDataText("");
             }
 
             @Override
