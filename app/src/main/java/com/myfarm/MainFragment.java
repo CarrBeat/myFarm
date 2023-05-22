@@ -82,8 +82,7 @@ public class MainFragment extends Fragment {
 
         PieChart pieChart = view.findViewById(R.id.pie_chart);
         ArrayList<PieEntry> weightChart = new ArrayList<>();
-        pieChart.setEnabled(false);
-
+        pieChart.setNoDataText("");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -98,7 +97,8 @@ public class MainFragment extends Fragment {
                     putData = true;
                 } else {
                     putData = false;
-
+                    weightChart.clear();
+                    pieChart.setData(null);
                     return;
                 }
                 PieDataSet pieDataSet = new PieDataSet(weightChart, "- даты доб. показ.");
@@ -112,8 +112,7 @@ public class MainFragment extends Fragment {
                 pieChart.animateY(2000);
                 pieChart.setCenterTextSize(18f);
                 pieChart.setEntryLabelTextSize(15f);
-                pieChart.setData(null);
-                pieChart.setNoDataText("");
+                statisticsIDList.clear();
             }
 
             @Override
