@@ -32,6 +32,7 @@
     <string name="first_text">1</string>
     <string name="second_text">2</string>
     <string name="short_kg">КГ</string>
+    <string name="greetings_of_fragment">Добро пожаловать! \n\nВыберите животное \nдля просмотра графика \nизменения массы.</string>
     <string name="pregnancy_description">Для изменения настроек уведомлений</string>
     <string name="pregnancy_description_two">или удаления, нужно поставить соответствующую галку и нажать на необходимую беременность</string>
     <string name="notify">Уведомить?</string>
