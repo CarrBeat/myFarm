@@ -16,4 +16,7 @@ public interface StatisticsDao {
 
     @Query("SELECT * FROM Statistics")
     List<Statistics> getAllStatistics();
+
+    @Query("SELECT idStatistics from statistics where animalID = :idAnimal")
+    List<Integer> getIDStatisticsByIDAnimal(int idAnimal);
 }

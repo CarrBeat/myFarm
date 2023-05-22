@@ -8,30 +8,43 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="358dp"
-        android:layout_height="192dp"
+        android:layout_height="157dp"
         android:text="@string/greetings_of_fragment"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.589"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintVertical_bias="0.031" />
 
     <Spinner
         android:id="@+id/select_animal_spinner"
         style="@style/spinnerLook"
-        android:layout_width="264dp"
-        android:layout_height="38dp"
+        android:layout_width="344dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="80dp"
-        android:layout_marginEnd="72dp"
+        android:layout_marginEnd="4dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.41" />
+        app:layout_constraintVertical_bias="0.294" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bar_chart"
+        android:layout_width="400dp"
+        android:layout_height="422dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.974" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
