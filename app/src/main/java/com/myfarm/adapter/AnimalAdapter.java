@@ -43,12 +43,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
         String animalTypeName = MyFarmDatabase.getDatabase(animalsFragment.getContext())
                 .animalDao().getAnimalTypeName(currentAnimal.getAnimalTypeID());
 
-        String animalID;
-        if (Common.showAnimalID){
-            animalID = " (№ " + currentAnimal.getIdAnimal() + ")";
-        } else {
-            animalID = "";
-        }
+        String animalID = " (№ " + currentAnimal.getIdAnimal() + ")";
 
         if (animalTypeName.contains("/")){
             if (currentAnimal.getFemale()){
