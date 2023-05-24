@@ -134,6 +134,7 @@
 
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/animal_type"
@@ -376,8 +377,12 @@
         android:layout_height="49dp"
         android:text="@string/notify"
         android:textSize="19dp"
-        tools:layout_editor_absoluteX="255dp"
-        tools:layout_editor_absoluteY="685dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.863" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

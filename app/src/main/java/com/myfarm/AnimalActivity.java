@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AnimalActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Animal animal;
-
+    boolean isNotify = true;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,15 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                         "а затем зажать кнопку удаления на несколько секунд!",
                 Toast.LENGTH_LONG);
         deleteAnimalWarning.setGravity(Gravity.BOTTOM, 0, 160);
+
+        CheckBox notifyBox = findViewById(R.id.notify_checkbox);
+        notifyBox.setChecked(true);
+        notifyBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isNotify = notifyBox.isChecked();
+            }
+        });
 
         Bundle arguments = getIntent().getExtras();
         if(arguments!=null) {
@@ -286,7 +295,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         c.add(Calendar.DAY_OF_MONTH, pregnancyPeriod);
 
         // непосредственно добавление в БД
-        Pregnancy newPregnancy = new Pregnancy(formatter.format(c.getTime()), true);
+        Pregnancy newPregnancy = new Pregnancy(formatter.format(c.getTime()), isNotify);
         animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
     }

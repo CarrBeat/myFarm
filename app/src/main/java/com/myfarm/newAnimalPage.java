@@ -45,7 +45,8 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         TextView fatYearsText = findViewById(R.id.fatYearsText);
         TextView monthBirthEditText = findViewById(R.id.monthBirthEditText);
         TextView animalWeight = findViewById(R.id.weightEditText);
-        Switch sexSwitch = findViewById(R.id.animalSex);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        Switch sexSwitch = findViewById(R.id.animal_sex);
         Button enterButton = findViewById(R.id.add_animal_button);
 
         Spinner spinner = findViewById(R.id.spinner);
@@ -130,7 +131,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     if (!fatYearsText.getText().toString().isEmpty()) {
                         days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
                     }
-                    days += Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
+                    days += 365 - Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                     cal.add(Calendar.DATE, -days);
