@@ -77,11 +77,63 @@
             app:layout_constraintTop_toBottomOf="@+id/pregnancy_column"
             app:layout_constraintVertical_bias="0.641" />
 
+        <Button
+            android:id="@+id/animal_animals_button"
+            android:layout_width="62dp"
+            android:layout_height="133dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.269"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/animal_main_button"
+            android:layout_width="59dp"
+            android:layout_height="137dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.016"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/animal_pregnancy_button"
+            android:layout_width="62dp"
+            android:layout_height="160dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.605"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/animal_settings_button"
+            android:layout_width="63dp"
+            android:layout_height="134dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.919"
+            tools:ignore="MissingConstraints" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
-        android:id="@+id/birthdateTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/animal_type"
@@ -96,8 +148,8 @@
 
     <ImageView
         android:id="@+id/animal_page_image"
-        android:layout_width="261dp"
-        android:layout_height="168dp"
+        android:layout_width="282dp"
+        android:layout_height="186dp"
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +160,6 @@
         app:srcCompat="@drawable/cow" />
 
     <TextView
-        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
@@ -138,7 +189,6 @@
         app:layout_constraintVertical_bias="0.396" />
 
     <TextView
-        android:id="@+id/birthdateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/animal_name"
@@ -152,7 +202,6 @@
         app:layout_constraintVertical_bias="0.404" />
 
     <TextView
-        android:id="@+id/ageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/animal_birthdate"
@@ -189,10 +238,10 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.942"
+        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.856" />
+        app:layout_constraintVertical_bias="0.748" />
 
     <Button
         android:id="@+id/add_pregnancy_button"
@@ -207,7 +256,7 @@
         app:layout_constraintHorizontal_bias="0.072"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.861" />
+        app:layout_constraintVertical_bias="0.86" />
 
     <Button
         android:id="@+id/open_calc_weight_button"
@@ -219,10 +268,10 @@
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.939"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.748" />
 
     <EditText
         android:id="@+id/weight_edit_text"
@@ -240,23 +289,24 @@
         app:layout_constraintVertical_bias="0.657" />
 
     <TextView
-        android:id="@+id/womanSex"
         android:layout_width="32dp"
-        android:layout_height="28dp"
+        android:layout_height="30dp"
         android:text="@string/female_short_text"
         android:textColor="@color/black"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.986"
+        app:layout_constraintHorizontal_bias="0.978"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.968" />
+        app:layout_constraintVertical_bias="0.966" />
 
     <Switch
         android:id="@+id/animal_sex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sex_male_text"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.847"
@@ -319,6 +369,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.488"
         tools:ignore="MissingConstraints" />
+
+    <CheckBox
+        android:id="@+id/notify_checkbox"
+        android:layout_width="144dp"
+        android:layout_height="49dp"
+        android:text="@string/notify"
+        android:textSize="19dp"
+        tools:layout_editor_absoluteX="255dp"
+        tools:layout_editor_absoluteY="685dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

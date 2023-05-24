@@ -77,20 +77,73 @@
             app:layout_constraintTop_toBottomOf="@+id/pregnancy_column"
             app:layout_constraintVertical_bias="0.641" />
 
+        <Button
+            android:id="@+id/calc_animals_button"
+            android:layout_width="62dp"
+            android:layout_height="133dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.269"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/calc_main_button"
+            android:layout_width="59dp"
+            android:layout_height="137dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.016"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/calc_pregnancy_button"
+            android:layout_width="62dp"
+            android:layout_height="160dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.605"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/calc_settings_button"
+            android:layout_width="63dp"
+            android:layout_height="134dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.919"
+            tools:ignore="MissingConstraints" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <ImageView
         android:id="@+id/calc_image"
-        android:layout_width="275dp"
-        android:layout_height="181dp"
+        android:layout_width="319dp"
+        android:layout_height="217dp"
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.075"
+        app:layout_constraintVertical_bias="0.081"
         app:srcCompat="@drawable/cow" />
 
     <TextView
