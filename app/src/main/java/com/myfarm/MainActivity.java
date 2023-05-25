@@ -18,6 +18,7 @@ import com.myfarm.adapter.AnimalTypeAdapter;
 import com.myfarm.adapter.CategoryAdapter;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Pregnancy;
+import com.myfarm.db.Statistics;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean animalsInSystem = false;
 
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +178,18 @@ public class MainActivity extends AppCompatActivity {
         Button pregnancyButton = findViewById(R.id.pregnancy_button);
         Button settingsButton = findViewById(R.id.settings_button);
 
-        if (animalsInSystem){
+        /*
+        Statistics statisticsO = new Statistics("2022-04-04", 1, 1.85f);
+        Statistics statistics1 = new Statistics("2022-03-04", 1, 15.4f);
+        Statistics statistics2 = new Statistics("2022-07-05", 1, 34.35f);
+        Statistics statistics3 = new Statistics("2022-10-03", 1, 55.5f);
+        Statistics statistics4 = new Statistics("2022-12-14", 1, 72.2f);
+        Statistics statistics5 = new Statistics("2023-04-04", 1, 97.6f);
+        MyFarmDatabase.getDatabase(this).statisticsDao().insertAll(statisticsO, statistics1,
+                statistics2, statistics3, statistics4, statistics5);
+*/
+
+        if (animalsInSystem)
             animalsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -208,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-    }
 
     void setPregnancyFragment(){
         PregnancyFragment pregnancyFragment = new PregnancyFragment();

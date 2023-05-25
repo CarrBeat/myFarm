@@ -24,6 +24,7 @@ import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Statistics;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,13 +87,19 @@ public class MainFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String normalDate;
                 List<Integer> statisticsIDList =
                         MyFarmDatabase.getDatabase(getContext()).statisticsDao()
                                 .getIDStatisticsByIDAnimal(animalsMap.get(spinner.getSelectedItem()));
                 if (statisticsIDList.size() >= 2){
                     for (int j = 0; j < statisticsIDList.size(); j++){
                         currentStatistics = statistics.get(statisticsIDList.get(j) - 1);
-                        weightChart.add(new PieEntry(currentStatistics.getWeight(), currentStatistics.getDate()));
+                        try {
+                            normalDate = Common.getNormalDate(currentStatistics.getDate());
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        };
+                        weightChart.add(new PieEntry(currentStatistics.getWeight(), normalDate));
                     }
                     putData = true;
                 } else {

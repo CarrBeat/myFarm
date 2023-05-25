@@ -189,9 +189,8 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                         weightWarning = true;
                     }
                 }
-
                 // заключительная проверка перед добавлением
-                if (animalBirthdate != null){
+                if (animalBirthdate != null & !weightWarning){
                     if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
                         if (isWeightCorrect){
                             Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
@@ -203,7 +202,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                             MyFarmDatabase.getDatabase(this).statisticsDao().insertAll(
                                     new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
                                     newAnimal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
-                        } else if (!weightWarning) {
+                        } else {
                             Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
                                     animalBirthdate, sexSwitch.isChecked());
@@ -262,7 +261,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         String selectedDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
-        System.out.println(selectedDate);
         TextView textView = findViewById(R.id.textAnimalBirthdate);
         textView.setText("20" + selectedDate.substring(selectedDate.lastIndexOf(".") + 1)
                 + "-" + selectedDate.substring(selectedDate.indexOf(".") + 1,
