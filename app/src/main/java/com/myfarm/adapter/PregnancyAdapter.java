@@ -49,12 +49,7 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
             String animalTypeName = (MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
                     .getAnimalTypeNameByAnimalID(idAnimal)).toUpperCase();
 
-            String animalID;
-            if (Common.showAnimalID){
-                animalID = " (№ " + idAnimal + "),";
-            } else {
-                animalID = "";
-            }
+            String animalID = " (№ " + idAnimal + "),";
 
             if (animalTypeName.contains("/")){
                 animalTypeName = animalTypeName.substring(0, animalTypeName.indexOf("/")).toUpperCase();

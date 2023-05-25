@@ -262,6 +262,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         String selectedDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+        System.out.println(selectedDate);
         TextView textView = findViewById(R.id.textAnimalBirthdate);
         textView.setText("20" + selectedDate.substring(selectedDate.lastIndexOf(".") + 1)
                 + "-" + selectedDate.substring(selectedDate.indexOf(".") + 1,

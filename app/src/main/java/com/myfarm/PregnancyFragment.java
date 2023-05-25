@@ -49,7 +49,6 @@ public class PregnancyFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         CheckBox deleteBox = view.findViewById(R.id.delete_pregn_сheckbox);
-        CheckBox notifyBox = view.findViewById(R.id.notify_checkbox);
 
         PregnancyAdapter.OnPregnancyClickListener pregnancyClickListener = new PregnancyAdapter.OnPregnancyClickListener() {
             @Override
@@ -60,12 +59,8 @@ public class PregnancyFragment extends Fragment {
                     animal.setPregnancyID(1);
                     MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao().updateAnimal(animal);
                     MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().delete(pregnancy);
-
                     changeFragment();
                     return;
-                } else {
-                    pregnancy.setNotify(notifyBox.isChecked());
-                    MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().updatePregnancy(pregnancy);
                 }
 
             }
