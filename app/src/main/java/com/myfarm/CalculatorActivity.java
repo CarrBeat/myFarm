@@ -2,6 +2,7 @@ package com.myfarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +43,10 @@ public class CalculatorActivity extends AppCompatActivity {
         EditText bodyLengthEdittext = findViewById(R.id.body_length_edittext);
         Button calcWeightButton = findViewById(R.id.calc_weight_button);
         Button saveWeightButton = findViewById(R.id.save_weight_button);
+        Button mainButton = findViewById(R.id.calc_main_button);
+        Button animalsButton = findViewById(R.id.calc_animals_button);
+        Button pregnancyButton = findViewById(R.id.calc_pregnancy_button);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch calcWaySwitch = findViewById(R.id.calc_way_switch);
         Spinner spinner = findViewById(R.id.spinner);
         ImageView imageView = findViewById(R.id.calc_image);
@@ -87,6 +92,18 @@ public class CalculatorActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG);
         saveWarning.setGravity(Gravity.BOTTOM, 0, 160);
 
+        mainButton.setOnClickListener(view -> {
+            openFragment("");
+        });
+
+        animalsButton.setOnClickListener(view -> {
+            openFragment("animalsFragment");
+        });
+
+        pregnancyButton.setOnClickListener(view -> {
+            openFragment("pregnancyFragment");
+        });
+
         if (animalTypeID == 1){
             // если тип животного крупный рогатый скот
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -115,100 +132,90 @@ public class CalculatorActivity extends AppCompatActivity {
             spinner.setEnabled(false);
         }
 
-        saveWeightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!weightText.getText().toString().equals("")){
-                    if (Integer.parseInt(weightText.getText().toString()) <= 2555){
-                        saveNewWeight(Float.parseFloat(weightText.getText().toString()));
-                    } else {
-                        saveWarning.show();
-                    }
+        saveWeightButton.setOnClickListener(view -> {
+            if (!weightText.getText().toString().equals("")){
+                if (Integer.parseInt(weightText.getText().toString()) <= 2555){
+                    saveNewWeight(Float.parseFloat(weightText.getText().toString()));
                 } else {
                     saveWarning.show();
                 }
+            } else {
+                saveWarning.show();
             }
         });
 
-
-        calcWaySwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isPig){
-                    spinner.setEnabled(calcWaySwitch.isChecked());
-                    bodyLengthEdittext.setEnabled(calcWaySwitch.isChecked());
-                } else {
-                    spinner.setEnabled(calcWaySwitch.isChecked());
-                }
+        calcWaySwitch.setOnClickListener(view -> {
+            if (!isPig){
+                spinner.setEnabled(calcWaySwitch.isChecked());
+                bodyLengthEdittext.setEnabled(calcWaySwitch.isChecked());
+            } else {
+                spinner.setEnabled(calcWaySwitch.isChecked());
             }
         });
 
-        calcWeightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                weightText.setText("");
-                if(!isPig){
-                    if (!chestGirth.getText().toString().equals("")){
-                        // методы расчёта массы коров
-                        if (Integer.parseInt(chestGirth.getText().toString()) >= 170 & !calcWaySwitch.isChecked()){
-                            // первый способ
-                            weightText.setText(String.valueOf(getCowWeightFirstWay(
-                                    Float.parseFloat(chestGirth.getText().toString()))));
-                        } else if (Integer.parseInt(chestGirth.getText().toString()) < 170 & !calcWaySwitch.isChecked()) {
-                            // предупреждение о невозможности использовать данный способ расчета
-                            calcFirstWayWarning.show();
+        calcWeightButton.setOnClickListener(view -> {
+            weightText.setText("");
+            if(!isPig){
+                if (!chestGirth.getText().toString().equals("")){
+                    // методы расчёта массы коров
+                    if (Integer.parseInt(chestGirth.getText().toString()) >= 170 & !calcWaySwitch.isChecked()){
+                        // первый способ
+                        weightText.setText(String.valueOf(getCowWeightFirstWay(
+                                Float.parseFloat(chestGirth.getText().toString()))));
+                    } else if (Integer.parseInt(chestGirth.getText().toString()) < 170 & !calcWaySwitch.isChecked()) {
+                        // предупреждение о невозможности использовать данный способ расчета
+                        calcFirstWayWarning.show();
+                    }
+                    if (calcWaySwitch.isChecked() & !bodyLengthEdittext.getText().toString().equals("")){
+                        if (Integer.parseInt(chestGirth.getText().toString()) >= 10 & calcWaySwitch.isChecked() &
+                                !spinner.getSelectedItem().toString().contains("!") &
+                                Integer.parseInt(bodyLengthEdittext.getText().toString()) >= 20){
+                            weightText.setText(String.valueOf(getCowWeightSecondWay(Float.parseFloat(chestGirth.getText().toString()),
+                                    Float.parseFloat(bodyLengthEdittext.getText().toString()),
+                                    spinner.getSelectedItem().toString())));
+                        } else {
+                            if (calcWaySwitch.isChecked() &
+                                    spinner.getSelectedItem().toString().contains("!")) {
+                                // предупреждение о необходимости выбора доп. данных
+                                calcSecondWayAnimalTypeWarning.show();
+                            }
+                            if (calcWaySwitch.isChecked() &
+                                    Integer.parseInt(chestGirth.getText().toString()) < 10 &
+                                    Integer.parseInt(bodyLengthEdittext.getText().toString()) < 20){
+                                calcSecondWayDataWarning.show();
+                            }
                         }
-                        if (calcWaySwitch.isChecked() & !bodyLengthEdittext.getText().toString().equals("")){
-                            if (Integer.parseInt(chestGirth.getText().toString()) >= 10 & calcWaySwitch.isChecked() &
-                                    !spinner.getSelectedItem().toString().contains("!") &
-                                    Integer.parseInt(bodyLengthEdittext.getText().toString()) >= 20){
-                                weightText.setText(String.valueOf(getCowWeightSecondWay(Float.parseFloat(chestGirth.getText().toString()),
+                    } else if (calcWaySwitch.isChecked()) {
+                        calcSecondWayWarning.show();
+                    }
+                } else {
+                    chestGirthWarning.show();
+                }
+            } else {
+                // расчёт массы свиньи
+                if (!chestGirth.getText().toString().equals("") & !bodyLengthEdittext.getText().toString().equals("")){
+                    if (Float.parseFloat(chestGirth.getText().toString()) >= 50 &
+                            Float.parseFloat(bodyLengthEdittext.getText().toString()) >= 75){
+                        if(!calcWaySwitch.isChecked()){
+                            // первый способ расчета
+                            weightText.setText(String.valueOf(getPigWeightFirstWay(Float.parseFloat(chestGirth.getText().toString()),
+                                    Float.parseFloat(bodyLengthEdittext.getText().toString()))));
+                        } else {
+                           // второй способ расчета + проверка
+                            if (calcWaySwitch.isChecked() &
+                                    !spinner.getSelectedItem().toString().contains("!")){
+                                weightText.setText(String.valueOf(getPigWeightSecondWay(Float.parseFloat(chestGirth.getText().toString()),
                                         Float.parseFloat(bodyLengthEdittext.getText().toString()),
                                         spinner.getSelectedItem().toString())));
                             } else {
-                                if (calcWaySwitch.isChecked() &
-                                        spinner.getSelectedItem().toString().contains("!")) {
-                                    // предупреждение о необходимости выбора доп. данных
-                                    calcSecondWayAnimalTypeWarning.show();
-                                }
-                                if (calcWaySwitch.isChecked() &
-                                        Integer.parseInt(chestGirth.getText().toString()) < 10 &
-                                        Integer.parseInt(bodyLengthEdittext.getText().toString()) < 20){
-                                    calcSecondWayDataWarning.show();
-                                }
+                                calcSecondWayPigWarning.show();
                             }
-                        } else if (calcWaySwitch.isChecked()) {
-                            calcSecondWayWarning.show();
                         }
                     } else {
-                        chestGirthWarning.show();
+                        pigNumWarning.show();
                     }
                 } else {
-                    // расчёт массы свиньи
-                    if (!chestGirth.getText().toString().equals("") & !bodyLengthEdittext.getText().toString().equals("")){
-                        if (Float.parseFloat(chestGirth.getText().toString()) >= 50 &
-                                Float.parseFloat(bodyLengthEdittext.getText().toString()) >= 75){
-                            if(!calcWaySwitch.isChecked()){
-                                // первый способ расчета
-                                weightText.setText(String.valueOf(getPigWeightFirstWay(Float.parseFloat(chestGirth.getText().toString()),
-                                        Float.parseFloat(bodyLengthEdittext.getText().toString()))));
-                            } else {
-                               // второй способ расчета + проверка
-                                if (calcWaySwitch.isChecked() &
-                                        !spinner.getSelectedItem().toString().contains("!")){
-                                    weightText.setText(String.valueOf(getPigWeightSecondWay(Float.parseFloat(chestGirth.getText().toString()),
-                                            Float.parseFloat(bodyLengthEdittext.getText().toString()),
-                                            spinner.getSelectedItem().toString())));
-                                } else {
-                                    calcSecondWayPigWarning.show();
-                                }
-                            }
-                        } else {
-                            pigNumWarning.show();
-                        }
-                    } else {
-                        pigDataWarning.show();
-                    }
+                    pigDataWarning.show();
                 }
             }
         });
@@ -268,6 +275,13 @@ public class CalculatorActivity extends AppCompatActivity {
         finishAffinity();
         Intent intent = new Intent(getApplication(), AnimalActivity.class);
         intent.putExtra(Animal.class.getSimpleName(), animal);
+        startActivity(intent);
+    }
+
+    void openFragment(String fragmentName){
+        finishAffinity();
+        Intent intent = new Intent(getApplication(), MainActivity.class);
+        intent.putExtra(fragmentName, true);
         startActivity(intent);
     }
 
