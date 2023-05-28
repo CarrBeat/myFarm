@@ -21,6 +21,8 @@ import com.myfarm.db.Pregnancy;
 import com.myfarm.db.Statistics;
 import com.myfarm.model.AnimalType;
 import com.myfarm.model.Category;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // если нужно сразу открыть animalFragment (после добавления животного)
-        boolean startAnimalFragment = getIntent().getBooleanExtra("animalFragment", false);
+        // если нужно сразу открыть animal или pregnancy fragment
+        boolean startAnimalsFragment = getIntent().getBooleanExtra("animalsFragment", false);
+        boolean startPregnancyFragment = getIntent().getBooleanExtra("pregnancyFragment", false);
 
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(new Category(1, "Птицы"));
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         if (prefs.getBoolean("isFirstRun", true)) {
-            setContentView(R.layout.greetings_activity_main);
+            // если первый запуск приложения
 
             com.myfarm.db.AnimalType cow = new com.myfarm.db.AnimalType("Корова/бык",
                     "250-310", "cow");
@@ -97,10 +100,12 @@ public class MainActivity extends AppCompatActivity {
             Pregnancy pregnancy = new Pregnancy("-", false);
             MyFarmDatabase.getDatabase(this).pregnancyDao().insert(pregnancy);
 
+
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
 
         if (MyFarmDatabase.getDatabase(this).animalDao().getAllAnimals().toString().equals("[]")){
+            // если в системе нет животных
 
             setContentView(R.layout.greetings_activity_main);
             fullAnimalList.addAll(animalList);
@@ -119,16 +124,15 @@ public class MainActivity extends AppCompatActivity {
             Toast animalsInfoToast = Toast.makeText(this,
                     "Во вкладке \"Животные\" отображаются все добавленные животные в систему, " +
                             "\nесть возможность добавить и удалить животных, " +
-                            "\nа также перейти в меню конкретного животного для работы с ним.",
+                            "\nа также перейти в меню выбранного животного для работы с ним.",
                     Toast.LENGTH_LONG);
             animalsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
             Toast pregnancyInfoToast = Toast.makeText(this,
-                    "В данной вкладке можно просмотреть все беременности, " +
-                            "\nа также ознакомиться с подробной информация о каждой из них.",
+                    "В данной вкладке можно ознакомиться \nс подробной информацией о беременностях",
                     Toast.LENGTH_LONG);
             pregnancyInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
             Toast settingsInfoToast = Toast.makeText(this,
-                    "Здесь можно настроить уведомления",
+                    "Здесь будут настройки",
                     Toast.LENGTH_LONG);
             settingsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
 
@@ -158,12 +162,19 @@ public class MainActivity extends AppCompatActivity {
             });
         } else {
             animalsInSystem = true;
-            if (!startAnimalFragment){
+            if (!startAnimalsFragment & !startPregnancyFragment){
                 setContentView(R.layout.activity_main);
                 setNewFragment(mainFragment);
             } else {
-                setContentView(R.layout.activity_main);
-                setAnimalFragment();
+                // если необходимо открыть не mainFragment
+                if (startAnimalsFragment){
+                    setContentView(R.layout.activity_main);
+                    setAnimalFragment();
+                }
+                if (startPregnancyFragment){
+                    setContentView(R.layout.activity_main);
+                    setPregnancyFragment();
+                }
             }
         }
 
@@ -172,22 +183,19 @@ public class MainActivity extends AppCompatActivity {
         TextView pregnancyText = findViewById(R.id.pregnancy_column);
         TextView settingsText = findViewById(R.id.settings_column);
 
-        mainText.setTypeface(null, Typeface.BOLD);
+        if (!startAnimalsFragment & ! startPregnancyFragment){
+            mainText.setTypeface(null, Typeface.BOLD);
+        }
+        if (startAnimalsFragment){
+            animalText.setTypeface(null, Typeface.BOLD);
+        }
+        if (startPregnancyFragment){
+            pregnancyText.setTypeface(null, Typeface.BOLD);
+        }
+
         Button mainButton = findViewById(R.id.main_button);
         Button animalsButton = findViewById(R.id.animals_button);
         Button pregnancyButton = findViewById(R.id.pregnancy_button);
-        Button settingsButton = findViewById(R.id.settings_button);
-
-        /*
-        Statistics statisticsO = new Statistics("2022-04-04", 1, 1.85f);
-        Statistics statistics1 = new Statistics("2022-03-04", 1, 15.4f);
-        Statistics statistics2 = new Statistics("2022-07-05", 1, 34.35f);
-        Statistics statistics3 = new Statistics("2022-10-03", 1, 55.5f);
-        Statistics statistics4 = new Statistics("2022-12-14", 1, 72.2f);
-        Statistics statistics5 = new Statistics("2023-04-04", 1, 97.6f);
-        MyFarmDatabase.getDatabase(this).statisticsDao().insertAll(statisticsO, statistics1,
-                statistics2, statistics3, statistics4, statistics5);
-*/
 
         if (animalsInSystem)
             animalsButton.setOnClickListener(new View.OnClickListener() {
@@ -240,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setAnimalTypeRecycler(List<AnimalType> animalList) {
+        // установка списка видов животных
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
                 RecyclerView.HORIZONTAL, false);
         animalsRecycler = findViewById(R.id.animal_recycler);
@@ -251,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setCategoryRecycler(List<Category> categoryList) {
-        // организуем горизонтальный вывод:
+        // отображение категорий животных
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
                 RecyclerView.HORIZONTAL, false);
         categoryRecycler = findViewById(R.id.recycler_view);
@@ -263,13 +272,12 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     public static void showSortedAnimalType(int category){
+        // вывод отсортированных видов животных
 
         animalList.clear();
         animalList.addAll(fullAnimalList);
 
         List<AnimalType> filterAnimalTypes = new ArrayList<>();
-
-        System.out.println(category);
 
         if (category == 4){
             filterAnimalTypes.addAll(animalList);
@@ -285,5 +293,4 @@ public class MainActivity extends AppCompatActivity {
         animalList.addAll(filterAnimalTypes);
         animalTypeAdapter.notifyDataSetChanged();
     }
-
 }

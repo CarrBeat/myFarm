@@ -186,8 +186,8 @@ public class CalculatorActivity extends AppCompatActivity {
                 } else {
                     // расчёт массы свиньи
                     if (!chestGirth.getText().toString().equals("") & !bodyLengthEdittext.getText().toString().equals("")){
-                        if (Integer.parseInt(chestGirth.getText().toString()) >= 50 &
-                                Integer.parseInt(bodyLengthEdittext.getText().toString()) >= 75){
+                        if (Float.parseFloat(chestGirth.getText().toString()) >= 50 &
+                                Float.parseFloat(bodyLengthEdittext.getText().toString()) >= 75){
                             if(!calcWaySwitch.isChecked()){
                                 // первый способ расчета
                                 weightText.setText(String.valueOf(getPigWeightFirstWay(Float.parseFloat(chestGirth.getText().toString()),
@@ -215,8 +215,8 @@ public class CalculatorActivity extends AppCompatActivity {
     }
 
     float getPigWeightFirstWay(float chestGirth, float bodyLength){
-        float weight = 0;
-        weight = (float) (1.54 * chestGirth + 0.99 * bodyLength - 150);
+        int weight;
+        weight = (int) (1.54 * chestGirth + 0.99 * bodyLength - 150);
         return weight;
     }
 

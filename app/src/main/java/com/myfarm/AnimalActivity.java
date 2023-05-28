@@ -2,7 +2,6 @@ package com.myfarm;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.DatePickerDialog;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -28,10 +26,6 @@ import com.myfarm.db.Statistics;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -43,8 +37,10 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animal_page);
+
         EditText animalName = findViewById(R.id.edit_animal_name);
         EditText animalWeight = findViewById(R.id.weight_edit_text);
         @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -118,7 +114,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             pregnancyButton.setOnClickListener(view -> {
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
-                pregnancyButton.setEnabled(false);
             });
 
 
@@ -139,7 +134,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                             MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().deletePregnancyById(animal.getPregnancyID());
                         }
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().delete(animal);
-                        finishActivity();
+                        openAnimalsFragment();
                     } else {
                         deleteAnimalWarning.show();
                     }
@@ -224,20 +219,21 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                         } else {
                             MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
                         }
-                        finishActivity();
+                        openAnimalsFragment();
                     }
                 }
             });
         }
     }
 
-    void finishActivity(){
+    void openAnimalsFragment(){
         finishAffinity();
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("animalFragment", true);
+        intent.putExtra("animalsFragment", true);
         startActivity(intent);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
@@ -252,6 +248,9 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         if (daysBetweenCalc(pregnancyStartDate) > 150){
             try {
                 setNewPregnancy(pregnancyStartDate);
+
+
+
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -281,6 +280,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
     }
 
     // добавление новой беременности
+    @SuppressLint("SetTextI18n")
     void setNewPregnancy(String startPregnancyDate) throws ParseException {
         // получили срок беременности
         int pregnancyPeriod = MyFarmDatabase.getDatabase(getApplication()).
@@ -298,6 +298,14 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         Pregnancy newPregnancy = new Pregnancy(formatter.format(c.getTime()), isNotify);
         animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+
+        openPregnancyFragment();
+    }
+    void openPregnancyFragment(){
+        finishAffinity();
+        Intent intent = new Intent(getApplication(), MainActivity.class);
+        intent.putExtra("pregnancyFragment", true);
+        startActivity(intent);
     }
 
 }
