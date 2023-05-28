@@ -63,17 +63,11 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 "Дата рождения \nне может быть в будущем!", Toast.LENGTH_LONG);
         selectedBirthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
-        mainButton.setOnClickListener(view -> {
-            openFragment("");
-        });
+        mainButton.setOnClickListener(view -> openFragment(""));
 
-        animalsButton.setOnClickListener(view -> {
-            openFragment("animalsFragment");
-        });
+        animalsButton.setOnClickListener(view -> openFragment("animalsFragment"));
 
-        pregnancyButton.setOnClickListener(view -> {
-            openFragment("pregnancyFragment");
-        });
+        pregnancyButton.setOnClickListener(view -> openFragment("pregnancyFragment"));
 
         Button datePickButton = findViewById(R.id.datePickerButton);
         datePickButton.setOnClickListener(view -> {
@@ -140,17 +134,17 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 if ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                         | fatYearsText.getText().toString().isEmpty()) &
                         monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b")) {
-
+                    // получение даты при указании месяца и возраста
                     int days = 0;
-                    // ищем количество дней жизни животного
-
                     if (!fatYearsText.getText().toString().isEmpty()) {
                         days = Integer.parseInt(fatYearsText.getText().toString()) * 365;
                     }
-                    days += 365 - Integer.parseInt(monthBirthEditText.getText().toString()) * 29;
                     Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.ENGLISH);
                     cal.add(Calendar.DATE, -days);
+                    cal.set(Integer.parseInt(sdf.format(cal.getTime())),
+                            Integer.parseInt(monthBirthEditText.getText().toString()) - 1, 14);
+                    sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                     animalBirthdate = sdf.format(cal.getTime());
                 } else {
                     if (daysBetweenCalc(animalTextView.getText().toString()) <= 0){
@@ -159,8 +153,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 }
 
                 Toast weightWarningToast = Toast.makeText(this,
-                        "Масса животного должна быть " +
-                                "\nот 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
+                        "Масса от 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
                         Toast.LENGTH_LONG);
                 weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
@@ -224,7 +217,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                     animalBirthdate, sexSwitch.isChecked());
                             MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                         }
-                        openFragment("animalsActivity");
+                        openFragment("animalsFragment");
                     } else {
                         birthdateWarningToast.show();
                     }

@@ -92,17 +92,11 @@ public class CalculatorActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG);
         saveWarning.setGravity(Gravity.BOTTOM, 0, 160);
 
-        mainButton.setOnClickListener(view -> {
-            openFragment("");
-        });
+        mainButton.setOnClickListener(view -> openFragment(""));
 
-        animalsButton.setOnClickListener(view -> {
-            openFragment("animalsFragment");
-        });
+        animalsButton.setOnClickListener(view -> openFragment("animalsFragment"));
 
-        pregnancyButton.setOnClickListener(view -> {
-            openFragment("pregnancyFragment");
-        });
+        pregnancyButton.setOnClickListener(view -> openFragment("pregnancyFragment"));
 
         if (animalTypeID == 1){
             // если тип животного крупный рогатый скот

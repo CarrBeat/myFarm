@@ -40,13 +40,10 @@ public class AnimalsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        AnimalAdapter.OnAnimalClickListener animalClickListener = new AnimalAdapter.OnAnimalClickListener() {
-            @Override
-            public void onAnimalClick(Animal animal, int position) {
-                Intent intent = new Intent(getActivity(), AnimalActivity.class);
-                intent.putExtra(Animal.class.getSimpleName(), animal);
-                startActivity(intent);
-            }
+        AnimalAdapter.OnAnimalClickListener animalClickListener = (animal, position) -> {
+            Intent intent = new Intent(getActivity(), AnimalActivity.class);
+            intent.putExtra(Animal.class.getSimpleName(), animal);
+            startActivity(intent);
         };
 
         final AnimalAdapter animalAdapter = new AnimalAdapter(requireActivity().getApplication(),
@@ -58,12 +55,9 @@ public class AnimalsFragment extends Fragment {
         recyclerView.setAdapter(animalAdapter);
 
         Button addAnimalButton = view.findViewById(R.id.open_add_animal_activity_button);
-        addAnimalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), newAnimalPage.class);
-                startActivity(intent);
-            }
+        addAnimalButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), newAnimalPage.class);
+            startActivity(intent);
         });
 
         return view;

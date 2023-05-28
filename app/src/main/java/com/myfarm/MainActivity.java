@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-
             TextView mainText = findViewById(R.id.main_column);
             TextView animalText = findViewById(R.id.animal_column);
             TextView pregnancyText = findViewById(R.id.pregnancy_column);
