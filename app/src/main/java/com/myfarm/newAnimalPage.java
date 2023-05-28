@@ -206,11 +206,18 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
                                     animalBirthdate, sexSwitch.isChecked(),
                                     Float.parseFloat(animalWeight.getText().toString()));
-                            MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
+                            long addedAnimalID = MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                             Calendar calendar = Calendar.getInstance();
                             MyFarmDatabase.getDatabase(this).statisticsDao().insertAll(
                                     new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
                                     newAnimal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+                            MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
+                                    new Statistics(sdf.format(calendar.getTime()),
+                                            Integer.parseInt(String.valueOf(addedAnimalID)),
+                                            Float.parseFloat(animalWeight.getText().toString())));
                         } else {
                             Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),

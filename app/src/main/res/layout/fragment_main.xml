@@ -25,26 +25,26 @@
     <Spinner
         android:id="@+id/select_animal_spinner"
         style="@style/spinnerLook"
-        android:layout_width="327dp"
-        android:layout_height="47dp"
+        android:layout_width="280dp"
+        android:layout_height="55dp"
         android:layout_marginLeft="80dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.287" />
+        app:layout_constraintVertical_bias="0.281" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pie_chart"
-        android:layout_width="329dp"
+        android:layout_width="292dp"
         android:layout_height="467dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.916"
+        app:layout_constraintHorizontal_bias="0.773"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942" />
+        app:layout_constraintVertical_bias="0.943" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

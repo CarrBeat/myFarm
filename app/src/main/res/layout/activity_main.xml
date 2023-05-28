@@ -135,8 +135,8 @@
 
     <FrameLayout
         android:id="@+id/frame_layout"
-        android:layout_width="349dp"
-        android:layout_height="657dp"
+        android:layout_width="297dp"
+        android:layout_height="718dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

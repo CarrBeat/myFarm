@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface AnimalDao {
     @Insert
-    void insertAll(Animal... animals);
+    long insertAll(Animal animal);
 
     @Delete
     void delete(Animal animal);

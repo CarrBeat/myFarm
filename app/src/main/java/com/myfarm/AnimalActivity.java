@@ -203,9 +203,12 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     if (isWeightCorrect) {
                         animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+
                         Calendar calendar = Calendar.getInstance();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
                         MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
-                                new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
+                                new Statistics(sdf.format(calendar.getTime()),
                                         animal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
                     } else {
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
