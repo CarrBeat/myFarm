@@ -118,17 +118,15 @@ public class MainActivity extends AppCompatActivity {
             Button settingsButton = findViewById(R.id.settings_button);
 
             Toast mainInfoToast = Toast.makeText(this,
-                    "Здесь отображаются данные о животных в графическом виде.",
+                    "Здесь отображаются данные о животном в виде диаграммы",
                     Toast.LENGTH_LONG);
             mainInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
             Toast animalsInfoToast = Toast.makeText(this,
-                    "Во вкладке \"Животные\" отображаются все добавленные животные в систему, " +
-                            "\nесть возможность добавить и удалить животных, " +
-                            "\nа также перейти в меню выбранного животного для работы с ним.",
+                    "Во вкладке \"Животные\" отображаются все добавленные животные",
                     Toast.LENGTH_LONG);
-            animalsInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
+            animalsInfoToast.setGravity(Gravity.BOTTOM, 100, 300);
             Toast pregnancyInfoToast = Toast.makeText(this,
-                    "В данной вкладке можно ознакомиться \nс подробной информацией о беременностях",
+                    "В данной вкладке находится информацией о беременностях",
                     Toast.LENGTH_LONG);
             pregnancyInfoToast.setGravity(Gravity.BOTTOM, 0, 160);
             Toast settingsInfoToast = Toast.makeText(this,
@@ -162,72 +160,64 @@ public class MainActivity extends AppCompatActivity {
             });
         } else {
             animalsInSystem = true;
-            if (!startAnimalsFragment & !startPregnancyFragment){
+            if (!startAnimalsFragment & !startPregnancyFragment) {
                 setContentView(R.layout.activity_main);
                 setNewFragment(mainFragment);
             } else {
                 // если необходимо открыть не mainFragment
-                if (startAnimalsFragment){
+                if (startAnimalsFragment) {
                     setContentView(R.layout.activity_main);
                     setAnimalFragment();
                 }
-                if (startPregnancyFragment){
+                if (startPregnancyFragment) {
                     setContentView(R.layout.activity_main);
                     setPregnancyFragment();
                 }
             }
-        }
 
-        TextView mainText = findViewById(R.id.main_column);
-        TextView animalText = findViewById(R.id.animal_column);
-        TextView pregnancyText = findViewById(R.id.pregnancy_column);
-        TextView settingsText = findViewById(R.id.settings_column);
 
-        if (!startAnimalsFragment & ! startPregnancyFragment){
-            mainText.setTypeface(null, Typeface.BOLD);
-        }
-        if (startAnimalsFragment){
-            animalText.setTypeface(null, Typeface.BOLD);
-        }
-        if (startPregnancyFragment){
-            pregnancyText.setTypeface(null, Typeface.BOLD);
-        }
+            TextView mainText = findViewById(R.id.main_column);
+            TextView animalText = findViewById(R.id.animal_column);
+            TextView pregnancyText = findViewById(R.id.pregnancy_column);
+            TextView settingsText = findViewById(R.id.settings_column);
 
-        Button mainButton = findViewById(R.id.main_button);
-        Button animalsButton = findViewById(R.id.animals_button);
-        Button pregnancyButton = findViewById(R.id.pregnancy_button);
+            if (!startAnimalsFragment & !startPregnancyFragment) {
+                mainText.setTypeface(null, Typeface.BOLD);
+            }
+            if (startAnimalsFragment) {
+                animalText.setTypeface(null, Typeface.BOLD);
+            }
+            if (startPregnancyFragment) {
+                pregnancyText.setTypeface(null, Typeface.BOLD);
+            }
 
-        if (animalsInSystem)
-            animalsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            Button mainButton = findViewById(R.id.main_button);
+            Button animalsButton = findViewById(R.id.animals_button);
+            Button pregnancyButton = findViewById(R.id.pregnancy_button);
+
+            if (animalsInSystem)
+                animalsButton.setOnClickListener(view -> {
                     setAnimalFragment();
                     mainText.setTypeface(null, Typeface.NORMAL);
                     pregnancyText.setTypeface(null, Typeface.NORMAL);
                     settingsText.setTypeface(null, Typeface.NORMAL);
                     animalText.setTypeface(null, Typeface.BOLD);
-                }
+                });
+            mainButton.setOnClickListener(view -> {
+                setNewFragment(mainFragment);
+                mainText.setTypeface(null, Typeface.BOLD);
+                pregnancyText.setTypeface(null, Typeface.NORMAL);
+                settingsText.setTypeface(null, Typeface.NORMAL);
+                animalText.setTypeface(null, Typeface.NORMAL);
             });
-            mainButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    setNewFragment(mainFragment);
-                    mainText.setTypeface(null, Typeface.BOLD);
-                    pregnancyText.setTypeface(null, Typeface.NORMAL);
-                    settingsText.setTypeface(null, Typeface.NORMAL);
-                    animalText.setTypeface(null, Typeface.NORMAL);
-                }
+            pregnancyButton.setOnClickListener(view -> {
+                setPregnancyFragment();
+                mainText.setTypeface(null, Typeface.NORMAL);
+                animalText.setTypeface(null, Typeface.NORMAL);
+                settingsText.setTypeface(null, Typeface.NORMAL);
+                pregnancyText.setTypeface(null, Typeface.BOLD);
             });
-            pregnancyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    setPregnancyFragment();
-                    mainText.setTypeface(null, Typeface.NORMAL);
-                    animalText.setTypeface(null, Typeface.NORMAL);
-                    settingsText.setTypeface(null, Typeface.NORMAL);
-                    pregnancyText.setTypeface(null, Typeface.BOLD);
-                }
-            });
+        }
         }
 
     void setPregnancyFragment(){

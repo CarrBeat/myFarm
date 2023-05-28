@@ -135,8 +135,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="339dp"
-        android:layout_height="100dp"
+        android:layout_width="291dp"
+        android:layout_height="102dp"
         android:layout_marginStart="6dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="6dp"
@@ -149,8 +149,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/animal_recycler"
-        android:layout_width="347dp"
-        android:layout_height="308dp"
+        android:layout_width="295dp"
+        android:layout_height="304dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="450dp"
@@ -171,7 +171,7 @@
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.899"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.843" />

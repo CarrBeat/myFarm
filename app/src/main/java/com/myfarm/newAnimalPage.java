@@ -33,7 +33,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class newAnimalPage extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-
+    boolean dateSelected;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +94,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
             findViewById(R.id.monthBirthEditText).setEnabled(true);
             birthDateText.setText("_______________");
             animalNameText.setText("");
+            dateSelected = false;
         });
 
         ImageView animalPageImage = findViewById(R.id.addAnimalImage);
@@ -131,8 +132,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
             birthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
             // проверка ввода даты рождения
-            if (birthDateText.getText().toString().matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]" +
-                    "|1[0-9]|2[0-9]|3[01])") |
+            if (dateSelected |
                     ((fatYearsText.getText().toString().matches("\\b([1-9]|[1-9][0-5])\\b")
                             | fatYearsText.getText().toString().isEmpty()) &
                             monthBirthEditText.getText().toString().matches("\\b([1-9]|1[0-2])\\b"))) {
@@ -280,10 +280,17 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         calendar.set(Calendar.DAY_OF_MONTH, day);
         String selectedDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
         TextView textView = findViewById(R.id.textAnimalBirthdate);
-        textView.setText("20" + selectedDate.substring(selectedDate.lastIndexOf(".") + 1)
-                + "-" + selectedDate.substring(selectedDate.indexOf(".") + 1,
-                selectedDate.lastIndexOf(".")) + "-" + selectedDate.substring(0,
-                selectedDate.indexOf(".")));
+
+        if (selectedDate.length() == 8){
+            textView.setText("20" + selectedDate.substring(selectedDate.lastIndexOf(".") + 1)
+                    + "-" + selectedDate.substring(selectedDate.indexOf(".") + 1,
+                    selectedDate.lastIndexOf(".")) + "-" + selectedDate.substring(0,
+                    selectedDate.indexOf(".")));
+        } else {
+            textView.setText(selectedDate.substring(selectedDate.lastIndexOf(".") + 1) + "-" +
+                    selectedDate.substring(3, 5) + "-" + selectedDate.substring(0, 2));
+        }
+        dateSelected = true;
         findViewById(R.id.fatYearsText).setEnabled(false);
         findViewById(R.id.monthBirthEditText).setEnabled(false);
     }
