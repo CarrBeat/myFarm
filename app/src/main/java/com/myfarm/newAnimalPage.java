@@ -48,6 +48,9 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch sexSwitch = findViewById(R.id.animal_sex);
         Button enterButton = findViewById(R.id.add_animal_button);
+        Button mainButton = findViewById(R.id.n_animal_main_button);
+        Button animalsButton = findViewById(R.id.n_animal_animals_button);
+        Button pregnancyButton = findViewById(R.id.n_animal_pregnancy_button);
 
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -59,6 +62,18 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         Toast selectedBirthdateWarningToast = Toast.makeText(this,
                 "Дата рождения \nне может быть в будущем!", Toast.LENGTH_LONG);
         selectedBirthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
+
+        mainButton.setOnClickListener(view -> {
+            openFragment("");
+        });
+
+        animalsButton.setOnClickListener(view -> {
+            openFragment("animalsFragment");
+        });
+
+        pregnancyButton.setOnClickListener(view -> {
+            openFragment("pregnancyFragment");
+        });
 
         Button datePickButton = findViewById(R.id.datePickerButton);
         datePickButton.setOnClickListener(view -> {
@@ -88,6 +103,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         spinner.setSelection(MyFarmDatabase.getDatabase(this).animalTypeDao().getAnimalTypeNames().indexOf(
                 getIntent().getStringExtra("animalTypeText")));
 
+        // смена фото при выборе вида животного
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @SuppressLint("DiscouragedApi")
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -208,7 +224,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                     animalBirthdate, sexSwitch.isChecked());
                             MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                         }
-                        finishActivity();
+                        openFragment("animalsActivity");
                     } else {
                         birthdateWarningToast.show();
                     }
@@ -224,6 +240,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         });
     }
 
+    // расчёт количества дней между датами
     int daysBetweenCalc(String selectedDate){
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -246,15 +263,16 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         return daysBetween;
     }
 
-    void finishActivity(){
+    void openFragment(String fragmentName){
         finishAffinity();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("animalFragment", true);
+        Intent intent = new Intent(getApplication(), MainActivity.class);
+        intent.putExtra(fragmentName, true);
         startActivity(intent);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
+    // метод выбора даты в диалоговом окне
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);

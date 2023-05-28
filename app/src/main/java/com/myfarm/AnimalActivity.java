@@ -45,7 +45,10 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         EditText animalWeight = findViewById(R.id.weight_edit_text);
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch animalSexSwitch = findViewById(R.id.animal_sex);
-        Button pregnancyButton = findViewById(R.id.add_pregnancy_button);
+        Button addPregnancyButton = findViewById(R.id.add_pregnancy_button);
+        Button mainButton = findViewById(R.id.animal_main_button);
+        Button animalsButton = findViewById(R.id.animal_animals_button);
+        Button pregnancyButton = findViewById(R.id.animal_pregnancy_button);
 
         Toast pregnancyWarningToast = Toast.makeText(this,
                 "Возраст животного \nдолжен быть не менее 150 дней!",
@@ -58,14 +61,15 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 Toast.LENGTH_LONG);
         deleteAnimalWarning.setGravity(Gravity.BOTTOM, 0, 160);
 
+        mainButton.setOnClickListener(view -> openFragment(""));
+
+        animalsButton.setOnClickListener(view -> openFragment("animalsFragment"));
+
+        pregnancyButton.setOnClickListener(view -> openFragment("pregnancyFragment"));
+
         CheckBox notifyBox = findViewById(R.id.notify_checkbox);
         notifyBox.setChecked(true);
-        notifyBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isNotify = notifyBox.isChecked();
-            }
-        });
+        notifyBox.setOnClickListener(view -> isNotify = notifyBox.isChecked());
 
         Bundle arguments = getIntent().getExtras();
         if(arguments!=null) {
@@ -82,10 +86,10 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
 
             if(animal.getPregnancyID() > 1 | !animal.getFemale()){
-                pregnancyButton.setEnabled(false);
+                addPregnancyButton.setEnabled(false);
                 if (animal.getPregnancyID() > 0){
                     try {
-                        pregnancyButton.setText("Роды с " + Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
+                        addPregnancyButton.setText("Роды с " + Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
                                 pregnancyDao().getPregnancyById(animal.getPregnancyID())));
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
@@ -111,42 +115,31 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             }
 
 
-            pregnancyButton.setOnClickListener(view -> {
+            addPregnancyButton.setOnClickListener(view -> {
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
             });
 
 
-            weightCalcButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplication(), CalculatorActivity.class);
-                    intent.putExtra(Animal.class.getSimpleName(), animal);
-                    startActivity(intent);
-                }
+            weightCalcButton.setOnClickListener(view -> {
+                Intent intent = new Intent(getApplication(), CalculatorActivity.class);
+                intent.putExtra(Animal.class.getSimpleName(), animal);
+                startActivity(intent);
             });
 
-            removeButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (deleteConfirm.isChecked()) {
-                        if (animal.getPregnancyID() > 1){
-                            MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().deletePregnancyById(animal.getPregnancyID());
-                        }
-                        MyFarmDatabase.getDatabase(getApplication()).animalDao().delete(animal);
-                        openAnimalsFragment();
-                    } else {
-                        deleteAnimalWarning.show();
+            removeButton.setOnLongClickListener(view -> {
+                if (deleteConfirm.isChecked()) {
+                    if (animal.getPregnancyID() > 1){
+                        MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().deletePregnancyById(animal.getPregnancyID());
                     }
-                    return false;
-                }
-            });
-            removeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                    MyFarmDatabase.getDatabase(getApplication()).animalDao().delete(animal);
+                    openFragment("animalsFragment");
+                } else {
                     deleteAnimalWarning.show();
                 }
+                return false;
             });
+            removeButton.setOnClickListener(view -> deleteAnimalWarning.show());
 
             Toast weightWarningToast = Toast.makeText(this,
                     "Масса животного должна быть " +
@@ -154,83 +147,73 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     Toast.LENGTH_LONG);
             weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
-            saveAnimalButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    boolean isWeightCorrect = false;
-                    boolean weightWarning = false;
-                    if (!animalWeight.getText().toString().isEmpty()) {
-                            // проверка введённого массы на корректность
-                            if (animalWeight.getText().toString().matches("^\\$?(\\d+|\\d*\\.\\d+)$")) {
-                                // если масса начинается с 0
-                                if (animalWeight.getText().toString().startsWith("0") &
-                                        animalWeight.getText().toString().indexOf(".") == 1 &
-                                        animalWeight.getText().toString().lastIndexOf(".") == 1) {
-                                    if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
+            saveAnimalButton.setOnClickListener(view -> {
+                boolean isWeightCorrect = false;
+                boolean weightWarning = false;
+                if (!animalWeight.getText().toString().isEmpty()) {
+                        // проверка введённого массы на корректность
+                        if (animalWeight.getText().toString().matches("^\\$?(\\d+|\\d*\\.\\d+)$")) {
+                            // если масса начинается с 0
+                            if (animalWeight.getText().toString().startsWith("0") &
+                                    animalWeight.getText().toString().indexOf(".") == 1 &
+                                    animalWeight.getText().toString().lastIndexOf(".") == 1) {
+                                if (Float.parseFloat(animalWeight.getText().toString()) >= 0.005 &
+                                        (animalWeight.getText().toString().length() -
+                                                animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
+                                    isWeightCorrect = true;
+                                } else {
+                                    animalWeight.setText("");
+                                    weightWarningToast.show();
+                                }
+                            } else {
+                                // если масса не начинается с 0
+                                if (!animalWeight.getText().toString().startsWith("0") &
+                                        Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
+                                    // если дробное число
+                                    if (animalWeight.getText().toString().contains(".") &
                                             (animalWeight.getText().toString().length() -
                                                     animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
                                         isWeightCorrect = true;
-                                    } else {
-                                        animalWeight.setText("");
-                                        weightWarningToast.show();
+                                        // если целое число
+                                    } else if (!animalWeight.getText().toString().contains(".") &
+                                            Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
+                                        isWeightCorrect = true;
                                     }
                                 } else {
-                                    // если масса не начинается с 0
-                                    if (!animalWeight.getText().toString().startsWith("0") &
-                                            Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
-                                        // если дробное число
-                                        if (animalWeight.getText().toString().contains(".") &
-                                                (animalWeight.getText().toString().length() -
-                                                        animalWeight.getText().toString().indexOf(".") - 1 <= 3)) {
-                                            isWeightCorrect = true;
-                                            // если целое число
-                                        } else if (!animalWeight.getText().toString().contains(".") &
-                                                Float.parseFloat(animalWeight.getText().toString()) <= 2555.999) {
-                                            isWeightCorrect = true;
-                                        }
-                                    } else {
-                                        animalWeight.setText("");
-                                        weightWarningToast.show();
-                                        weightWarning = true;
-                                    }
+                                    animalWeight.setText("");
+                                    weightWarningToast.show();
+                                    weightWarning = true;
                                 }
-                            } else { // если некорректно указан вес
-                                animalWeight.setText("");
-                                weightWarningToast.show();
-                                weightWarning = true;
                             }
+                        } else { // если некорректно указан вес
+                            animalWeight.setText("");
+                            weightWarningToast.show();
+                            weightWarning = true;
                         }
-
-                    if (!weightWarning | isWeightCorrect | (animalWeight.getText().toString().equals("")
-                            & !weightWarning)){
-                        weightWarningToast.cancel();
-                        if (animalWeight.getText().toString().equals("")){
-                            animal.setWeight(0);
-                        }
-                        animal.setAnimalName(String.valueOf(animalName.getText()));
-                        animal.setFemale(animalSexSwitch.isChecked());
-                        if (isWeightCorrect) {
-                            animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
-                            MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
-                            Calendar calendar = Calendar.getInstance();
-                            MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
-                                    new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
-                                            animal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
-                        } else {
-                            MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
-                        }
-                        openAnimalsFragment();
                     }
+
+                if (!weightWarning | isWeightCorrect | (animalWeight.getText().toString().equals("")
+                        & !weightWarning)){
+                    weightWarningToast.cancel();
+                    if (animalWeight.getText().toString().equals("")){
+                        animal.setWeight(0);
+                    }
+                    animal.setAnimalName(String.valueOf(animalName.getText()));
+                    animal.setFemale(animalSexSwitch.isChecked());
+                    if (isWeightCorrect) {
+                        animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
+                        MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+                        Calendar calendar = Calendar.getInstance();
+                        MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
+                                new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
+                                        animal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
+                    } else {
+                        MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+                    }
+                    openFragment("animalsFragment");
                 }
             });
         }
-    }
-
-    void openAnimalsFragment(){
-        finishAffinity();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("animalsFragment", true);
-        startActivity(intent);
     }
 
     @SuppressLint("SetTextI18n")
@@ -299,13 +282,13 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
 
-        openPregnancyFragment();
-    }
-    void openPregnancyFragment(){
-        finishAffinity();
-        Intent intent = new Intent(getApplication(), MainActivity.class);
-        intent.putExtra("pregnancyFragment", true);
-        startActivity(intent);
+        openFragment("pregnancyFragment");
     }
 
+    void openFragment(String fragmentName){
+        finishAffinity();
+        Intent intent = new Intent(getApplication(), MainActivity.class);
+        intent.putExtra(fragmentName, true);
+        startActivity(intent);
+    }
 }

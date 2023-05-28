@@ -50,19 +50,15 @@ public class PregnancyFragment extends Fragment {
 
         CheckBox deleteBox = view.findViewById(R.id.delete_pregn_сheckbox);
 
-        PregnancyAdapter.OnPregnancyClickListener pregnancyClickListener = new PregnancyAdapter.OnPregnancyClickListener() {
-            @Override
-            public void onPregnancyClick(Pregnancy pregnancy, int position) {
-                if (deleteBox.isChecked()){
-                    Animal animal = MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao()
-                                    .getAnimalByPregnancy(pregnancy.getIdPregnancy());
-                    animal.setPregnancyID(1);
-                    MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao().updateAnimal(animal);
-                    MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().delete(pregnancy);
-                    changeFragment();
-                    return;
-                }
-
+        // нажатие на элемент с информацией о беременности
+        PregnancyAdapter.OnPregnancyClickListener pregnancyClickListener = (pregnancy, position) -> {
+            if (deleteBox.isChecked()){
+                Animal animal = MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao()
+                                .getAnimalByPregnancy(pregnancy.getIdPregnancy());
+                animal.setPregnancyID(1);
+                MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao().updateAnimal(animal);
+                MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().delete(pregnancy);
+                reopenFragment();
             }
         };
 
@@ -73,6 +69,7 @@ public class PregnancyFragment extends Fragment {
         pregnancyDao = MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao();
         executorService = Executors.newSingleThreadExecutor();
 
+        // заполнение списка информацией о беременности
         if (pregnancyDao.getAllPregnancies().size() > 1){
             pregnancyAdapter.setPregnancies(pregnancyDao.getAllPregnancies());
             recyclerView.setAdapter(pregnancyAdapter);
@@ -83,17 +80,15 @@ public class PregnancyFragment extends Fragment {
             pregnancyWarning.show();
             recyclerView.setAdapter(pregnancyAdapter);
         }
-
         return view;
     }
 
-    void changeFragment(){
-        Fragment newFragment = new AnimalsFragment();
+    void reopenFragment(){
+        Fragment newFragment = new PregnancyFragment();
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
 
 }
