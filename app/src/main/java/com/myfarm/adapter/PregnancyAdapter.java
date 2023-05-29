@@ -73,7 +73,6 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println(currentPregnancy.getApproximatelyChildbirth());
             if (childBirth.contains("/")){
                 childBirth = childBirth.substring(0, childBirth.indexOf("-"));
             }

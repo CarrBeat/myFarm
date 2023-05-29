@@ -319,8 +319,10 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         }
         startChildbirth = formatter.format(startChildbirthDate.getTime());
 
+
         if (isNotify){
-            ActivityCompat.requestPermissions(this,
+            // запрашиваем разрешение
+            ActivityCompat.requestPermissions(AnimalActivity.this,
                     new String[]{Manifest.permission.WRITE_CALENDAR}, REQUEST_CODE_PERMISSION_WRITE_CALENDAR);
 
             // проверка текущего состояния разрешения на доступ к календарю
@@ -328,6 +330,8 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
             if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
                 createEvent(startChildbirth, endChildbirth);
+            } else {
+                isNotify = false;
             }
         }
         // непосредственно добавление в БД
