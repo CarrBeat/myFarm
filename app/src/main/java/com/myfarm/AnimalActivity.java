@@ -103,8 +103,12 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 addPregnancyButton.setEnabled(false);
                 if (animal.getPregnancyID() > 0){
                     try {
-                        addPregnancyButton.setText("Роды с " + Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
-                                pregnancyDao().getPregnancyById(animal.getPregnancyID())));
+                        String childBirth = Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
+                                pregnancyDao().getPregnancyById(animal.getPregnancyID()));
+                        if (childBirth.contains("/")){
+                            childBirth = childBirth.substring(0, childBirth.indexOf("-"));
+                        }
+                        addPregnancyButton.setText("Роды с " + childBirth);
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
@@ -327,7 +331,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             }
         }
         // непосредственно добавление в БД
-        Pregnancy newPregnancy = new Pregnancy(startChildbirth + endChildbirth, isNotify);
+        Pregnancy newPregnancy = new Pregnancy(startChildbirth + "/" + endChildbirth, isNotify);
         animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
         openFragment("pregnancyFragment");

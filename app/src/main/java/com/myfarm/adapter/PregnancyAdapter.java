@@ -65,26 +65,25 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
                     holder.topText.setText(animalTypeName + animalID);
                 }
             }
-            if (currentPregnancy.getNotify()){
-                try {
-                    holder.bottomText.setText("родит с " + Common.getNormalDate(
-                            currentPregnancy.getApproximatelyChildbirth()) + ", уведомление вкл.");
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                try {
-                    holder.bottomText.setText("родит с " + Common.getNormalDate(currentPregnancy.getApproximatelyChildbirth()));
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
+
+            String childBirth;
+            try {
+                childBirth = Common.getNormalDate(
+                        currentPregnancy.getApproximatelyChildbirth());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
             }
-            holder.itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    onClickListener.onPregnancyClick(currentPregnancy, position);
-                }
-            });
+            System.out.println(currentPregnancy.getApproximatelyChildbirth());
+            if (childBirth.contains("/")){
+                childBirth = childBirth.substring(0, childBirth.indexOf("-"));
+            }
+
+            if (currentPregnancy.getNotify()){
+                holder.bottomText.setText("родит с " + childBirth + ", уведомление вкл.");
+            } else {
+                holder.bottomText.setText("родит с " + childBirth);
+            }
+            holder.itemView.setOnClickListener(v -> onClickListener.onPregnancyClick(currentPregnancy, position));
         }
     }
 
