@@ -26,6 +26,6 @@ public interface AnimalTypeDao {
     String getPhotoNameByIDAnimalType(int idAnimalType);
 
     @Query("SELECT pregnancyPeriod from animalType where idAnimalType = :animalTypeID")
-    int getPregnancyPeriodByAnimalTypeID(int animalTypeID);
+    String getPregnancyPeriodByAnimalTypeID(int animalTypeID);
 
 }

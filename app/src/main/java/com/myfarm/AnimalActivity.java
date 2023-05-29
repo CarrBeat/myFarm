@@ -1,10 +1,16 @@
 package com.myfarm;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -14,26 +20,33 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.DatePickerDialog;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Pregnancy;
 import com.myfarm.db.Statistics;
 
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import android.Manifest;
+import io.reactivex.rxjava3.annotations.NonNull;
 
 public class AnimalActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Animal animal;
     boolean isNotify = true;
+    private static final int REQUEST_CODE_PERMISSION_READ_CALENDAR = 1;
+    private static final int REQUEST_CODE_PERMISSION_WRITE_CALENDAR = 2;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +83,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         CheckBox notifyBox = findViewById(R.id.notify_checkbox);
         notifyBox.setChecked(true);
         notifyBox.setOnClickListener(view -> isNotify = notifyBox.isChecked());
+
 
         Bundle arguments = getIntent().getExtras();
         if(arguments!=null) {
@@ -116,6 +130,8 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
 
             addPregnancyButton.setOnClickListener(view -> {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{ Manifest.permission.READ_CALENDAR}, 1);
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
             });
@@ -226,17 +242,22 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
+
         String pregnancyStartDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
-        pregnancyStartDate = "20" + pregnancyStartDate.substring(pregnancyStartDate.lastIndexOf(".") + 1)
-                + "-" + pregnancyStartDate.substring(pregnancyStartDate.indexOf(".") + 1,
-                pregnancyStartDate.lastIndexOf(".")) + "-" + pregnancyStartDate.substring(0,
-                pregnancyStartDate.indexOf("."));
+
+        if (pregnancyStartDate.length() == 8){
+            pregnancyStartDate = "20" + pregnancyStartDate.substring(pregnancyStartDate.lastIndexOf(".") + 1)
+                    + "-" + pregnancyStartDate.substring(pregnancyStartDate.indexOf(".") + 1,
+                    pregnancyStartDate.lastIndexOf(".")) + "-" + pregnancyStartDate.substring(0,
+                    pregnancyStartDate.indexOf("."));
+        } else {
+            pregnancyStartDate = pregnancyStartDate.substring(pregnancyStartDate.lastIndexOf(".") + 1) + "-" +
+                    pregnancyStartDate.substring(3, 5) + "-" + pregnancyStartDate.substring(0, 2);
+        }
+
         if (daysBetweenCalc(pregnancyStartDate) > 150){
             try {
                 setNewPregnancy(pregnancyStartDate);
-
-
-
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -268,25 +289,127 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
     // добавление новой беременности
     @SuppressLint("SetTextI18n")
     void setNewPregnancy(String startPregnancyDate) throws ParseException {
-        // получили срок беременности
-        int pregnancyPeriod = MyFarmDatabase.getDatabase(getApplication()).
-                animalTypeDao().getPregnancyPeriodByAnimalTypeID(animal.getAnimalTypeID());
-
-        // расчёт даты беременности
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = formatter.parse(startPregnancyDate);
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.add(Calendar.DAY_OF_MONTH, pregnancyPeriod);
+        Calendar startChildbirthDate = Calendar.getInstance();
+        startChildbirthDate.setTime(date);
+        String startChildbirth;
+        String endChildbirth = "";
 
+        String pregnancyPeriod = MyFarmDatabase.getDatabase(getApplication()).
+                animalTypeDao().getPregnancyPeriodByAnimalTypeID(animal.getAnimalTypeID());
+
+        // расчёт даты родов
+        if (pregnancyPeriod.contains("-")){
+            Calendar finishChildBirthDate = Calendar.getInstance();
+            finishChildBirthDate.setTime(date);
+            startChildbirthDate.add(Calendar.DAY_OF_MONTH, Integer.parseInt(
+                    pregnancyPeriod.substring(0, pregnancyPeriod.indexOf("-"))));
+            finishChildBirthDate.add(Calendar.DAY_OF_MONTH, Integer.parseInt((
+                    pregnancyPeriod.substring(pregnancyPeriod.indexOf("-") + 1)
+                    )));
+            endChildbirth = formatter.format(finishChildBirthDate.getTime());
+        } else {
+            startChildbirthDate.add(Calendar.DAY_OF_MONTH, Integer.parseInt(pregnancyPeriod));
+        }
+        startChildbirth = formatter.format(startChildbirthDate.getTime());
+
+        if (isNotify){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_CALENDAR}, REQUEST_CODE_PERMISSION_WRITE_CALENDAR);
+
+            // проверка текущего состояния разрешения на доступ к календарю
+            int permissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR);
+
+            if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
+                createEvent(startChildbirth, endChildbirth);
+            }
+        }
         // непосредственно добавление в БД
-        Pregnancy newPregnancy = new Pregnancy(formatter.format(c.getTime()), isNotify);
+        Pregnancy newPregnancy = new Pregnancy(startChildbirth + endChildbirth, isNotify);
         animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
-
         openFragment("pregnancyFragment");
     }
+
+    // создания события беременности в календаре
+    void createEvent(String startData, String endData){
+
+        // создаём уведомление
+        long calID = 1;
+        long startMillis;
+        long endMillis;
+        Calendar beginTime = Calendar.getInstance();
+
+        // дата начала и мб конца
+        int year = Integer.parseInt(startData.substring(0, startData.indexOf("-")));
+        int month = Integer.parseInt(startData.substring(startData.indexOf("-") + 1, startData.lastIndexOf("-")));
+        int day = Integer.parseInt(startData.substring(startData.lastIndexOf("-") + 1));
+
+        beginTime.set(year, month - 1, day, 0, 1);
+        startMillis = beginTime.getTimeInMillis();
+        Calendar endTime = Calendar.getInstance();
+        if (!endData.equals("")){
+            endTime.set(Integer.parseInt(endData.substring(0, endData.indexOf("-"))),
+                    Integer.parseInt(endData.substring(endData.indexOf("-") + 1, endData.lastIndexOf("-"))),
+                    Integer.parseInt(endData.substring(endData.lastIndexOf("-") + 1)), 23, 59);
+        } else {
+            endTime.set(year, month - 1, day, 23, 59);
+        }
+        endMillis = endTime.getTimeInMillis();
+        ContentResolver cr = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.DTSTART, startMillis);
+        values.put(CalendarContract.Events.DTEND, endMillis);
+
+        String animalInfo = MyFarmDatabase.getDatabase(this)
+                .animalDao().getAnimalTypeName(animal.getAnimalTypeID());
+
+        // выбор названия типа животного cамки
+        if (animalInfo.contains("/")){
+            animalInfo = animalInfo.substring(0, animalInfo.indexOf("/")).toUpperCase();
+                if (!Objects.equals(animal.getAnimalName(), "")){
+                    animalInfo = animalInfo.toUpperCase() + " " + animal.getAnimalName() + " №" + animal.getIdAnimal();
+                } else {
+                    animalInfo = animalInfo.toUpperCase() + " №" + animal.getIdAnimal();
+                }
+        } else {
+            if (!Objects.equals(animal.getAnimalName(), "")){
+                animalInfo = animalInfo.toUpperCase() + " " + animal.getAnimalName() + " №" + animal.getIdAnimal();
+            } else {
+                animalInfo = animalInfo.toUpperCase() + " №" + animal.getIdAnimal();
+            }
+        }
+
+        values.put(CalendarContract.Events.TITLE, animalInfo + " скоро родит!");
+        values.put(CalendarContract.Events.DESCRIPTION, "Будьте внимательны, ожидаются роды!");
+        values.put(CalendarContract.Events.CALENDAR_ID, calID);
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, "Russia/Moscow");
+        cr.insert(CalendarContract.Events.CONTENT_URI, values);
+        values.clear();
+        // создаём оповещение
+        long eventID = 1;
+        values.put(CalendarContract.Reminders.MINUTES, 15);
+        values.put(CalendarContract.Reminders.EVENT_ID, eventID);
+        values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+        cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
+    }
+
+    // проверка разрешения
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CODE_PERMISSION_WRITE_CALENDAR:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isNotify = true;
+                }
+                return;
+        }
+    }
+
 
     void openFragment(String fragmentName){
         finishAffinity();
