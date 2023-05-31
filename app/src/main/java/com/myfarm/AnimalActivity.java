@@ -170,8 +170,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             removeButton.setOnClickListener(view -> deleteAnimalWarning.show());
 
             Toast weightWarningToast = Toast.makeText(this,
-                    "Масса животного должна быть " +
-                            "\nот 0.005 кг до 2555.999 кг!",
+                    "Масса от 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
                     Toast.LENGTH_LONG);
             weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 

@@ -15,14 +15,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Statistics;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -120,8 +117,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
             boolean isWeightCorrect = false;
             boolean weightWarning = false;
             Toast birthdateWarningToast = Toast.makeText(this,
-                    "Выберите дату рождения животного \nили введите месяц рождения " +
-                            "\nи возраст (если он более 1 года)!",
+                    "Выберите дату рождения животного или введите месяц рождения!",
                     Toast.LENGTH_LONG);
             birthdateWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
@@ -149,6 +145,9 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 } else {
                     if (daysBetweenCalc(animalTextView.getText().toString()) <= 0){
                         animalBirthdate = animalTextView.getText().toString();
+                    } else {
+                        selectedBirthdateWarningToast.show();
+                        return;
                     }
                 }
 
@@ -202,15 +201,13 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                 if (animalBirthdate != null & !weightWarning){
                     if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
                         if (isWeightCorrect){
+                            // если масса введена
                             Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
                                     animalBirthdate, sexSwitch.isChecked(),
                                     Float.parseFloat(animalWeight.getText().toString()));
                             long addedAnimalID = MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
                             Calendar calendar = Calendar.getInstance();
-                            MyFarmDatabase.getDatabase(this).statisticsDao().insertAll(
-                                    new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
-                                    newAnimal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
@@ -218,7 +215,12 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                     new Statistics(sdf.format(calendar.getTime()),
                                             Integer.parseInt(String.valueOf(addedAnimalID)),
                                             Float.parseFloat(animalWeight.getText().toString())));
+
+                            MyFarmDatabase.getDatabase(this).statisticsDao().insertAll(
+                                    new Statistics(DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()),
+                                    newAnimal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
                         } else {
+                            // если масса не введена
                             Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
                                     animalBirthdate, sexSwitch.isChecked());
@@ -229,7 +231,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                         birthdateWarningToast.show();
                     }
                 } else {
-                    selectedBirthdateWarningToast.show();
                     animalTextView.setText("___________");
                     findViewById(R.id.fatYearsText).setEnabled(true);
                     findViewById(R.id.monthBirthEditText).setEnabled(true);
