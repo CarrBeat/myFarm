@@ -4,7 +4,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import java.util.List;
 
@@ -23,5 +22,8 @@ public interface PregnancyDao {
     void deletePregnancyById(int pregnancyId);
 
     @Query("select approximatelyChildbirth from pregnancy where idPregnancy = :pregnancyId")
-    String getPregnancyById(int pregnancyId);
+    String getChildbirthDateByPregnancyID(int pregnancyId);
+
+    @Query("select notifyID from pregnancy where idPregnancy = :pregnancyID")
+    int getNotifyIDByPregnancyID(int pregnancyID);
 }

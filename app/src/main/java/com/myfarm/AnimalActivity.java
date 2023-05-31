@@ -58,13 +58,12 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         Button pregnancyButton = findViewById(R.id.animal_pregnancy_button);
 
         Toast pregnancyWarningToast = Toast.makeText(this,
-                "Возраст животного \nдолжен быть не менее 150 дней!",
+                "Возраст животного должен быть не менее 150 дней!",
                 Toast.LENGTH_LONG);
         pregnancyWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
         Toast deleteAnimalWarning = Toast.makeText(this,
-                "Для удаления необходимо поставить галочку в верхнем правом углу, \n" +
-                        "а затем зажать кнопку удаления на несколько секунд!",
+                "Вначале поставьте галку в правом верхнем углу!",
                 Toast.LENGTH_LONG);
         deleteAnimalWarning.setGravity(Gravity.BOTTOM, 0, 160);
 
@@ -81,6 +80,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
         Bundle arguments = getIntent().getExtras();
         if(arguments!=null) {
+            // передача данных о животном
             animal = (Animal) arguments.getSerializable(Animal.class.getSimpleName());
             TextView animalType = findViewById(R.id.animal_type_text);
             animalType.setText(MyFarmDatabase.getDatabase(this)
@@ -93,6 +93,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     animalTypeDao().getPhotoNameByIDAnimalType(animal.getAnimalTypeID()), "drawable", getPackageName()));
 
             if(animal.getFemale()){
+                // запрос разрешения к календарю
                 if (ContextCompat.checkSelfPermission(AnimalActivity.this,
                         android.Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_DENIED) {
                     ActivityCompat.requestPermissions(this,
@@ -104,13 +105,20 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             if(animal.getPregnancyID() > 1 | !animal.getFemale()){
                 addPregnancyButton.setEnabled(false);
                 if (animal.getPregnancyID() > 1){
+                    // если животное беременно
                     try {
                         String childBirth = Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
-                                pregnancyDao().getPregnancyById(animal.getPregnancyID()));
+                                pregnancyDao().getChildbirthDateByPregnancyID(animal.getPregnancyID()));
                         if (childBirth.contains("/")){
                             childBirth = childBirth.substring(0, childBirth.indexOf("-"));
                         }
                         addPregnancyButton.setText("Роды с " + childBirth);
+                        if (MyFarmDatabase.getDatabase(this).pregnancyDao().getNotifyIDByPregnancyID(animal.getPregnancyID()) > 0){
+                            notifyBox.setChecked(true);
+                        } else {
+                            notifyBox.setChecked(false);
+                        }
+                        notifyBox.setEnabled(false);
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
@@ -163,7 +171,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
             Toast weightWarningToast = Toast.makeText(this,
                     "Масса животного должна быть " +
-                            "\nот 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
+                            "\nот 0.005 кг до 2555.999 кг!",
                     Toast.LENGTH_LONG);
             weightWarningToast.setGravity(Gravity.BOTTOM, 0, 160);
 
@@ -220,6 +228,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     }
                     animal.setAnimalName(String.valueOf(animalName.getText()));
                     animal.setFemale(animalSexSwitch.isChecked());
+                    // сохранение изменений в БД
                     if (isWeightCorrect) {
                         animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);

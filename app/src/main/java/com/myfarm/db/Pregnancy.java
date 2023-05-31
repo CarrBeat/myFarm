@@ -17,7 +17,7 @@ public class Pregnancy {
     @ColumnInfo(name = "approximatelyChildbirth")
     private String approximatelyChildbirth;
 
-    @ColumnInfo(name = "notify")
+    @ColumnInfo(name = "notifyID")
     private long notifyID;
 
     public Pregnancy(String approximatelyChildbirth, long notifyID){
