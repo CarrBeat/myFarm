@@ -16,9 +16,6 @@ public interface PregnancyDao {
     @Delete
     void delete(Pregnancy pregnancy);
 
-    @Update
-    void updatePregnancy(Pregnancy pregnancy);
-
     @Query("SELECT * FROM pregnancy")
     List<Pregnancy> getAllPregnancies();
 

@@ -103,10 +103,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     ActivityCompat.requestPermissions(this,
                             new String[]{ android.Manifest.permission.WRITE_CALENDAR},
                             REQUEST_CODE_PERMISSION_WRITE_CALENDAR);
-                    if(!isNotify){
-                        notifyBox.setChecked(false);
-                        notifyBox.setEnabled(false);
-                    }
                 }
             }
 
@@ -328,19 +324,22 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         }
         startChildbirth = formatter.format(startChildbirthDate.getTime());
 
-        if (isNotify){
-            createEvent(startChildbirth, endChildbirth);
-        }
         // непосредственно добавление в БД
         Pregnancy newPregnancy = new Pregnancy(startChildbirth + "/" + endChildbirth, isNotify);
-        animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
+        long IDEvent = MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy);
+        animal.setPregnancyID((int) IDEvent);
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+
+        if (isNotify){
+            // создаём событие с напоминанием в календаре
+            createEvent(IDEvent, startChildbirth, endChildbirth);
+        }
+
         openFragment("pregnancyFragment");
     }
 
     // создания события беременности в календаре
-    void createEvent(String startData, String endData){
-
+    void createEvent(long eventID, String startData, String endData){
         // создаём уведомление
         long calID = 1;
         long startMillis;
@@ -356,6 +355,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         startMillis = beginTime.getTimeInMillis();
         Calendar endTime = Calendar.getInstance();
         if (!endData.equals("")){
+            // если роды ожидаются не в один день
             endTime.set(Integer.parseInt(endData.substring(0, endData.indexOf("-"))),
                     Integer.parseInt(endData.substring(endData.indexOf("-") + 1, endData.lastIndexOf("-"))),
                     Integer.parseInt(endData.substring(endData.lastIndexOf("-") + 1)), 23, 59);
@@ -386,15 +386,14 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 animalInfo = animalInfo.toUpperCase() + " №" + animal.getIdAnimal();
             }
         }
-
+        // создаём событие
         values.put(CalendarContract.Events.TITLE, animalInfo + " скоро родит!");
-        values.put(CalendarContract.Events.DESCRIPTION, "Будьте внимательны, ожидаются роды!");
+        values.put(CalendarContract.Events.DESCRIPTION, "Будьте внимательны, скоро роды!");
         values.put(CalendarContract.Events.CALENDAR_ID, calID);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "Russia/Moscow");
         cr.insert(CalendarContract.Events.CONTENT_URI, values);
         values.clear();
         // создаём оповещение
-        long eventID = 1;
         values.put(CalendarContract.Reminders.MINUTES, 15);
         values.put(CalendarContract.Reminders.EVENT_ID, eventID);
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
@@ -408,9 +407,13 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_PERMISSION_WRITE_CALENDAR){
             if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(AnimalActivity.this, "Для получения уведомлений " +
+                Toast.makeText(AnimalActivity.this, "Для получения уведомлений о родах" +
                         "\nтребуется разрешение!", Toast.LENGTH_SHORT).show();
                 isNotify = false;
+                CheckBox box = findViewById(R.id.notify_checkbox);
+                box.setEnabled(false);
+                box.setChecked(false);
+                box.setSelected(false);
             }
         }
     }
