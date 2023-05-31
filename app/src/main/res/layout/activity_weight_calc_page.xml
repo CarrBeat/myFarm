@@ -137,30 +137,26 @@
         android:id="@+id/calc_image"
         android:layout_width="319dp"
         android:layout_height="217dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.468"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.081"
+        app:layout_constraintVertical_bias="0.074"
         app:srcCompat="@drawable/cow_calc_guide" />
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
+        android:layout_marginEnd="28dp"
         android:text="@string/weight_calc"
         android:textColor="@color/black"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.025" />
+        app:layout_constraintVertical_bias="0.022" />
 
     <EditText
         android:id="@+id/chest_girth_edittext"
@@ -171,14 +167,14 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.781"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/body_length_edittext"
-        android:layout_width="102dp"
+        android:layout_width="70dp"
         android:layout_height="51dp"
         android:inputType="numberDecimal"
         android:textColor="@color/black"
@@ -211,7 +207,7 @@
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.676" />
@@ -245,19 +241,6 @@
         app:layout_constraintVertical_bias="0.424" />
 
     <TextView
-        android:id="@+id/weight"
-        android:layout_width="71dp"
-        android:layout_height="33dp"
-        android:textColor="@color/black"
-        android:textSize="19sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.81"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.862" />
-
-    <TextView
         android:layout_width="36dp"
         android:layout_height="43dp"
         android:text="@string/short_kg"
@@ -265,10 +248,23 @@
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.907"
+        app:layout_constraintHorizontal_bias="0.949"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875" />
+        app:layout_constraintVertical_bias="0.872" />
+
+    <TextView
+        android:id="@+id/weight"
+        android:layout_width="71dp"
+        android:layout_height="33dp"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.859" />
 
     <Switch
         android:id="@+id/calc_way_switch"
@@ -303,7 +299,7 @@
         android:layout_width="320dp"
         android:layout_height="35dp"
         android:layout_marginLeft="212dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="4dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,13 +1,10 @@
 package com.myfarm;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +13,9 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Statistics;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,11 +65,11 @@ public class CalculatorActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG);
         calcFirstWayWarning.setGravity(Gravity.BOTTOM, 0, 160);
         Toast chestGirthWarning = Toast.makeText(getApplication(),
-                "Укажите обхват груди за лопатками \nна расстоянии \nширины ладони от локтя!",
+                "Укажите обхват груди за лопатками на расстоянии ширины ладони от локтя!",
                 Toast.LENGTH_LONG);
         chestGirthWarning.setGravity(Gravity.BOTTOM, 0, 160);
         Toast calcSecondWayWarning = Toast.makeText(getApplication(),
-                "Укажите обхват груди \nи длину туловища, \nа также выберите породу!",
+                "Укажите обхват груди и длину туловища, \nа также выберите породу!",
                 Toast.LENGTH_LONG);
         calcSecondWayWarning.setGravity(Gravity.BOTTOM, 0, 160);
 
