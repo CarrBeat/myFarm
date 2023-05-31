@@ -44,8 +44,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 public class AnimalActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Animal animal;
     boolean isNotify = true;
-    private static final int REQUEST_CODE_PERMISSION_READ_CALENDAR = 1;
-    private static final int REQUEST_CODE_PERMISSION_WRITE_CALENDAR = 2;
+    private static final int REQUEST_CODE_PERMISSION_WRITE_CALENDAR = 1;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -98,6 +97,18 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
             imageView.setImageResource(getResources().getIdentifier(MyFarmDatabase.getDatabase(this).
                     animalTypeDao().getPhotoNameByIDAnimalType(animal.getAnimalTypeID()), "drawable", getPackageName()));
 
+            if(animal.getFemale()){
+                if (ContextCompat.checkSelfPermission(AnimalActivity.this,
+                        android.Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{ android.Manifest.permission.WRITE_CALENDAR},
+                            REQUEST_CODE_PERMISSION_WRITE_CALENDAR);
+                    if(!isNotify){
+                        notifyBox.setChecked(false);
+                        notifyBox.setEnabled(false);
+                    }
+                }
+            }
 
             if(animal.getPregnancyID() > 1 | !animal.getFemale()){
                 addPregnancyButton.setEnabled(false);
@@ -134,8 +145,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
 
             addPregnancyButton.setOnClickListener(view -> {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{ Manifest.permission.READ_CALENDAR}, 1);
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
             });
@@ -298,7 +307,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         Date date = formatter.parse(startPregnancyDate);
         Calendar startChildbirthDate = Calendar.getInstance();
         startChildbirthDate.setTime(date);
-        String startChildbirth;
+        String startChildbirth = "";
         String endChildbirth = "";
 
         String pregnancyPeriod = MyFarmDatabase.getDatabase(getApplication()).
@@ -319,20 +328,8 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         }
         startChildbirth = formatter.format(startChildbirthDate.getTime());
 
-
         if (isNotify){
-            // запрашиваем разрешение
-            ActivityCompat.requestPermissions(AnimalActivity.this,
-                    new String[]{Manifest.permission.WRITE_CALENDAR}, REQUEST_CODE_PERMISSION_WRITE_CALENDAR);
-
-            // проверка текущего состояния разрешения на доступ к календарю
-            int permissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR);
-
-            if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
-                createEvent(startChildbirth, endChildbirth);
-            } else {
-                isNotify = false;
-            }
+            createEvent(startChildbirth, endChildbirth);
         }
         // непосредственно добавление в БД
         Pregnancy newPregnancy = new Pregnancy(startChildbirth + "/" + endChildbirth, isNotify);
@@ -406,15 +403,15 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
     // проверка разрешения
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_CODE_PERMISSION_WRITE_CALENDAR:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isNotify = true;
-                }
-                return;
+        if (requestCode == REQUEST_CODE_PERMISSION_WRITE_CALENDAR){
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(AnimalActivity.this, "Для получения уведомлений " +
+                        "\nтребуется разрешение!", Toast.LENGTH_SHORT).show();
+                isNotify = false;
+            }
         }
     }
 
