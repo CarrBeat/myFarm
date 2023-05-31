@@ -1,13 +1,19 @@
 package com.myfarm;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +64,14 @@ public class PregnancyFragment extends Fragment {
                                 .getAnimalByPregnancy(pregnancy.getIdPregnancy());
                 animal.setPregnancyID(1);
                 MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao().updateAnimal(animal);
+                if (pregnancy.getNotify()){
+                    try {
+                        removeEvent(156);
+                    } catch (Exception exception){
+                        exception.printStackTrace();
+                    }
+
+                }
                 MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().delete(pregnancy);
                 reopenFragment();
             }
@@ -82,6 +96,14 @@ public class PregnancyFragment extends Fragment {
             recyclerView.setAdapter(pregnancyAdapter);
         }
         return view;
+    }
+
+    void removeEvent(long eventID){
+        MainActivity mainActivity = new MainActivity();
+        ContentResolver cr = requireActivity().getContentResolver();
+        Uri deleteUri = null;
+        deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventID);
+        cr.delete(deleteUri, null, null);
     }
 
     void reopenFragment(){

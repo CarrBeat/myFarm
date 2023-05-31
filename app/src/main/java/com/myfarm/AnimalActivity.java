@@ -1,12 +1,10 @@
 package com.myfarm;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -28,8 +26,6 @@ import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
 import com.myfarm.db.Pregnancy;
 import com.myfarm.db.Statistics;
-
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +34,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import android.Manifest;
 import io.reactivex.rxjava3.annotations.NonNull;
 
 public class AnimalActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -108,7 +103,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
             if(animal.getPregnancyID() > 1 | !animal.getFemale()){
                 addPregnancyButton.setEnabled(false);
-                if (animal.getPregnancyID() > 0){
+                if (animal.getPregnancyID() > 1){
                     try {
                         String childBirth = Common.getNormalDate(MyFarmDatabase.getDatabase(getApplication()).
                                 pregnancyDao().getPregnancyById(animal.getPregnancyID()));
@@ -326,20 +321,19 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
 
         // непосредственно добавление в БД
         Pregnancy newPregnancy = new Pregnancy(startChildbirth + "/" + endChildbirth, isNotify);
-        long IDEvent = MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy);
-        animal.setPregnancyID((int) IDEvent);
+        animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
 
         if (isNotify){
             // создаём событие с напоминанием в календаре
-            createEvent(IDEvent, startChildbirth, endChildbirth);
+            createEvent(startChildbirth, endChildbirth);
         }
 
         openFragment("pregnancyFragment");
     }
 
     // создания события беременности в календаре
-    void createEvent(long eventID, String startData, String endData){
+    void createEvent(String startData, String endData){
         // создаём уведомление
         long calID = 1;
         long startMillis;
@@ -391,7 +385,9 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         values.put(CalendarContract.Events.DESCRIPTION, "Будьте внимательны, скоро роды!");
         values.put(CalendarContract.Events.CALENDAR_ID, calID);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "Russia/Moscow");
-        cr.insert(CalendarContract.Events.CONTENT_URI, values);
+        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+        long eventID = Long.parseLong(uri.getLastPathSegment());
+        System.out.println(uri.getLastPathSegment());
         values.clear();
         // создаём оповещение
         values.put(CalendarContract.Reminders.MINUTES, 15);

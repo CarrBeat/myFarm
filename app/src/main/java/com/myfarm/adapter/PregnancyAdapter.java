@@ -46,8 +46,13 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
                     .getAnimalIDByPregnancy(currentPregnancy.getIdPregnancy());
             String animalName = MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
                     .getAnimalName(idAnimal);
+
             String animalTypeName = (MyFarmDatabase.getDatabase(pregnancyFragment.getContext()).animalDao()
-                    .getAnimalTypeNameByAnimalID(idAnimal)).toUpperCase();
+                    .getAnimalTypeNameByAnimalID(idAnimal));
+
+            if (animalTypeName != null){
+                animalTypeName = animalTypeName.toUpperCase();
+            }
 
             String animalID = " (№ " + idAnimal + "),";
 
