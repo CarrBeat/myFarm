@@ -19,8 +19,12 @@ import android.widget.Toast;
 
 import com.myfarm.db.Animal;
 import com.myfarm.db.MyFarmDatabase;
+import com.myfarm.db.Statistics;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CalculatorActivity extends AppCompatActivity {
@@ -266,6 +270,11 @@ public class CalculatorActivity extends AppCompatActivity {
     void saveNewWeight(float weight){
         animal.setWeight(weight);
         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
+                new Statistics(sdf.format(calendar.getTime()),
+                        animal.getIdAnimal(), weight));
         finishAffinity();
         Intent intent = new Intent(getApplication(), AnimalActivity.class);
         intent.putExtra(Animal.class.getSimpleName(), animal);

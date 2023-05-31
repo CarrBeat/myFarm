@@ -1,35 +1,26 @@
 package com.myfarm;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.CalendarContract;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.myfarm.adapter.PregnancyAdapter;
 import com.myfarm.db.Animal;
 import com.myfarm.db.AnimalDao;
 import com.myfarm.db.MyFarmDatabase;
-import com.myfarm.db.Pregnancy;
 import com.myfarm.db.PregnancyDao;
-
-import org.w3c.dom.Text;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,13 +55,12 @@ public class PregnancyFragment extends Fragment {
                                 .getAnimalByPregnancy(pregnancy.getIdPregnancy());
                 animal.setPregnancyID(1);
                 MyFarmDatabase.getDatabase(requireActivity().getApplication()).animalDao().updateAnimal(animal);
-                if (pregnancy.getNotify()){
+                if (pregnancy.getNotifyID() > 0){
                     try {
-                        removeEvent(156);
+                        removeEvent(pregnancy.getNotifyID());
                     } catch (Exception exception){
                         exception.printStackTrace();
                     }
-
                 }
                 MyFarmDatabase.getDatabase(requireActivity().getApplication()).pregnancyDao().delete(pregnancy);
                 reopenFragment();

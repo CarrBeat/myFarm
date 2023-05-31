@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             MyFarmDatabase.getDatabase(this).animalTypeDao().insertAll(cow, sheep, goat, chicken, quail, duck, goose,
                     turkey, ostrich, pig, nutria, rabbit);
 
-            Pregnancy pregnancy = new Pregnancy("-", false);
+            Pregnancy pregnancy = new Pregnancy("-", 0);
             MyFarmDatabase.getDatabase(this).pregnancyDao().insert(pregnancy);
 
 

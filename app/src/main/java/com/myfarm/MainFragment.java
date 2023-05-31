@@ -54,7 +54,7 @@ public class MainFragment extends Fragment {
         for (int i = 0; i < animals.size(); i++){
             currentAnimal = animals.get(i);
 
-            if(animalTypes.get(currentAnimal.getAnimalTypeID()).contains("/")){
+            if(animalTypes.get(currentAnimal.getAnimalTypeID() - 1).contains("/")){
                 if (currentAnimal.getFemale()){
                     animalType = animalTypes.get(currentAnimal.getAnimalTypeID() - 1).substring(0,
                             animalTypes.get(currentAnimal.getAnimalTypeID() - 1).indexOf("/")).toUpperCase();

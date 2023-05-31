@@ -319,21 +319,27 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         }
         startChildbirth = formatter.format(startChildbirthDate.getTime());
 
-        // непосредственно добавление в БД
-        Pregnancy newPregnancy = new Pregnancy(startChildbirth + "/" + endChildbirth, isNotify);
-        animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
-        MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+
+        Pregnancy newPregnancy;
+
 
         if (isNotify){
             // создаём событие с напоминанием в календаре
-            createEvent(startChildbirth, endChildbirth);
+            newPregnancy = new Pregnancy(startChildbirth + "/" + endChildbirth,
+                    createEvent(startChildbirth, endChildbirth));
+        } else {
+            newPregnancy = new Pregnancy(startChildbirth + "/" + endChildbirth, 0);
         }
+
+        // непосредственно добавление в БД
+        animal.setPregnancyID((int) MyFarmDatabase.getDatabase(getApplication()).pregnancyDao().insert(newPregnancy));
+        MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
 
         openFragment("pregnancyFragment");
     }
 
     // создания события беременности в календаре
-    void createEvent(String startData, String endData){
+    long createEvent(String startData, String endData){
         // создаём уведомление
         long calID = 1;
         long startMillis;
@@ -394,6 +400,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         values.put(CalendarContract.Reminders.EVENT_ID, eventID);
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
+        return eventID;
     }
 
     // проверка разрешения

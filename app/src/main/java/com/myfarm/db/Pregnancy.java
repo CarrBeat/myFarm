@@ -4,8 +4,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import org.jetbrains.annotations.NotNull;
-
 import io.reactivex.rxjava3.annotations.NonNull;
 
 @Entity(tableName = "pregnancy")
@@ -20,11 +18,11 @@ public class Pregnancy {
     private String approximatelyChildbirth;
 
     @ColumnInfo(name = "notify")
-    private Boolean notify;
+    private long notifyID;
 
-    public Pregnancy(String approximatelyChildbirth, Boolean notify){
+    public Pregnancy(String approximatelyChildbirth, long notifyID){
         this.approximatelyChildbirth = approximatelyChildbirth;
-        this.notify = notify;
+        this.notifyID = notifyID;
     }
 
     public int getIdPregnancy() {
@@ -43,11 +41,11 @@ public class Pregnancy {
         this.approximatelyChildbirth = approximatelyChildbirth;
     }
 
-    public Boolean getNotify() {
-        return notify;
+    public long getNotifyID() {
+        return notifyID;
     }
 
-    public void setNotify(Boolean notify) {
-        this.notify = notify;
+    public void setNotifyID(long notifyID) {
+        this.notifyID = notifyID;
     }
 }
