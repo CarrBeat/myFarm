@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             Pregnancy pregnancy = new Pregnancy("-", 0);
             MyFarmDatabase.getDatabase(this).pregnancyDao().insert(pregnancy);
 
-
         }
         prefs.edit().putBoolean("isFirstRun", false).apply();
 

@@ -232,7 +232,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     if (animalWeight.getText().toString().equals("")){
                         animal.setWeight(0);
                     }
-                    animal.setAnimalName(String.valueOf(animalName.getText()));
+                    animal.setAnimalName(String.valueOf(animalName.getText()).replace("\n", " "));
                     animal.setFemale(animalSexSwitch.isChecked());
                     // сохранение изменений в БД
                     if (isWeightCorrect) {

@@ -83,7 +83,7 @@ public class PregnancyAdapter extends RecyclerView.Adapter<PregnancyAdapter.Preg
             }
 
             if (currentPregnancy.getNotifyID() > 0){
-                holder.bottomText.setText("родит с " + childBirth + ", уведомление вкл.");
+                holder.bottomText.setText("родит с " + childBirth + "\nуведомление вкл.");
             } else {
                 holder.bottomText.setText("родит с " + childBirth);
             }

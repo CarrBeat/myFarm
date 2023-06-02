@@ -202,7 +202,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     if (animalBirthdate.matches("[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])")){
                         if (isWeightCorrect){
                             // если масса введена
-                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()).replace("\n", " "),
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
                                     animalBirthdate, sexSwitch.isChecked(),
                                     Float.parseFloat(animalWeight.getText().toString()));
@@ -221,7 +221,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                                     newAnimal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
                         } else {
                             // если масса не введена
-                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()),
+                            Animal newAnimal = new Animal(String.valueOf(animalNameText.getText()).replace("\n", " "),
                                     Integer.parseInt(String.valueOf(spinner.getSelectedItemId() + 1)),
                                     animalBirthdate, sexSwitch.isChecked());
                             MyFarmDatabase.getDatabase(this).animalDao().insertAll(newAnimal);
