@@ -80,7 +80,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.AnimalHold
             if (currentAnimal.getPregnancyID() > 1) {
                 try {
                     holder.bottom_text.setText("Самка | " + Common.getNormalDate(currentAnimal.getBirthdate())
-                            + " | Ожидает потомство!");
+                            + "\nОжидает потомство!");
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }

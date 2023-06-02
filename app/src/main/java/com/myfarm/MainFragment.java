@@ -91,6 +91,7 @@ public class MainFragment extends Fragment {
                 List<Integer> statisticsIDList =
                         MyFarmDatabase.getDatabase(getContext()).statisticsDao()
                                 .getIDStatisticsByIDAnimal(animalsMap.get(spinner.getSelectedItem()));
+                weightChart.clear();
                 if (statisticsIDList.size() >= 2){
                     for (int j = 0; j < statisticsIDList.size(); j++){
                         currentStatistics = statistics.get(statisticsIDList.get(j) - 1);
@@ -115,7 +116,7 @@ public class MainFragment extends Fragment {
                 PieData pieData = new PieData(pieDataSet);
                 pieChart.setData(pieData);
                 pieChart.getDescription().setEnabled(false);
-                pieChart.setCenterText("Изменение массы");
+                pieChart.setCenterText("Изменение массы (кг)");
                 pieChart.animateY(2000);
                 pieChart.setCenterTextSize(18f);
                 pieChart.setEntryLabelTextSize(15f);

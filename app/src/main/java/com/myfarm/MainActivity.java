@@ -193,6 +193,12 @@ public class MainActivity extends AppCompatActivity {
             Button mainButton = findViewById(R.id.main_button);
             Button animalsButton = findViewById(R.id.animals_button);
             Button pregnancyButton = findViewById(R.id.pregnancy_button);
+            Button settingsButton = findViewById(R.id.settings_button);
+
+            settingsButton.setOnClickListener(view -> {
+                Toast.makeText(this, "Страница находится в разрботке!",
+                        Toast.LENGTH_SHORT).show();
+            });
 
             if (animalsInSystem)
                 animalsButton.setOnClickListener(view -> {

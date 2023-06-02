@@ -167,7 +167,14 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                 }
                 return false;
             });
-            removeButton.setOnClickListener(view -> deleteAnimalWarning.show());
+            removeButton.setOnClickListener(view -> {
+                if (deleteConfirm.isChecked()) {
+                    Toast.makeText(this, "Для удаления нужно удерживать кнопку!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    deleteAnimalWarning.show();
+                }
+            });
 
             Toast weightWarningToast = Toast.makeText(this,
                     "Масса от 0.005 кг до 2555.999 кг! \n(точность до 1 гр)",
