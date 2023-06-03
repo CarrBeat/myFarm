@@ -235,7 +235,7 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     animal.setAnimalName(String.valueOf(animalName.getText()).replace("\n", " "));
                     animal.setFemale(animalSexSwitch.isChecked());
                     // сохранение изменений в БД
-                    if (isWeightCorrect) {
+                    if (isWeightCorrect & Float.parseFloat(animalWeight.getText().toString()) != animal.getWeight()) {
                         animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
 

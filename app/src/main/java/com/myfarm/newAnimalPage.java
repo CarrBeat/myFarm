@@ -144,6 +144,7 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     animalBirthdate = sdf.format(cal.getTime());
                 } else {
                     if (daysBetweenCalc(animalTextView.getText().toString()) <= 0){
+                        System.out.println(daysBetweenCalc(animalTextView.getText().toString()));
                         animalBirthdate = animalTextView.getText().toString();
                     } else {
                         selectedBirthdateWarningToast.show();
@@ -247,15 +248,12 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         int daysBetween;
         try {
-            String currentDateS = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
-            Date currentDate = sdf.parse("20" + currentDateS.substring(currentDateS.lastIndexOf(".") + 1)
-                    + "-" + currentDateS.substring(currentDateS.indexOf(".") + 1,
-                    currentDateS.lastIndexOf(".")) + "-" + currentDateS.substring(0,
-                    currentDateS.indexOf(".")));
             Date animalBirthdateToCheck = sdf.parse(selectedDate);
+            String currentDateS = sdf.format(calendar.getTime());
+            Date currentTime = sdf.parse(currentDateS);
             assert animalBirthdateToCheck != null;
-            assert currentDate != null;
-            long diff = animalBirthdateToCheck.getTime() - currentDate.getTime();
+            assert currentTime != null;
+            long diff = animalBirthdateToCheck.getTime() - currentTime.getTime();
             daysBetween = Integer.parseInt(""+(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)));
 
         } catch (ParseException e) {
