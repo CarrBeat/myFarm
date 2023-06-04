@@ -144,7 +144,6 @@ public class newAnimalPage extends AppCompatActivity implements DatePickerDialog
                     animalBirthdate = sdf.format(cal.getTime());
                 } else {
                     if (daysBetweenCalc(animalTextView.getText().toString()) <= 0){
-                        System.out.println(daysBetweenCalc(animalTextView.getText().toString()));
                         animalBirthdate = animalTextView.getText().toString();
                     } else {
                         selectedBirthdateWarningToast.show();

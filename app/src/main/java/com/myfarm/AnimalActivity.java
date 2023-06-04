@@ -235,16 +235,20 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
                     animal.setAnimalName(String.valueOf(animalName.getText()).replace("\n", " "));
                     animal.setFemale(animalSexSwitch.isChecked());
                     // сохранение изменений в БД
-                    if (isWeightCorrect & Float.parseFloat(animalWeight.getText().toString()) != animal.getWeight()) {
-                        animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
-                        MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+                    if (isWeightCorrect & !animalWeight.getText().toString().equals("")) {
+                        if (Float.parseFloat(animalWeight.getText().toString()) != animal.getWeight()){
+                            animal.setWeight(Float.parseFloat(animalWeight.getText().toString()));
+                            MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
 
-                        Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            Calendar calendar = Calendar.getInstance();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-                        MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
-                                new Statistics(sdf.format(calendar.getTime()),
-                                        animal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
+                            MyFarmDatabase.getDatabase(getApplication()).statisticsDao().insertAll(
+                                    new Statistics(sdf.format(calendar.getTime()),
+                                            animal.getIdAnimal(), Float.parseFloat(animalWeight.getText().toString())));
+                        } else {
+                            MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
+                        }
                     } else {
                         MyFarmDatabase.getDatabase(getApplication()).animalDao().updateAnimal(animal);
                     }
@@ -408,7 +412,6 @@ public class AnimalActivity extends AppCompatActivity implements DatePickerDialo
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "Russia/Moscow");
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
         long eventID = Long.parseLong(uri.getLastPathSegment());
-        System.out.println(uri.getLastPathSegment());
         values.clear();
         // создаём оповещение
         values.put(CalendarContract.Reminders.MINUTES, 15);
